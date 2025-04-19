@@ -119,8 +119,15 @@ const Sidebar = () => {
                 setSelected={setSelected}
               />
               <Item
-                title="Workout"
-                to="/workout"
+                title="Workouts"
+                to="/workouts"
+                icon={<FitnessCenterIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+                            <Item
+                title="Users"
+                to="/users"
                 icon={<FitnessCenterIcon />}
                 selected={selected}
                 setSelected={setSelected}

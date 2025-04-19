@@ -1,25 +1,23 @@
 import { useGetQuery, usePostMutation, usePutMutation, useDeleteMutation } from "@utils/apiHooks";
 import { useErrorSnackbar, useSuccessSnackbar } from "@hooks/useSnackbar";
 
-export const useWorkout = () => {
+export const useWorkout = (workoutId) => {
     const setSuccess = useSuccessSnackbar();
     const setError = useErrorSnackbar();
 
-    // ✅ Fetch the workout in "Draft" mode
-    const workout = useGetQuery(["workout", "draft"], `/workouts`);
+    const workout = useGetQuery(["workout", workoutId], `/workout/${workoutId}`);
 
     // ✅ Mutations for workout management
-    const completeWorkout = usePutMutation(["workout", "draft"], () => `/workouts/complete`, ["workout", "draft"]);
-    const deleteWorkout = useDeleteMutation(["workout", "draft"], () => `/workouts`, ["workout", "draft"]);
+    const completeWorkout = usePutMutation(["workout", workoutId], () => `/workout/${workoutId}/complete`, ["workout", workoutId]);
+    const deleteWorkout = useDeleteMutation(["workout", workoutId], () => `/workouts`, ["workout", workoutId]);
 
     // ✅ Mutations for logging sets
-    const logSet = usePutMutation(["workoutLogs", "draft"], ({ logId }) => `/log/${logId}`, ["workout", "draft"]);
-    const updateLoggedSet = usePutMutation(["workoutLogs", "draft"], ({ logId }) => `/log/${logId}/update`, ["workoutLogs", "draft"]);
+    const logSet = usePutMutation(["workoutLogs", workoutId], ({ logId }) => `/log/${logId}`, ["workout", workoutId]);
+    const updateLoggedSet = usePutMutation(["workoutLogs", workoutId], ({ logId }) => `/log/${logId}/update`, ["workoutLogs", workoutId]);
 
     // ✅ Handles API requests with notifications
     const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
         try {
-            console.log(data);
             await mutationFn(data);
             setSuccess(successMessage);
         } catch (error) {

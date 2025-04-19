@@ -1,37 +1,26 @@
 const { workoutHandler } = require("../handlers");
 
-// ✅ 1️⃣ Create a new workout from a split
-const createWorkoutFromSplit = async (req, res) => {
-  try {
-    const { splitId } = req.params;
-    console.log(`Creating workout for splitId: ${splitId}`);
-
-    const newWorkout = await workoutHandler.createWorkoutFromSplit(splitId);
-
-    res.status(201).json(newWorkout);
-  } catch (error) {
-    console.error("Error creating workout:", error);
-    res.status(500).json({ error: "Failed to create workout." });
-  }
+const getAllWorkouts = async (req, res) => {
+  const workouts = await workoutHandler.getAllWorkouts();
+  res.status(200).json(workouts);
 };
 
-const getDraftWorkout = async (req, res) => {
+const createWorkout = async (req, res) => {
+  const { splitId } = req.body;
+    const newWorkout = await workoutHandler.createWorkoutFromSplit(splitId);
+    res.status(201).json(newWorkout);
+};
 
-  console.log("hit")
-  const workout = await workoutHandler.getDraftWorkout();
-  console.log(workout)
-  if (!workout) {
-    return res.status(200).json({ error: "Workout not found." });
-  }
-
-  res.status(200).json(workout);
-
+const getWorkoutById = async (req, res) => {
+    const { workoutId } = req.params;
+    const workout = await workoutHandler.getWorkoutById(workoutId);
+    res.status(200).json(workout);
 };
 
 const completeWorkout = async (req, res) => {
   try {
-
-    const updatedWorkout = await workoutHandler.completeWorkout();
+    const { workoutId } = req.params;
+    const updatedWorkout = await workoutHandler.completeWorkout(workoutId);
 
     res.status(200).json(updatedWorkout);
   } catch (error) {
@@ -40,7 +29,6 @@ const completeWorkout = async (req, res) => {
   }
 };
 
-// ✅ 4️⃣ Delete a workout
 const deleteWorkout = async (req, res) => {
   try {
     const { workoutId } = req.params;
@@ -87,10 +75,11 @@ const updateLoggedSet = async (req, res) => {
 };
 
 module.exports = {
-  createWorkoutFromSplit,
-  getDraftWorkout,
-  completeWorkout,
+  getAllWorkouts,
+  createWorkout,
+  getWorkoutById,
   deleteWorkout,
+  completeWorkout,
   logSet,
   updateLoggedSet,
 };

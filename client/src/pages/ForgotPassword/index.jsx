@@ -1,7 +1,5 @@
-import { Box, Button, TextField, useMediaQuery } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import CustomInput from "@components/CustomInput";
-import CustomPaper from "@components/CustomPaper";
-import Header from "@components/Header";
 import { Formik } from "formik";
 import React from "react";
 import * as yup from "yup";
@@ -15,17 +13,14 @@ const initialValues = {
   password: "",
 };
 
-const ForgotPassword = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+const ForgotPassword = ({colors, theme, user, navigate, isMobile, params}) => {
 
   const handleFormSubmit = (values) => {
     console.log(values);
   };
 
   return (
-    <CustomPaper sx={isNonMobile? {minWidth: "500px"} : {height: "100%"}}>
-      <Box p={4}>
-        <Header title="Forgot Password" />
+      <Box sx={!isMobile? {minWidth: "500px"} : {height: "100%"}} p={4}>
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValues}
@@ -46,7 +41,7 @@ const ForgotPassword = () => {
                 width={"100%"}
                 gridTemplateColumns="repeat(4, minmax(0, 1fr))"
                 sx={{
-                  "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                  "& > div": { gridColumn: isMobile ? undefined : "span 4" },
                 }}
               >
                 <CustomInput
@@ -70,7 +65,6 @@ const ForgotPassword = () => {
           )}
         </Formik>
       </Box>
-    </CustomPaper>
   );
 };
 

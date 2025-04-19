@@ -16,7 +16,6 @@ USER node
 RUN mkdir /app/log
 RUN chown -R node:node /app /app/log
 
-COPY .env.docker .env
 COPY --chown=node:node package.json package-lock.json* ./
 RUN npm ci && npm cache clean --force
 

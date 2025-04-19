@@ -1,22 +1,19 @@
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, TextField, Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from "@mui/material";
+import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, IconButton } from "@mui/material";
 import CustomButton from "@components/CustomButton";
-import { PlusOneOutlined, DeleteOutline } from "@mui/icons-material";
+import { DeleteOutline } from "@mui/icons-material";
 import { useExercises } from "@hooks/useExercises";
-import PagePaper from "@components/CustomPaper/Pagepaper";
 
-const ExercisesEdit = () => {
+const ExercisesEdit = ({colors, theme, user, navigate, isMobile, params}) => {
   const { exercises, addExercise, updateExercise, deleteExercise } = useExercises();
   const [open, setOpen] = useState(false);
   const [exerciseData, setExerciseData] = useState({ name: "", description: "" });
 
-  // Handle input change
   const handleInputChange = (event) => {
     setExerciseData({ ...exerciseData, [event.target.name]: event.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
     if (!exerciseData.name.trim()) return alert("Exercise name is required.");
     if (!exerciseData.description.trim()) return alert("Description is required.");
@@ -30,7 +27,6 @@ const ExercisesEdit = () => {
     }
   };
 
-  // Process inline row update
   const processRowUpdate = async (newRow) => {
     try {
       await updateExercise(newRow);
@@ -64,12 +60,8 @@ const ExercisesEdit = () => {
     },
   ];
 
-    const PageButton = <CustomButton variant="outlined" color="primary" onClick={() => setOpen()} Icon={ PlusOneOutlined } label={"Add Exercise"} />
-
     return (
-  <PagePaper title={"EXERCISES"} subtitle={"A list of all exercises"} PageButton={PageButton}>
-
-      <Box m="20px 0 0 0" height="75vh">
+      <>
         <DataGrid
           rows={exercises}
           columns={columns}
@@ -78,7 +70,6 @@ const ExercisesEdit = () => {
           processRowUpdateMode="client"
           rowCount={0}
         />
-      </Box>
 
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Add New Exercise</DialogTitle>
@@ -112,7 +103,7 @@ const ExercisesEdit = () => {
           </CustomButton>
         </DialogActions>
       </Dialog>
-    </PagePaper>
+      </>
   );
 };
 

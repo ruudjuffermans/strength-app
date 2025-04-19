@@ -4,15 +4,11 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { tokens } from "@theme";
-import PagePaper from "@components/CustomPaper/Pagepaper";
 
-const Support = () => {
+const Support = ({colors, theme, user, navigate, isMobile, params}) => {
 
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
     return (
-      <PagePaper title={"FAQ"} subtitle={"Frequently Asked Questions Page"} >
+      <>
         <Accordion sx={{margin: "15px 0"}} >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography color={colors.primary[500]} variant="h5">
@@ -78,7 +74,7 @@ const Support = () => {
             </Typography>
           </AccordionDetails>
         </Accordion>
-      </PagePaper>
+      </>
     );
 }
 

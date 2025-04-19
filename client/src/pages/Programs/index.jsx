@@ -8,10 +8,8 @@ import {
   TextField,
 } from "@mui/material";
 import CustomButton from "@components/CustomButton";
-import { PlusOneOutlined } from "@mui/icons-material";
 import { usePrograms } from "@hooks/usePrograms";
 import ProgramTile from "./ProgramTile";
-import PagePaper from "../../components/CustomPaper/Pagepaper";
 
 const Programs = () => {
   const {
@@ -41,12 +39,6 @@ const Programs = () => {
     name: "",
     description: ""
   });
-
-  // Open Add Program Dialog
-  const handleAddNewProgram = () => {
-    setProgramData({ id: null, name: "", description: "" });
-    setOpenProgramDialog(true);
-  };
 
   // Open Edit Program Dialog
   const handleEditProgram = (id, name, description) => {
@@ -95,7 +87,7 @@ const Programs = () => {
   };
 
   // Handle Save Split (Create or Update)
-  const handleSaveSplit = () => {
+  const handleSaveSplit = ({colors, theme, user, navigate, isMobile, params}) => {
     if (!splitData.name.trim())
       return setError({ ...error, name: "Split name is required." });
 
@@ -122,7 +114,7 @@ const Programs = () => {
 
 
   return (
-    <PagePaper title={"PROGRAMS"} subtitle={"subtitle"}>
+    <>
       <Box display="flex" flexWrap="wrap" gap="10px">
         {programs.map(({ id, name, description, splits }) => (
           <ProgramTile
@@ -217,7 +209,7 @@ const Programs = () => {
           <CustomButton onClick={handleSaveSplit} color="primary" label={"Save"} />
         </DialogActions>
       </Dialog>
-    </PagePaper>
+      </>
   );
 };
 

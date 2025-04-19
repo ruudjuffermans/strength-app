@@ -18,17 +18,18 @@ export const useSplit = (splitId) => {
     const editExercise = usePutMutation(["exerciseSplit", splitId], ({ exerciseSplitId }) => `/exercise-split/${exerciseSplitId}`, ["exerciseSplit", splitId]);
     const deleteExercise = useDeleteMutation(["exerciseSplit", splitId], ({ exerciseSplitId }) => `/exercise-split/${exerciseSplitId}`, ["exerciseSplit", splitId]);
 
-    const createWorkout = usePostMutation(["workout", splitId], () => `/workouts/${splitId}`, ["workouts"]);
+    const createWorkout = usePostMutation(["workout", splitId], () => `/workout/create`, ["workout", splitId]);
 
     const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
         try {
             console.log(data);
-            await mutationFn(data);
+            const res = await mutationFn(data);
             setSuccess(successMessage);
+            return res
         } catch (error) {
             console.log(error);
             setError(errorMessage);
-        }
+        } 
     };
 
     return {
@@ -36,6 +37,6 @@ export const useSplit = (splitId) => {
         addExercise: (data) => handleMutation(addExercise, data, "Exercise added successfully!", "Failed to add Exercise."),
         editExercise: (data) => handleMutation(editExercise, data, "Exercise updated successfully!", "Failed to update Exercise."),
         deleteExercise: (data) => handleMutation(deleteExercise, data, "Exercise deleted successfully!", "Failed to delete Exercise."),
-        createWorkout: () => handleMutation(createWorkout, {}, "Workout created successfully!", "Failed to create workout."),
+        createWorkout: (data) => handleMutation(createWorkout, data, "Workout created successfully!", "Failed to create workout."),
     };
 };

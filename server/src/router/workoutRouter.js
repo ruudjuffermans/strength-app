@@ -3,35 +3,42 @@ const { asyncHandler } = require("../utils/asyncHandler");
 
 function workoutRouter(app) {
 
+
+
     app.post(
-        "/api/workouts/:splitId",
-        asyncHandler(workoutController.createWorkoutFromSplit)
+        "/api/workout/create",
+        asyncHandler(workoutController.createWorkout)
     );
 
     app.get(
-        "/api/workouts",
-        asyncHandler(workoutController.getDraftWorkout)
+        "/api/workout/:workoutId",
+        asyncHandler(workoutController.getWorkoutById)
     );
 
     app.put(
-        "/api/workouts/complete",
+        "/api/workout/:workoutId/complete",
         asyncHandler(workoutController.completeWorkout)
     );
 
     app.delete(
-        "/api/workouts/:workoutId",
+        "/api/workout/:workoutId",
         asyncHandler(workoutController.deleteWorkout)
     );
 
-    app.patch(
+    app.get(
+        "/api/workout",
+        asyncHandler(workoutController.getAllWorkouts)
+    );
+
+    app.put(
         "/api/log/:logId",
         asyncHandler(workoutController.logSet)
     );
 
-    app.patch(
-        "/api/log/:logId/update",
-        asyncHandler(workoutController.updateLoggedSet)
-    );
+    // app.patch(
+    //     "/api/log/:logId/update",
+    //     asyncHandler(workoutController.updateLoggedSet)
+    // );
 }
 
 module.exports = workoutRouter;

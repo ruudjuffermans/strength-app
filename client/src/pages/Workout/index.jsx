@@ -1,34 +1,64 @@
 import { useWorkout } from "@hooks/useWorkout";
 
-const Workout = () => {
-    const { workout, completeWorkout, logSet, updateLoggedSet, removeLoggedSet } = useWorkout();
+import { useState, useEffect } from "react";
+import WorkoutItem from "./WorkoutItem";
 
-    console.log(workout)
+const Workout = ({colors, theme, user, navigate, isMobile, params}) => {
+  const { workoutId } = params;
+  const { workout, completeWorkout, logSet, updateLoggedSet } =
+    useWorkout(workoutId);
 
-    if (workout.isLoading) return <p>Loading...</p>;
-    if (workout.error) return <p>Error loading workout</p>;
+  const [inputValues, setInputValues] = useState({});
 
-    return (
-        <div>
-            <h2>Workout: {workout.data?.split}</h2>
-            <button onClick={() => completeWorkout()}>Complete Workout</button>
+  // Populate input values when workout data is available
+  useEffect(() => {
+    if (workout.logs) {
+      const initialValues = workout.logs.reduce((acc, log) => {
+        acc[log.id] = {
+          weight: log.weight_used || "", // Use existing value or empty string
+          reps: log.performed_reps || "", // Use existing value or empty string
+        };
+        return acc;
+      }, {});
+      setInputValues(initialValues);
+    }
+  }, [workout.logs]);
 
-            {workout.data?.logs?.map((log) => (
-                <div key={log.id}>
-                    <p>{log.exercise_name} - Set {log.set_number}</p>
-                    <button onClick={() => logSet({ logId: log.id, performedReps: 10, weightUsed: 50 })}>
-                        Log Set
-                    </button>
-                    <button onClick={() => updateLoggedSet({ logId: log.id, performedReps: 12, weightUsed: 55 })}>
-                        Update Set
-                    </button>
-                    <button onClick={() => removeLoggedSet({ logId: log.id })}>
-                        Remove Set
-                    </button>
-                </div>
-            ))}
-        </div>
-    );
+  if (workout.isLoading) return <p>Loading...</p>;
+  if (workout.error) return <p>Error loading workout</p>;
+
+  // Handle input change
+  const handleInputChange = (logId, field, value) => {
+    setInputValues((prev) => ({
+      ...prev,
+      [logId]: {
+        ...prev[logId],
+        [field]: value,
+      },
+    }));
+  };
+
+  return (
+    <>
+      <h2>state: {workout.workout_state}</h2>
+      <div>program: {workout.program}</div>
+      <div>split: {workout.split}</div>
+      <div>id: {workout.id}</div>
+      <div>completed at: {workout.completed_at}</div>
+      <div>created at: {workout.created_at}</div>
+      <div>notes: {workout.notes}</div>
+      <br />
+      {Object.entries(
+        workout.logs?.reduce((acc, log) => {
+          (acc[log.exercise_order] = acc[log.exercise_order] || []).push(log);
+          return acc;
+        }, {})
+      ).map(([order, logs]) => (
+        <WorkoutItem key={order} logs={logs} handleInputChange={handleInputChange} inputValues={inputValues} logSet={logSet} />
+      ))}
+      <button onClick={() => completeWorkout()}>Complete Workout</button>
+    </>
+  );
 };
 
-export default Workout
+export default Workout;

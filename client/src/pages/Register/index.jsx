@@ -1,34 +1,37 @@
-import { Box, Button, TextField, useMediaQuery } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import CustomInput from "@components/CustomInput";
-import CustomPaper from "@components/CustomPaper";
-import Header from "@components/Header";
 import { Formik } from "formik";
 import React from "react";
 import * as yup from "yup";
+import { useAuth } from "../../hooks/useAuth";
 
 const checkoutSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
-  name: yup.string().required("required"),
-  password: yup.string().required("required"),
+  firstname: yup.string().required("required"),
+  lastname: yup.string().required("required"),
 });
 
 const initialValues = {
   email: "",
-  password: "",
-  name: "",
+  firstname: "",
+  lastname: "",
 };
 
-const Register = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+const Register = ({colors, theme, user, navigate, isMobile, params}) => {
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
+  const {
+    register,
+  } = useAuth();
+
+  const handleFormSubmit = async (values) => {
+    const res = await register(values);
+    if (res?.token) {
+      localStorage.setItem('token', res.token);
+    }
   };
 
   return (
-    <CustomPaper>
-      <Box p={4}>
-        <Header title="Register" />
+      <Box sx={!isMobile? {minWidth: "500px"} : {height: "100%"}} p={4}>
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValues}
@@ -46,22 +49,32 @@ const Register = () => {
               <Box
                 display="grid"
                 gap="30px"
-                width={"400px"}
+                width={"100%"}
                 gridTemplateColumns="repeat(4, minmax(0, 1fr))"
                 sx={{
-                  "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                  "& > div": { gridColumn: isMobile ? undefined : "span 4" },
                 }}
               >
-                                <CustomInput
-
+                <CustomInput
                   type="text"
                   label="Firstname"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.name}
-                  name="name"
-                  error={!!touched.name && !!errors.name}
-                  helperText={touched.name && errors.name}
+                  value={values.firstname}
+                  name="firstname"
+                  error={!!touched.firstname && !!errors.firstname}
+                  helperText={touched.firstname && errors.firstname}
+                  sx={{ gridColumn: "span 4" }}
+                />
+                <CustomInput
+                  type="text"
+                  label="Lastname"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.lastname}
+                  name="lastname"
+                  error={!!touched.lastname && !!errors.lastname}
+                  helperText={touched.lastname && errors.lastname}
                   sx={{ gridColumn: "span 4" }}
                 />
                 <CustomInput
@@ -75,17 +88,6 @@ const Register = () => {
                   helperText={touched.email && errors.email}
                   sx={{ gridColumn: "span 4" }}
                 />
-                <CustomInput
-                  type="password"
-                  label="Password"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.password}
-                  name="password"
-                  error={!!touched.password && !!errors.password}
-                  helperText={touched.password && errors.password}
-                  sx={{ gridColumn: "span 4" }}
-                />
               </Box>
               <Box display="flex" justifyContent="end" mt="20px">
                 <Button type="submit" color="secondary" variant="contained">
@@ -96,7 +98,6 @@ const Register = () => {
           )}
         </Formik>
       </Box>
-    </CustomPaper>
   );
 };
 

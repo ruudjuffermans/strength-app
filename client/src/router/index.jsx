@@ -1,38 +1,49 @@
-import AppLayout from "@layout/AppLayout";
-import AuthLayout from "@layout/AuthLayout";
-import ForgotPassword from "@pages/ForgotPassword";
-import Home from "@pages/Home";
-import Login from "@pages/Login";
-import Register from "@pages/Register";
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Settings from "@pages/Settings";
-import Support from "@pages/Support";
-import Programs from "@pages/Programs";
-import ProgramsEdit from "@pages/ProgramsEdit";
-import Exercises from "@pages/Exercises";
-import ExercisesEdit from "@pages/ExercisesEdit";
-import Split from "@pages/Split";
-import Workout from "@pages/Workout";
+
+import AppLayout from "@layout/AppLayout";
+import AuthLayout from "@layout/AuthLayout";
+
+import {
+  homePage,
+  loginPage,
+  registerPage,
+  forgotPasswordPage,
+  settingsPage,
+  usersPage,
+  supportPage,
+  exercisesPage,
+  exercisesEditPage,
+  programsPage,
+  programsEditPage,
+  splitPage,
+  workoutPage,
+  workoutsPage,
+} from "./routes";
 
 const Router = () => {
   return (
     <Routes>
+      {/* Public / Auth Pages */}
       <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/login" element={loginPage()} />
+        <Route path="/register" element={registerPage()} />
+        <Route path="/forgot-password" element={forgotPasswordPage()} />
       </Route>
+
+      {/* Protected App Pages */}
       <Route element={<AppLayout />}>
-        <Route index element={<Home />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/support" element={<Support />} />
-        <Route path="/exercises" element={<Exercises />} />
-        <Route path="/exercises/edit" element={<ExercisesEdit />} />
-        <Route path="/programs" element={<Programs />} />
-        <Route path="/programs/edit" element={<ProgramsEdit />} />
-        <Route path="/split/:splitId" element={<Split />} />
-        <Route path="/workout" element={<Workout />} />
+        <Route index element={homePage()} />
+        <Route path="/settings" element={settingsPage()} />
+        <Route path="/users" element={usersPage()} />
+        <Route path="/support" element={supportPage()} />
+        <Route path="/exercises" element={exercisesPage()} />
+        <Route path="/exercises/edit" element={exercisesEditPage()} />
+        <Route path="/programs" element={programsPage()} />
+        <Route path="/programs/edit" element={programsEditPage()} />
+        <Route path="/split/:splitId" element={splitPage()} />
+        <Route path="/workout/:workoutId" element={workoutPage()} />
+        <Route path="/workouts" element={workoutsPage()} />
       </Route>
     </Routes>
   );

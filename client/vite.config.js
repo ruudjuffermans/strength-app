@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@components': path.resolve(__dirname, './src/components'),
+      '@context': path.resolve(__dirname, './src/context'),
       '@layout': path.resolve(__dirname, './src/layout'),
       '@data': path.resolve(__dirname, './src/data'),
       '@theme': path.resolve(__dirname, './src/theme'),

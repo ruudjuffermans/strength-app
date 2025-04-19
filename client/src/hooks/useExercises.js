@@ -5,10 +5,7 @@ export const useExercises = () => {
     const setSuccess = useSuccessSnackbar();
     const setError = useErrorSnackbar();
 
-    const exercises = useGetQuery(["exercises"], "/exercise", (data) => {
-      console.log("Fetched exercises:", data);
-      return data;
-  });
+    const exercises = useGetQuery(["exercises"], "/exercise");
   
 
     const addExercise = usePostMutation(["exercises"], "/exercise", ["exercises"]);

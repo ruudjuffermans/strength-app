@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, FormControl, Select, MenuItem, IconButton } from "@mui/material";
-import Header from "@components/Header";
-import CustomPaper from "@components/CustomPaper";
 import CustomButton from "@components/CustomButton";
 import { PlusOneOutlined, DeleteOutline } from "@mui/icons-material";
 import { useExercises } from "@hooks/useExercises";
@@ -11,10 +8,10 @@ import { useSplit } from "@hooks/useSplit";
 import CustomDropdown from "../../components/DropDown";
 import PagePaper from "../../components/CustomPaper/Pagepaper";
 
-const Split = () => {
-  const { splitId } = useParams();
+const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
+  const { splitId } = params;
   const { exercises } = useExercises();
-  const { splitExercises, addExercise, editExercise, createWorkout, deleteExercise } = useSplit(splitId);
+  const { splitExercises, addExercise, createWorkout, deleteExercise } = useSplit(splitId);
 
   const [selectedExercise, setSelectedExercise] = useState("");
   const [reps, setReps] = useState("");
@@ -37,8 +34,15 @@ const Split = () => {
     setSelectedExercise("")
   };
 
+  const handleCreateWorkout = async () => {
+    const response = await createWorkout({ splitId })
+    console.log(response)
+    navigate(`/workout/${response.id}`)
+
+  }
+
   const columns = [
-    { field: "order", headerName: "order", flex: 0.5},
+    { field: "order", headerName: "order", flex: 0.5 },
     { field: "name", headerName: "Exercise Name", flex: 2 },
     { field: "sets", headerName: "Sets", flex: 1 },
     { field: "reps", headerName: "Reps", flex: 1 },
@@ -58,81 +62,79 @@ const Split = () => {
     },
   ];
 
-    const PageButton = (
-      <CustomButton
-        variant="outlined"
-        color="primary"
-        onClick={() => createWorkout()}
-        Icon={PlusOneOutlined}
-        label={"Create Workout"}
-      />
-    );
+  const PageButton = (
+    <CustomButton
+      variant="outlined"
+      color="primary"
+      onClick={handleCreateWorkout}
+      Icon={PlusOneOutlined}
+      label={"Do Workout"}
+    />
+  );
 
   return (
-<PagePaper title={`Split: ${splitExercises.name}`} subtitle={`description: ${splitExercises.description}`} PageButton={PageButton}>
-
-        {/* FLEX ROW FOR DROPDOWNS */}
-        <Box
-          display="flex"
-          alignItems="center"
-          gap={2}
-          mt={2}
-          sx={{ width: "100%" }}
-        >
-          <FormControl sx={{ flex: 3 }}>
-            <Select
-              value={selectedExercise}
-              onChange={(e) => setSelectedExercise(e.target.value)}
-              displayEmpty
-            >
-              <MenuItem value="" disabled>
-                Select an exercise
+    <PagePaper title={`Split: ${splitExercises.name}`} subtitle={`description: ${splitExercises.description}`} PageButton={PageButton}>
+      <Box
+        display="flex"
+        alignItems="center"
+        gap={2}
+        mt={2}
+        sx={{ width: "100%" }}
+      >
+        <FormControl sx={{ flex: 3 }}>
+          <Select
+            value={selectedExercise}
+            onChange={(e) => setSelectedExercise(e.target.value)}
+            displayEmpty
+          >
+            <MenuItem value="" disabled>
+              Select an exercise
+            </MenuItem>
+            {exercises.map((exercise) => (
+              <MenuItem key={exercise.id} value={exercise.id}>
+                {exercise.name}
               </MenuItem>
-              {exercises.map((exercise) => (
-                <MenuItem key={exercise.id} value={exercise.id}>
-                  {exercise.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+            ))}
+          </Select>
+        </FormControl>
 
-          <Box sx={{ flex: 1, minWidth: "150px" }}>
-            <CustomDropdown
-              value={sets}
-              onChange={setSets}
-              options={setOptions}
-              placeholder="Sets"
-              sx={{ flexGrow: 1, minWidth: "100px" }}
-            />
-          </Box>
-          <Box sx={{  flex: 1, minWidth: "150px" }}>
-            <CustomDropdown
-              value={reps}
-              onChange={setReps}
-              options={repOptions}
-              placeholder="Reps"
-            />
-          </Box>
-          <CustomButton
-            variant="contained"
-            color="primary"
-            onClick={handleAddExercise}
-            Icon={PlusOneOutlined}
-            label={"Add Exercise"}
+        <Box sx={{ flex: 1, minWidth: "150px" }}>
+          <CustomDropdown
+            value={sets}
+            onChange={setSets}
+            options={setOptions}
+            placeholder="Sets"
+            sx={{ flexGrow: 1, minWidth: "100px" }}
           />
         </Box>
-
-        {/* TABLE */}
-        <Box mt={3} height="50vh">
-          <DataGrid
-            rows={splitExercises.exercises || []}
-            columns={columns}
-            density="compact"
-            processRowUpdateMode="client"
-            rowCount={0}
+        <Box sx={{ flex: 1, minWidth: "150px" }}>
+          <CustomDropdown
+            value={reps}
+            onChange={setReps}
+            options={repOptions}
+            placeholder="Reps"
           />
         </Box>
-      </PagePaper>
+        <CustomButton
+          variant="contained"
+          color="primary"
+          onClick={handleAddExercise}
+          Icon={PlusOneOutlined}
+          label={"Add Exercise"}
+        />
+      </Box>
+
+      {/* TABLE */}
+      <Box mt={3} height="50vh">
+        <DataGrid
+          rows={splitExercises.exercises || []}
+          columns={columns}
+          density="compact"
+          processRowUpdateMode="client"
+          rowCount={0}
+        />
+      </Box>
+    </PagePaper>
   );
 };
 

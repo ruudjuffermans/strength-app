@@ -1,10 +1,9 @@
 import { Box, Modal, TextField, Typography } from "@mui/material";
 import CustomButton from "@components/CustomButton";
 import CustomPaper from "@components/CustomPaper";
-import Header from "@components/Header";
 import React, { useState } from "react";
 
-const Settings = () => {
+const Settings = ({colors, theme, user, navigate, isMobile, params}) => {
   const [open, setOpen] = useState(false);
 
   // Functions to open and close the modal
@@ -13,8 +12,6 @@ const Settings = () => {
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="SETTINGS" subtitle="Welcome tohelp & support" />
-
         <Box>
           <CustomButton variant="outlined" color="primary" onClick={handleOpen}>
             Open Modal
@@ -23,6 +20,9 @@ const Settings = () => {
       </Box>
 
       <Modal open={open} onClose={handleClose}>
+        <Box>
+
+
         <CustomPaper
           sx={{
             position: "absolute",
@@ -56,6 +56,7 @@ const Settings = () => {
             </CustomButton>
           </Box>
         </CustomPaper>
+        </Box>
       </Modal>
     </Box>
   );

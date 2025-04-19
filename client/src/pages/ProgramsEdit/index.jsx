@@ -11,9 +11,8 @@ import CustomButton from "@components/CustomButton";
 import { PlusOneOutlined } from "@mui/icons-material";
 import { usePrograms } from "@hooks/usePrograms";
 import ProgramTile from "./ProgramTile";
-import PagePaper from "../../components/CustomPaper/Pagepaper";
 
-const ProgramsEdit = () => {
+const ProgramsEdit = ({colors, theme, user, navigate, isMobile, params}) => {
   const {
     programs,
     createProgram,
@@ -131,7 +130,7 @@ const ProgramsEdit = () => {
   );
 
   return (
-    <PagePaper title={"PROGRAMS"} subtitle={"subtitle"} PageButton={PageButton}>
+    <>
       <Box display="flex" flexWrap="wrap" gap="10px">
         {programs.map(({ id, name, description, splits }) => (
           <ProgramTile
@@ -226,7 +225,7 @@ const ProgramsEdit = () => {
           <CustomButton onClick={handleSaveSplit} color="primary" label={"Save"} />
         </DialogActions>
       </Dialog>
-    </PagePaper>
+    </>
   );
 };
 

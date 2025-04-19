@@ -2,7 +2,6 @@ import {
   Box,
   IconButton,
   Typography,
-  useTheme,
 } from "@mui/material";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
@@ -10,28 +9,14 @@ import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 
-import { tokens } from "../../theme";
 import { mockTransactions } from "@data/mockData";
-import Header from "@components/Header";
-// import BarChart from "components/BarChart";
 import StatBox from "@components/StatBox";
 import ProgressCircle from "@components/ProgressCircle";
 import CustomPaper from "@components/CustomPaper";
-import CustomButton from "@components/CustomButton";
-import PagePaper from "../../components/CustomPaper/Pagepaper";
 
-const Home = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+const Home = ({colors, theme, user, navigate, isMobile, params}) => {
 
-    const PageButton = <CustomButton variant="outlined" color="primary" onClick={() => handleAddNewProgram()}  label={"Downloads Reports"} />
-
-    return (
-  <PagePaper title={"DASHBOARD"} subtitle={"Welcome to your dashboard"} PageButton={PageButton}>
-
-
-
-
+  return (
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -249,7 +234,6 @@ const Home = () => {
           </Box>
         </CustomPaper>
       </Box>
-    </PagePaper>
   );
 };
 
