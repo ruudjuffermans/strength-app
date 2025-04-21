@@ -11,8 +11,9 @@ import CustomButton from "@components/CustomButton";
 import { usePrograms } from "@hooks/usePrograms";
 import Pagepaper from "@components/CustomPaper/Pagepaper";
 import SplitTile from "./SplitTile";
+import SplitTileAdmin from "./SplitTileAdmin";
 
-const Program = ({params}) => {
+const Program = ({ params, navigate, isAdmin }) => {
   const {
     programs,
     createProgram,
@@ -46,7 +47,7 @@ const Program = ({params}) => {
 
   // Open Edit Program Dialog
   const handleEditProgram = (id, name, description) => {
-    setProgramData({ programId: id, name, description });
+    setProgramData({ id, name, description });
     setOpenProgramDialog(true);
   };
 
@@ -73,7 +74,7 @@ const Program = ({params}) => {
 
   const handleSaveProgram = () => {
     if (!programData.name.trim()) return setError({ ...error, name: "Program name is required." });
-    if (!programData.description.trim()) return setError({...error, description: "Program description is required."});
+    if (!programData.description.trim()) return setError({ ...error, description: "Program description is required." });
 
     if (programData.id) {
       updateProgram({
@@ -91,7 +92,7 @@ const Program = ({params}) => {
   };
 
   // Handle Save Split (Create or Update)
-  const handleSaveSplit = ({colors, theme, user, navigate, isMobile, params}) => {
+  const handleSaveSplit = ({ colors, theme, user, navigate, isMobile, params }) => {
     if (!splitData.name.trim())
       return setError({ ...error, name: "Split name is required." });
 
@@ -120,16 +121,13 @@ const Program = ({params}) => {
   return (
     <Pagepaper m={2} title={program.name} subtitle={program.description}>
       <Box display="flex" flexWrap="wrap" gap="10px" >
-
-      <Box
-        
-display="flex" flexWrap="wrap" gap="10px"
-        
-      >
-        {program.splits.map(({ name, description, id }) => (
-          <SplitTile key={id} id={id} name={name} description={description} />
-        ))}
-      </Box>
+        <Box
+          display="flex" flexWrap="wrap" gap="10px"
+        >
+          {program.splits.map(({ name, description, id }) => (
+            !isAdmin ? <SplitTileAdmin key={id} id={id} name={name} description={description} navigate={navigate} /> : <SplitTile key={id} id={id} name={name} description={description} navigate={navigate} />
+          ))}
+        </Box>
         {/* {programs.map(({ id, name, description, splits }) => (
           <ProgramTile
             key={id}
@@ -184,7 +182,7 @@ display="flex" flexWrap="wrap" gap="10px"
             color="secondary"
             label={"Cancel"}
           />
-          <CustomButton onClick={handleSaveProgram} color="primary" label={"Save"}/>
+          <CustomButton onClick={handleSaveProgram} color="primary" label={"Save"} />
         </DialogActions>
       </Dialog>
 
@@ -202,16 +200,16 @@ display="flex" flexWrap="wrap" gap="10px"
             fullWidth
             value={splitData.name}
             onChange={handleSplitInputChange}
-          />         
+          />
           <TextField
-          autoFocus
-          margin="dense"
-          label="Split Description"
-          name="description"
-          fullWidth
-          value={splitData.description}
-          onChange={handleSplitInputChange}
-        />
+            autoFocus
+            margin="dense"
+            label="Split Description"
+            name="description"
+            fullWidth
+            value={splitData.description}
+            onChange={handleSplitInputChange}
+          />
         </DialogContent>
         <DialogActions>
           <CustomButton
@@ -223,7 +221,7 @@ display="flex" flexWrap="wrap" gap="10px"
           <CustomButton onClick={handleSaveSplit} color="primary" label={"Save"} />
         </DialogActions>
       </Dialog>
-      </Pagepaper>
+    </Pagepaper>
   );
 };
 

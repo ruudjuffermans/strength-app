@@ -66,9 +66,9 @@ async function seedDatabase() {
     await client.query(`
       INSERT INTO split (program_id, name, description)
       VALUES
-        (1, 'LEGS & SHOULDERS', 'description LEGS & SHOULDERS'),
-        (1, 'BACK & BICEPS', 'description BACK & BICEPS'),
-        (1, 'CHEST & TRICPES', 'description CHEST & TRICPES')
+        (1, 'LEGS & SHOULDERS', 'A full lower body workout combined with shoulder isolation exercises.'),
+        (1, 'BACK & BICEPS', 'Focused on pulling movements to strengthen the back and build biceps.'),
+        (1, 'CHEST & TRICPES', 'A classic push day routine targeting the chest and triceps muscles.')
       ON CONFLICT DO NOTHING;
     `);
 

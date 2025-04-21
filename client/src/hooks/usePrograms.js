@@ -18,7 +18,6 @@ export const usePrograms = () => {
 
     const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
         try {
-            console.log(data)
             await mutationFn(data);
 
             setSuccess(successMessage);

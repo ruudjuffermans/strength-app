@@ -40,7 +40,7 @@ export class PageBuilder {
 
     includeParams() {
         const useHookedProps = this._useHookedProps;
-    
+
         this._useHookedProps = () => {
             const params = useParams();
             return {
@@ -48,14 +48,14 @@ export class PageBuilder {
                 params,
             };
         };
-    
+
         return this;
     }
 
     includeUserContext() {
         function useHookedProps() {
             const { user } = useAuth()
-            return { user };
+            return { user, isAdmin: user.role == "Admin" };
         }
 
         this._useHookedProps = useHookedProps;

@@ -3,11 +3,13 @@ const workoutHandler = require("./workoutHandler");
 const exerciseHandler = require("./exerciseHandler");
 const programHandler = require("./programHandler");
 const splitHandler = require("./splitHandler");
+const userHandler = require("./userHandler");
 
 module.exports = {
   authHandler,
   exerciseHandler,
   programHandler,
   splitHandler,
-  workoutHandler
+  workoutHandler,
+  userHandler
 };

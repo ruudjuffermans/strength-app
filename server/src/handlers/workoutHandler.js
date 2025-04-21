@@ -1,7 +1,6 @@
 const pool = require("../db");
 
 async function createWorkoutFromSplit(splitId) {
-    console.log(splitId)
 
     const splitResult = await pool.query(
         `SELECT s.name AS split_name, p.name AS program_name
@@ -10,8 +9,6 @@ async function createWorkoutFromSplit(splitId) {
          WHERE s.id = $1`,
         [splitId]
     );
-
-    console.log(splitResult)
 
     if (splitResult.rows.length === 0) {
         throw new Error("Split not found");
@@ -38,9 +35,6 @@ async function createWorkoutFromSplit(splitId) {
 
     for (const exercise of exercises.rows) {
         for (let i = 1; i <= exercise.sets; i++) {
-            console.log(exercise)
-            console.log(exercise)
-            console.log(exercise)
             await pool.query(
                 `INSERT INTO workout_log (workout_id, exercise_id, exercise_name, target_reps, exercise_order, set_number, performed_reps, weight_used)
                  VALUES ($1, $2, $3, $4, $5, $6, 0, NULL)`,
@@ -128,10 +122,8 @@ async function getAllWorkouts() {
     return result.rows;
 }
 
-async function completeWorkout(workoutId) {
-    console.log(workoutId)
-    const result = await pool.query(`UPDATE workout SET workout_state = 'Completed', completed_at =  NOW() WHERE id = $1 RETURNING *`, [workoutId]);
-    console.log(result.rows[0])
+async function completeWorkout(workoutId, notes) {
+    const result = await pool.query(`UPDATE workout SET workout_state = 'Completed', completed_at =  NOW(), notes = $2 WHERE id = $1 RETURNING *`, [workoutId, notes]);
     return result.rows[0];
 }
 

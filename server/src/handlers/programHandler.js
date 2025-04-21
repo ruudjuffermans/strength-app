@@ -59,7 +59,6 @@ async function createProgram(name, description) {
 }
 
 async function updateProgram(id, name, description) {
-  console.log(description)
   const result = await pool.query(
     `UPDATE program 
      SET name = $2, description = $3

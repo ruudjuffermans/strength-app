@@ -3,25 +3,25 @@ const { asyncHandler } = require("../utils/asyncHandler");
 
 function authRouter(app) {
   app.post(
-    "/api/auth/register",
+    "/auth/register",
     asyncHandler(authController.register)
   );
 
   app.post(
-    "/api/auth/login",
+    "/auth/login",
     asyncHandler(authController.login)
   );
 
   app.post(
-    "/api/auth/approve/:userId",
+    "/auth/approve/:userId",
     asyncHandler(authController.approve)
   );
 
-  app.get("/api/auth/me", 
+  app.get("/auth/me", 
     asyncHandler(authController.getContext)
   );
 
-  app.post("/api/auth/logout", 
+  app.post("/auth/logout", 
     asyncHandler(authController.logout)
   );
 }

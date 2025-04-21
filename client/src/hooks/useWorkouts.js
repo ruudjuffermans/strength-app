@@ -15,7 +15,6 @@ export const useWorkouts = () => {
     // ✅ Handles API requests with notifications
     const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
         try {
-            console.log(data);
             await mutationFn(data);
             setSuccess(successMessage);
         } catch (error) {

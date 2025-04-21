@@ -20,7 +20,9 @@ const getWorkoutById = async (req, res) => {
 const completeWorkout = async (req, res) => {
   try {
     const { workoutId } = req.params;
-    const updatedWorkout = await workoutHandler.completeWorkout(workoutId);
+    const { notes } = req.body;
+    console.log(notes)
+    const updatedWorkout = await workoutHandler.completeWorkout(workoutId, notes);
 
     res.status(200).json(updatedWorkout);
   } catch (error) {

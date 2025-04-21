@@ -88,7 +88,6 @@ async function addExercise(splitId, exerciseId, sets, reps) {
       `SELECT COALESCE(MAX(exercise_order), 0) + 1 AS next_order FROM split_exercise WHERE split_id = $1`,
       [splitId]
     );
-    console.log(rows[0])
     const nextOrder = rows[0].next_order;
 
     // Insert the new exercise with the next order value

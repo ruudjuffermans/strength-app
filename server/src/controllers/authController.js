@@ -31,17 +31,6 @@ const login = async (req, res) => {
   }
 };
 
-const approve = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const approvedUser = await authHandler.approveUser(userId);
-    res.status(200).json(approvedUser);
-  } catch (error) {
-    console.error("Error approving user:", error);
-    res.status(500).json({ error: "Failed to approve user." });
-  }
-};
-
 const getContext = async (req, res) => {
   try {
     const user = await authHandler.getUserFromCookie(req);
@@ -73,7 +62,6 @@ const logout = async (req, res) => {
 module.exports = {
   register,
   login,
-  approve,
   getContext,
   logout
 };

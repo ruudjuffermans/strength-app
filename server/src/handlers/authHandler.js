@@ -42,24 +42,6 @@ async function login({ email, password }) {
   };
 }
 
-// APPROVE: Admin approves a user and sets password
-async function approveUser(userId, password, approvedByAdminId) {
-  const passwordHash = await bcrypt.hash(password, 10);
-
-  const result = await pool.query(
-    `UPDATE user_account
-     SET status = 'Approved',
-         password_hash = $1,
-         approved_by = $2,
-         approved_at = NOW()
-     WHERE id = $3
-     RETURNING id, email, full_name, status`,
-    [passwordHash, approvedByAdminId, userId]
-  );
-
-  return result.rows[0];
-}
-
 async function getUserFromCookie(req) {
   const token = req.cookies?.token;
   if (!token) return null;
@@ -82,6 +64,5 @@ async function getUserFromCookie(req) {
 module.exports = {
   register,
   login,
-  approveUser,
   getUserFromCookie
 };

@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
+import CustomPaper from "@components/CustomPaper";
 import {
   Box,
   FormControl,
   Select,
   MenuItem,
   IconButton,
-  Menu,
-  ListItemIcon,
-  ListItemText,
   Typography,
   Dialog,
   DialogTitle,
@@ -15,32 +13,28 @@ import {
   DialogActions,
   Button,
 } from "@mui/material";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Add, DeleteOutline } from "@mui/icons-material";
-
-import CustomButton from "@components/CustomButton";
-import { useExercises } from "@hooks/useExercises";
-import { useSplit } from "@hooks/useSplit";
 import CustomDropdown from "@components/DropDown";
-import CustomPaper from "@components/CustomPaper";
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { useExercises } from "@hooks/useExercises";
+import { useSplit } from '../../hooks/useSplit';
+import { DeleteOutline, DragIndicator } from '@mui/icons-material';
+import SubHeader from '@components/SubHeader';
+import TextButton from '@components/TextButton';
 
-const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
-  const { splitId } = params;
-  const { exercises } = useExercises();
+const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, navigate }) => {
+  const [selectedExercise, setSelectedExercise] = useState("");
+  const [reps, setReps] = useState("");
+  const [sets, setSets] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const {
     splitExercises,
     addExercise,
     createWorkout,
     deleteExercise,
     reorderExercises
-  } = useSplit(splitId);
-
-  const [selectedExercise, setSelectedExercise] = useState("");
-  const [reps, setReps] = useState("");
-  const [sets, setSets] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
-
+  } = useSplit(id);
+  const { exercises } = useExercises();
   const openMenu = Boolean(anchorEl);
 
   const repOptions = Array.from({ length: 15 }, (_, i) => ({
@@ -51,9 +45,8 @@ const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
     value: i + 1,
     label: `${i + 1} sets`,
   }));
-
   const handleAddExercise = () => {
-    if (!splitId || !selectedExercise) return;
+    if (!id || !selectedExercise) return;
     addExercise({ exerciseId: selectedExercise, reps, sets });
     setReps("");
     setSets("");
@@ -62,23 +55,40 @@ const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
     setAnchorEl(null);
   };
 
+  const handleCreateWorkout = async () => {
+    const res = await createWorkout({ splitId: id });
+    navigate(`/workout/${res.id}`)
+
+  };
   const handleDragEnd = (result) => {
     if (!result.destination) return;
-  
+
     const reordered = Array.from(splitExercises.exercises);
     const [moved] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, moved);
-  
+
     const payload = reordered.map((item, index) => ({
       id: item.id,         // this should be the splitExerciseId
       order: index + 1     // 1-based order
     }));
-  
+
     reorderExercises(payload);
   };
   return (
-    <>
-      <Box mt={3} display="flex" flexDirection="column" gap={2}>
+    <CustomPaper sx={{
+      padding: "10px",
+      flex: "1 1 400px",
+      width: "100%",
+    }}>
+      <SubHeader title={name} subtitle={description} />
+      <Box mt={1} display="flex" flexDirection="column">
+        <TextButton style={{ float: "right" }} text={"Do the Workout"} onClick={() => handleCreateWorkout({ splitId: id })} />
+        <TextButton style={{ float: "right" }} text={"Add Exercise"} onClick={() => {
+          setDialogOpen(true);
+          setAnchorEl(null);
+        }} />
+      </Box>
+      <Box mt={3} display="flex" flexDirection="column" gap={1}>
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="exercise-list">
             {(provided) => (
@@ -95,26 +105,34 @@ const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
                       <CustomPaper
                         ref={provided.innerRef}
                         {...provided.draggableProps}
-                        {...provided.dragHandleProps}
                         sx={{
-                          p: 2,
+                          p: 1,
                           display: "flex",
                           justifyContent: "space-between",
                           alignItems: "center",
                         }}
                       >
-                        <Box>
-                          <Typography variant="subtitle1">{exercise.name}</Typography>
-                          <Typography variant="body2">
-                            Sets: {exercise.sets} • Reps: {exercise.reps} • Order: {exercise.order} • id: {exercise.id}
-                          </Typography>
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <IconButton size={"small"} sx={{ opacity: 0.5 }} {...provided.dragHandleProps}>
+                            <DragIndicator />
+                          </IconButton>
+
+                          <Box>
+                            <Typography variant="subtitle1">{exercise.name}</Typography>
+                            <Typography variant="body2">
+                              Sets: {exercise.sets}<br />
+                              Reps: {exercise.reps}
+                            </Typography>
+                          </Box>
                         </Box>
-                        <IconButton onClick={() => deleteExercise({ exerciseSplitId: exercise.id })}>
+
+                        <IconButton size={"small"} sx={{ opacity: 0.5 }} onClick={() => deleteExercise({ exerciseSplitId: exercise.id })}>
                           <DeleteOutline />
                         </IconButton>
                       </CustomPaper>
                     )}
                   </Draggable>
+
                 ))}
                 {provided.placeholder}
               </Box>
@@ -122,30 +140,6 @@ const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
           </Droppable>
         </DragDropContext>
       </Box>
-
-      {/* Add Exercise Button */}
-      <Box display="flex" justifyContent="flex-end" mt={2}>
-        <CustomButton
-          variant="outlined"
-          color="primary"
-          onClick={(e) => setAnchorEl(e.currentTarget)}
-          icon={Add}
-          label="Add Exercise"
-        />
-        <Menu anchorEl={anchorEl} open={openMenu} onClose={() => setAnchorEl(null)}>
-          <MenuItem
-            onClick={() => {
-              setDialogOpen(true);
-              setAnchorEl(null);
-            }}
-          >
-            <ListItemIcon><Add fontSize="small" /></ListItemIcon>
-            <ListItemText primary="Add Exercise" />
-          </MenuItem>
-        </Menu>
-      </Box>
-
-      {/* Add Exercise Dialog */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="sm">
         <DialogTitle>Add Exercise to Split</DialogTitle>
         <DialogContent dividers>
@@ -185,8 +179,8 @@ const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </CustomPaper>
   );
 };
 
-export default Split;
+export default SplitTileAdmin

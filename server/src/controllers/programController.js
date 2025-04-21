@@ -74,7 +74,6 @@ const editSplit = async (req, res) => {
   try {
     const { splitId } = req.params;
     const { name, description } = req.body;
-    console.log(req.body)
     const updatedProgram = await programHandler.editSplit(splitId, name, description);
     res.status(200).json(updatedProgram);
   } catch (error) {

@@ -32,7 +32,6 @@ const ProgramTile = ({
   const handleOpenMenu = (event) => setAnchorEl(event.currentTarget);
   const handleCloseMenu = () => setAnchorEl(null);
 
-  console.log(splits)
   return (
     <CustomPaper sx={{ padding: "10px", position: "relative", width: "100%" }}>
       <Box display="flex" justifyContent="space-between" alignItems="center">

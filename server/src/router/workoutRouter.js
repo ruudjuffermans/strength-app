@@ -6,32 +6,32 @@ function workoutRouter(app) {
 
 
     app.post(
-        "/api/workout/create",
+        "/workout/create",
         asyncHandler(workoutController.createWorkout)
     );
 
     app.get(
-        "/api/workout/:workoutId",
+        "/workout/:workoutId",
         asyncHandler(workoutController.getWorkoutById)
     );
 
     app.put(
-        "/api/workout/:workoutId/complete",
+        "/workout/:workoutId/complete",
         asyncHandler(workoutController.completeWorkout)
     );
 
     app.delete(
-        "/api/workout/:workoutId",
+        "/workout/:workoutId",
         asyncHandler(workoutController.deleteWorkout)
     );
 
     app.get(
-        "/api/workout",
+        "/workout",
         asyncHandler(workoutController.getAllWorkouts)
     );
 
     app.put(
-        "/api/log/:logId",
+        "/log/:logId",
         asyncHandler(workoutController.logSet)
     );
 

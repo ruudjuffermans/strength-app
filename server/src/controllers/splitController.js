@@ -3,7 +3,6 @@ const splitHandler = require('../handlers/splitHandler');
 const getSplitById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id)
     const split = await splitHandler.getSplitById(id);
     if (!split) {
       return res.status(404).json({ error: "Split not found." });
@@ -18,9 +17,6 @@ const getSplitById = async (req, res) => {
 const createSplitExercise = async (req, res) => {
   const { splitId } = req.params;
   const { exerciseId, sets, reps } = req.body
-
-  console.log(req.body)
-  console.log(splitId, exerciseId, sets, reps)
 
   const createdExerciseSplit = await splitHandler.addExercise(splitId, exerciseId, sets, reps);
 
@@ -37,7 +33,6 @@ const updateSplitExercise = async (req, res) => {
 
 const deleteSplitExercise = async (req, res) => {
   const { exerciseSplitId } = req.params;
-  console.log(exerciseSplitId)
   await splitHandler.removeExercise(exerciseSplitId);
   
   res.status(201).json();
@@ -46,8 +41,6 @@ const deleteSplitExercise = async (req, res) => {
 const reorderSplitExercises = async (req, res) => {
   const { splitId } = req.params;
   const exercises = req.body; // Destructure from object
-
-  console.log(exercises)
 
   try {
     if (!Array.isArray(exercises)) {

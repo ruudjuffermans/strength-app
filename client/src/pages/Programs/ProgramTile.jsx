@@ -1,49 +1,31 @@
 import React from "react";
 import CustomPaper from "@components/CustomPaper";
-import SplitTile from "./SplitTile";
-import { IconButton, Box } from "@mui/material";
-import { Edit, Delete, Add } from "@mui/icons-material";
+import { Box } from "@mui/material";
+import SubHeader from "../../components/SubHeader";
 
 const ProgramTile = ({ id, name, description, splits, navigate }) => {
   return (
-<CustomPaper
-  sx={{
-    padding: "10px",
-    position: "relative",
-    width: "100%",
-    cursor: "pointer",
-    "&:hover": {
-      background: "#123",
-    },
-  }}
-  onClick={() => navigate(`/program/${id}`)}
->
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Box>
-          <div>{name}</div>
-          <div>{description}</div>
-        </Box>
 
-        <Box>
-        </Box>
-      </Box>
-
-      {/* Split Tiles */}
+    <CustomPaper sx={{
+      padding: "10px",
+      flex: "1 1 400px",
+      cursor: "pointer",
+      "&:hover": {
+        background: "#123",
+      }
+    }}
+      onClick={() => navigate(`/program/${id}`)}
+    >
+      <SubHeader title={name} subtitle={description} />
       <Box
         sx={{
-          marginTop: "10px",
+          m: "10px",
         }}
       >
         {splits.map(({ name, description, id }) => (
-          <Box key={id} p={1}>
-            <div>
-              {name}
-            </div>
-            <div>
-              {description}
-            </div>
+          <Box key={id} p={2}>
+            <SubHeader title={name} subtitle={description} />
           </Box>
-          // <SplitTile key={id} id={id} name={name} description={description} onEditSplit={onEditSplit} onDeleteSplit={onDeleteSplit} />
         ))}
       </Box>
     </CustomPaper>

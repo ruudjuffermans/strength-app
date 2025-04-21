@@ -26,7 +26,6 @@ export const homePage = new PageBuilder()
 
 export const loginPage = new PageBuilder()
   .element(Login).title("login").subtitle("welcome to your dashboard")
-  .includeUserContext()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
@@ -35,7 +34,6 @@ export const loginPage = new PageBuilder()
 
 export const registerPage = new PageBuilder()
   .element(Register).title("register").subtitle("welcome to your dashboard")
-  .includeUserContext()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
@@ -70,7 +68,7 @@ export const supportPage = new PageBuilder()
   .build();
 
 export const programsPage = new PageBuilder()
-  .element(Programs).title("programs").subtitle("welcome to your dashboard")
+  .element(Programs).title("Programs").subtitle("All available programs")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
@@ -88,7 +86,7 @@ export const programPage = new PageBuilder()
   .build();
 
 export const exercisesPage = new PageBuilder()
-  .element(Exercises).title("exercise").subtitle("welcome to your dashboard")
+  .element(Exercises).title("Exercises").subtitle("A list of all the exersices")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
@@ -106,7 +104,7 @@ export const splitPage = new PageBuilder()
   .build();
 
 export const usersPage = new PageBuilder()
-  .element(Users).title("users").subtitle("welcome to your dashboard")
+  .element(Users).title("Users").subtitle("al list of all the users")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
@@ -124,7 +122,7 @@ export const workoutsPage = new PageBuilder()
   .build();
 
 export const workoutPage = new PageBuilder()
-  .element(Workout).title("workout").subtitle("welcome to your dashboard")
+  .element(Workout)
   .includeUserContext()
   .includeNavigate()
   .includeMobile()

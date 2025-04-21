@@ -10,17 +10,17 @@ import {
 import { useWorkouts } from "@hooks/useWorkouts";
 import { DeleteOutline, Link, MoreVert } from "@mui/icons-material";
 
-const Workouts = ({ colors, theme, user, navigate, params }) => {
+const Workouts = ({ colors, theme, user, navigate, isAdmin, isMobile, params }) => {
   const { workouts, deleteWorkout } = useWorkouts();
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.1 },
+    ...(!isMobile ? [{ field: "id", headerName: "ID", flex: 0.1 }] : []),
     { field: "program", headerName: "Program", flex: 1 },
     { field: "split", headerName: "Split", flex: 1 },
     { field: "workout_state", headerName: "State", flex: 1 },
     { field: "created_at", headerName: "Created", flex: 1 },
-    { field: "completed_at", headerName: "Completed", flex: 1 },
-    {
+    ...(!isMobile ? [{ field: "completed_at", headerName: "Completed", flex: 1 }] : []),
+    ...(isAdmin ? [{
       field: "actions",
       headerName: "Actions",
       flex: 0.5,
@@ -48,7 +48,7 @@ const Workouts = ({ colors, theme, user, navigate, params }) => {
 
         return (
           <>
-            <IconButton onClick={handleMenuOpen}>
+            <IconButton size={"small"} sx={{ opacity: 0.5 }} onClick={handleMenuOpen}>
               <MoreVert />
             </IconButton>
             <Menu
@@ -73,8 +73,8 @@ const Workouts = ({ colors, theme, user, navigate, params }) => {
             </Menu>
           </>
         );
-      },
-    },
+},
+}] : []),
   ];
 
   return (
@@ -84,6 +84,20 @@ const Workouts = ({ colors, theme, user, navigate, params }) => {
       density="compact"
       processRowUpdateMode="client"
       rowCount={0}
+      onRowClick={(params) => navigate(`/workout/${params.row.id}`)}
+      sx={{
+        fontSize: "10px",
+        p: 0,
+        m: 0,
+        '& .MuiDataGrid-header': {
+          py: 0,
+          px: 0.5,
+        },
+        '& .MuiIconButton-root': {
+          padding: "0px",
+          fontSize: "11px"
+        }
+      }}
     />
   );
 };

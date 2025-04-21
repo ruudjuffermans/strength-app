@@ -28,7 +28,7 @@ export const useWorkout = (workoutId) => {
 
     return {
         workout,
-        completeWorkout: () => handleMutation(completeWorkout, {}, "Workout completed successfully!", "Failed to complete workout."),
+        completeWorkout: (data) => handleMutation(completeWorkout, data, "Workout completed successfully!", "Failed to complete workout."),
         deleteWorkout: () => handleMutation(deleteWorkout, {}, "Workout deleted successfully!", "Failed to delete workout."),
         logSet: (data) => handleMutation(logSet, data, "Set logged successfully!", "Failed to log set."),
         updateLoggedSet: (data) => handleMutation(updateLoggedSet, data, "Set updated successfully!", "Failed to update set."),
