@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { IconButton } from "@mui/material";
-
+import {
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import { useWorkouts } from "@hooks/useWorkouts";
-import { DeleteOutline, Link } from "@mui/icons-material";
+import { DeleteOutline, Link, MoreVert } from "@mui/icons-material";
 
-const Workouts = ({colors, theme, user, navigate, isMobile, params}) => {
+const Workouts = ({ colors, theme, user, navigate, params }) => {
   const { workouts, deleteWorkout } = useWorkouts();
 
   const columns = [
@@ -19,22 +24,56 @@ const Workouts = ({colors, theme, user, navigate, isMobile, params}) => {
       field: "actions",
       headerName: "Actions",
       flex: 0.5,
-      renderCell: (params) => (
-        <>
-          <IconButton
-            onClick={() => deleteWorkout({ id: params.row.id })
-            }
-            type="button"
-            sx={{ p: 1 }}
-          >
-            <DeleteOutline sx={{ color: "error.main" }} />
-          </IconButton>
-          <IconButton onClick={() => navigate(`/workout/${params.row.id}`)}>
-            <Link
-            />
-          </IconButton>
-        </>
-      ),
+      renderCell: (params) => {
+        const [anchorEl, setAnchorEl] = useState(null);
+        const open = Boolean(anchorEl);
+
+        const handleMenuOpen = (event) => {
+          setAnchorEl(event.currentTarget);
+        };
+
+        const handleMenuClose = () => {
+          setAnchorEl(null);
+        };
+
+        const handleDelete = () => {
+          deleteWorkout({ id: params.row.id });
+          handleMenuClose();
+        };
+
+        const handleView = () => {
+          navigate(`/workout/${params.row.id}`);
+          handleMenuClose();
+        };
+
+        return (
+          <>
+            <IconButton onClick={handleMenuOpen}>
+              <MoreVert />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleMenuClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+              <MenuItem onClick={handleView}>
+                <ListItemIcon>
+                  <Link fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>View</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={handleDelete}>
+                <ListItemIcon>
+                  <DeleteOutline fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Delete</ListItemText>
+              </MenuItem>
+            </Menu>
+          </>
+        );
+      },
     },
   ];
 

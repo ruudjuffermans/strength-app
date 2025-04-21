@@ -4,15 +4,25 @@ import SplitTile from "./SplitTile";
 import { IconButton, Box } from "@mui/material";
 import { Edit, Delete, Add } from "@mui/icons-material";
 
-const ProgramTile = ({ id, name, description, splits, onEdit, onDelete, onAddSplit, onEditSplit, onDeleteSplit }) => {
+const ProgramTile = ({ id, name, description, splits, navigate }) => {
   return (
-    <CustomPaper sx={{ padding: "10px", position: "relative", width: "100%" }}>
-
+<CustomPaper
+  sx={{
+    padding: "10px",
+    position: "relative",
+    width: "100%",
+    cursor: "pointer",
+    "&:hover": {
+      background: "#123",
+    },
+  }}
+  onClick={() => navigate(`/program/${id}`)}
+>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-      <Box>
-      <div>{name}</div>
-      <div>{description}</div>
-      </Box>
+        <Box>
+          <div>{name}</div>
+          <div>{description}</div>
+        </Box>
 
         <Box>
         </Box>
@@ -21,14 +31,19 @@ const ProgramTile = ({ id, name, description, splits, onEdit, onDelete, onAddSpl
       {/* Split Tiles */}
       <Box
         sx={{
-          display: "flex",
-          flexWrap: "wrap", // ✅ Wraps items when they don't fit
-          gap: "10px", // ✅ Adds spacing between split tiles
           marginTop: "10px",
         }}
       >
         {splits.map(({ name, description, id }) => (
-          <SplitTile key={id} id={id} name={name} description={description} onEditSplit={onEditSplit} onDeleteSplit={onDeleteSplit} />
+          <Box key={id} p={1}>
+            <div>
+              {name}
+            </div>
+            <div>
+              {description}
+            </div>
+          </Box>
+          // <SplitTile key={id} id={id} name={name} description={description} onEditSplit={onEditSplit} onDeleteSplit={onDeleteSplit} />
         ))}
       </Box>
     </CustomPaper>

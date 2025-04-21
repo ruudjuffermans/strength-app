@@ -49,7 +49,7 @@ const ProgramsEdit = ({colors, theme, user, navigate, isMobile, params}) => {
 
   // Open Edit Program Dialog
   const handleEditProgram = (id, name, description) => {
-    setProgramData({ programId: id, name, description });
+    setProgramData({ id, name, description });
     setOpenProgramDialog(true);
   };
 
@@ -77,7 +77,6 @@ const ProgramsEdit = ({colors, theme, user, navigate, isMobile, params}) => {
   const handleSaveProgram = () => {
     if (!programData.name.trim()) return setError({ ...error, name: "Program name is required." });
     if (!programData.description.trim()) return setError({...error, description: "Program description is required."});
-
     if (programData.id) {
       updateProgram({
         id: programData.id,

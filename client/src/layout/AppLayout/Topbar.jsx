@@ -1,52 +1,70 @@
-import { Box, IconButton, useTheme } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputBase,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import { useContext } from "react";
-import { ColorModeContext, tokens } from "../../theme";
-import InputBase from "@mui/material/InputBase";
-import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import SearchIcon from "@mui/icons-material/Search";
+import CustomPaper from "@components/CustomPaper";
+import { ColorModeContext, getColors } from "@theme";
+import {
+  LightModeIcon,
+  DarkModeIcon,
+  NotificationsIcon,
+  SettingsIcon,
+  PersonIcon,
+  SearchIcon,
+  MenuIcon,
+} from "@icons";
 
-const Topbar = () => {
+const Topbar = ({ open, setOpen }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = getColors(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const isMobile = useMediaQuery("(max-width:600px)");
+
+  const content = (
+    <Box display="flex" justifyContent="space-between" alignItems="center" p={1}>
+      {isMobile ? (
+        <IconButton onClick={() => setOpen(!open)}>
+          <MenuIcon />
+        </IconButton>
+      ) : (
+        <>
+          <Box
+            display="flex"
+            backgroundColor={colors.base[300]}
+            borderRadius="3px"
+          >
+            <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
+            <IconButton type="button" sx={{ p: 1 }}>
+              <SearchIcon sx={{ color: colors.base[900] }} />
+            </IconButton>
+          </Box>
+
+          <Box display="flex">
+            <IconButton onClick={colorMode.toggleColorMode}>
+              {theme.palette.mode === "dark" ? <DarkModeIcon /> : <LightModeIcon />}
+            </IconButton>
+            <IconButton>
+              <NotificationsIcon />
+            </IconButton>
+            <IconButton>
+              <SettingsIcon />
+            </IconButton>
+            <IconButton>
+              <PersonIcon />
+            </IconButton>
+          </Box>
+        </>
+      )}
+    </Box>
+  );
 
   return (
-    <Box display="flex" justifyContent="space-between" p={2}>
-      {/* SEARCH BAR */}
-      <Box
-        display="flex"
-        backgroundColor={colors.base[300]}
-        borderRadius="3px"
-      >
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
-        <IconButton type="button" sx={{ p: 1 }}>
-          <SearchIcon sx={{ color: colors.base[900] }}  />
-        </IconButton>
-      </Box>
-
-      {/* ICONS */}
-      <Box display="flex">
-        <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark" ? (
-            <DarkModeOutlinedIcon />
-          ) : (
-            <LightModeOutlinedIcon />
-          )}
-        </IconButton>
-        <IconButton>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <SettingsOutlinedIcon />
-        </IconButton>
-        <IconButton>
-          <PersonOutlinedIcon />
-        </IconButton>
-      </Box>
+    <Box m={isMobile ? "6px" : "10px"}>
+      {isMobile ? <CustomPaper>{content}</CustomPaper> : content}
     </Box>
   );
 };

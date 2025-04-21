@@ -111,7 +111,6 @@ async function editExercise(id, reps, sets) {
 }
 
 async function removeExercise(id) {
-  console.log(id)
   const result = await pool.query(
     `DELETE FROM split_exercise
      WHERE id = $1
@@ -120,11 +119,37 @@ async function removeExercise(id) {
   );
   return result.rows[0];
 }
+
+async function reorderExercises(splitId, reorderedList) {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    for (const { id, order } of reorderedList) {
+      await client.query(
+        `UPDATE split_exercise
+         SET exercise_order = $1
+         WHERE id = $2 AND split_id = $3`,
+        [order, id, splitId]
+      );
+    }
+
+    await client.query("COMMIT");
+  } catch (error) {
+    await client.query("ROLLBACK");
+    console.error("Error reordering split exercises:", error);
+    throw new Error("Failed to reorder exercises");
+  } finally {
+    client.release();
+  }
+}
+
 module.exports = {
   getSplitById,
   updateSplit,
   deleteSplit,
   addExercise,
   editExercise,
-  removeExercise
+  removeExercise,
+  reorderExercises
 };

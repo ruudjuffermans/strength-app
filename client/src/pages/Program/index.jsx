@@ -9,9 +9,10 @@ import {
 } from "@mui/material";
 import CustomButton from "@components/CustomButton";
 import { usePrograms } from "@hooks/usePrograms";
-import ProgramTile from "./ProgramTile";
+import Pagepaper from "@components/CustomPaper/Pagepaper";
+import SplitTile from "./SplitTile";
 
-const Programs = ({navigate}) => {
+const Program = ({params}) => {
   const {
     programs,
     createProgram,
@@ -21,6 +22,9 @@ const Programs = ({navigate}) => {
     editSplit,
     deleteSplit,
   } = usePrograms();
+  const { programId } = params;
+
+  const program = programs.find(program => program.id == programId);
 
   // State for Add/Edit Program Dialog
   const [openProgramDialog, setOpenProgramDialog] = useState(false);
@@ -102,26 +106,35 @@ const Programs = ({navigate}) => {
     }
   };
 
-  // Handle Delete Program
-  const handleDeleteProgram = (id) => {
-    deleteProgram({ programId: id });
-  };
+  // // Handle Delete Program
+  // const handleDeleteProgram = (id) => {
+  //   deleteProgram({ programId: id });
+  // };
 
-  // Handle Delete Split
-  const handleDeleteSplit = (id, programId) => {
-    deleteSplit({ splitId: id, programId });
-  };
+  // // Handle Delete Split
+  // const handleDeleteSplit = (id, programId) => {
+  //   deleteSplit({ splitId: id, programId });
+  // };
 
 
   return (
-    <>
-      <Box display="flex" flexWrap="wrap" gap="10px">
-        {programs.map(({ id, name, description, splits }) => (
+    <Pagepaper m={2} title={program.name} subtitle={program.description}>
+      <Box display="flex" flexWrap="wrap" gap="10px" >
+
+      <Box
+        
+display="flex" flexWrap="wrap" gap="10px"
+        
+      >
+        {program.splits.map(({ name, description, id }) => (
+          <SplitTile key={id} id={id} name={name} description={description} />
+        ))}
+      </Box>
+        {/* {programs.map(({ id, name, description, splits }) => (
           <ProgramTile
             key={id}
             id={id}
             name={name}
-            navigate={navigate}
             description={description}
             splits={splits}
             onEdit={handleEditProgram}
@@ -130,7 +143,7 @@ const Programs = ({navigate}) => {
             onEditSplit={handleEditSplit}
             onDeleteSplit={handleDeleteSplit}
           />
-        ))}
+        ))} */}
       </Box>
 
       <Dialog
@@ -210,8 +223,8 @@ const Programs = ({navigate}) => {
           <CustomButton onClick={handleSaveSplit} color="primary" label={"Save"} />
         </DialogActions>
       </Dialog>
-      </>
+      </Pagepaper>
   );
 };
 
-export default Programs;
+export default Program;

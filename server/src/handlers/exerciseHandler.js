@@ -15,11 +15,11 @@ async function getExerciseById(id) {
   return result.rows[0];
 }
 
-async function createExercise(name, description) {
+async function createExercise(name, description, muscle_group, equipment_type) {
   const result = await pool.query(
-    `INSERT INTO exercise (name, description)
-     VALUES ($1, $2) RETURNING *`,
-    [name, description]
+    `INSERT INTO exercise (name, description, muscle_group, equipment_type)
+     VALUES ($1, $2, $3, $4) RETURNING *`,
+    [name, description, muscle_group, equipment_type]
   );
   return result.rows[0];
 }

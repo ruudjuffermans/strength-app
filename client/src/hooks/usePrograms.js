@@ -9,7 +9,7 @@ export const usePrograms = () => {
     const programs = useGetQuery(["programs"], "/program");
 
     const createProgram = usePostMutation(["programs"], "/program", ["programs"]);
-    const updateProgram = usePutMutation(["programs"], ({ programId }) => `/program/${programId}`, ["programs"]);
+    const updateProgram = usePutMutation(["programs"], ({ id }) => `/program/${id}`, ["programs"]);
     const deleteProgram = useDeleteMutation(["programs"], ({programId}) => `/program/${programId}`, ["programs"]);
     
     const addSplit = usePostMutation(["splits"], ({ programId }) => `/split/${programId}`, ["programs"]);

@@ -7,7 +7,9 @@
         "start": "node src/server.js",
         "dev": "nodemon index.js",
         "seed-admin": "node src/scripts/createAdminUser.js",
-        "seed-base": "node src/scripts/createBaseUser.js"
+        "seed-base": "node src/scripts/createBaseUser.js",
+        "seed-data": "node src/scripts/seedData.js",
+        "clear-data": "node src/scripts/clearData.js"
     },
     "author": "",
     "license": "ISC",

@@ -1,6 +1,6 @@
 import { createContext, useState, useMemo } from "react";
 import { createTheme } from "@mui/material/styles";
-import { Accordion } from "@mui/material";
+import { Accordion, useMediaQuery } from "@mui/material";
 
 
 
@@ -99,16 +99,13 @@ export const darkTheme = {
 };
 
 
-// color design tokens export
-export const tokens = (mode) => ({
-  ...(mode === "dark"
-    ? darkTheme
-    : lightTheme),
+export const getColors = (mode) => ({
+  ...(mode === "dark" ? darkTheme : lightTheme),
 });
 
 // mui theme settings
 export const themeSettings = (mode) => {
-  const colors = tokens(mode);
+  const colors = getColors(mode);
   return {
     palette: {
       mode: mode,
@@ -266,13 +263,13 @@ export const themeSettings = (mode) => {
   }
 }
 
-// context for color mode
 export const ColorModeContext = createContext({
   toggleColorMode: () => { },
 });
 
 export const useMode = () => {
   const [mode, setMode] = useState("dark");
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   const colorMode = useMemo(
     () => ({
@@ -283,5 +280,5 @@ export const useMode = () => {
   );
 
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  return [theme, colorMode];
+  return [theme, colorMode, isMobile];
 };

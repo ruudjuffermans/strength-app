@@ -43,9 +43,30 @@ const deleteSplitExercise = async (req, res) => {
   res.status(201).json();
 };
 
+const reorderSplitExercises = async (req, res) => {
+  const { splitId } = req.params;
+  const exercises = req.body; // Destructure from object
+
+  console.log(exercises)
+
+  try {
+    if (!Array.isArray(exercises)) {
+      return res.status(400).json({ error: "Invalid format. Expected { exercises: [...] }" });
+    }
+
+    await splitHandler.reorderExercises(splitId, exercises);
+    res.status(200).json({ message: "Order updated successfully." });
+  } catch (error) {
+    console.error("Error reordering exercises:", error);
+    res.status(500).json({ error: "Failed to reorder exercises." });
+  }
+};
+
+
 module.exports = { 
   getSplitById,
   createSplitExercise,
   updateSplitExercise,
-  deleteSplitExercise
+  deleteSplitExercise,
+  reorderSplitExercises
 };

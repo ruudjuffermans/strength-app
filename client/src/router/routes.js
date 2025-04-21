@@ -2,9 +2,7 @@ import Home from "@pages/Home";
 import Settings from "@pages/Settings";
 import Support from "@pages/Support";
 import Programs from "@pages/Programs";
-import ProgramsEdit from "@pages/ProgramsEdit";
 import Exercises from "@pages/Exercises";
-import ExercisesEdit from "@pages/ExercisesEdit";
 import Split from "@pages/Split";
 import Workout from "@pages/Workout";
 import Workouts from "@pages/Workouts";
@@ -15,6 +13,7 @@ import Register from "@pages/Register";
 
 import { PageBuilder } from "./PageBuilder";
 import Users from "@pages/Users";
+import Program from "../pages/Program";
 
 export const homePage = new PageBuilder()
   .element(Home).title("home").subtitle("welcome to your dashboard")
@@ -22,6 +21,7 @@ export const homePage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
 export const loginPage = new PageBuilder()
@@ -30,6 +30,7 @@ export const loginPage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
 export const registerPage = new PageBuilder()
@@ -38,6 +39,7 @@ export const registerPage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
 export const forgotPasswordPage = new PageBuilder()
@@ -46,6 +48,7 @@ export const forgotPasswordPage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
 export const settingsPage = new PageBuilder()
@@ -54,6 +57,7 @@ export const settingsPage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
 export const supportPage = new PageBuilder()
@@ -62,6 +66,7 @@ export const supportPage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
 export const programsPage = new PageBuilder()
@@ -70,46 +75,43 @@ export const programsPage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
-export const programsEditPage = new PageBuilder()
-  .element(ProgramsEdit).title("edit program").subtitle("welcome to your dashboard")
+export const programPage = new PageBuilder()
+  .element(Program)
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
 export const exercisesPage = new PageBuilder()
-  .element(Exercises).title("exercises").subtitle("welcome to your dashboard")
+  .element(Exercises).title("exercise").subtitle("welcome to your dashboard")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
-  .build();
-
-export const exercisesEditPage = new PageBuilder()
-  .element(ExercisesEdit).title("edit exercise").subtitle("welcome to your dashboard")
-  .includeUserContext()
-  .includeNavigate()
-  .includeMobile()
-  .includeTheme()
+  .includeParams()
   .build();
 
 export const splitPage = new PageBuilder()
-  .element(Split).title("split").subtitle("welcome to your dashboard")
+  .element(Split)
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
-  export const usersPage = new PageBuilder()
+export const usersPage = new PageBuilder()
   .element(Users).title("users").subtitle("welcome to your dashboard")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
 export const workoutsPage = new PageBuilder()
@@ -118,6 +120,7 @@ export const workoutsPage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();
 
 export const workoutPage = new PageBuilder()
@@ -126,4 +129,5 @@ export const workoutPage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
+  .includeParams()
   .build();

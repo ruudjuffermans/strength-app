@@ -38,8 +38,8 @@ const updateExercise = async (req, res) => {
 
 const createExercise = async (req, res) => {
   try {
-    const { name, description } = req.body;
-    const createdExercise = await exerciseHandler.createExercise(name, description);
+    const { name, description, muscle_group, equipment_type } = req.body;
+    const createdExercise = await exerciseHandler.createExercise(name, description, muscle_group, equipment_type);
     res.status(200).json(createdExercise);
   } catch (error) {
     console.error("Error creating exercise:", error);

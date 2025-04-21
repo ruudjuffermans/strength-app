@@ -1,14 +1,12 @@
-import { Paper } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import React from "react";
+import { Paper } from "@mui/material";
 
-const CustomPaper = ({ children, ...props }) => {
-  const theme = useTheme();
-  
+const CustomPaper = React.forwardRef(({ children, ...props }, ref) => {
   return (
-    <Paper variant="outlined" {...props}>
+    <Paper ref={ref} variant="outlined" {...props}>
       {children}
     </Paper>
   );
-};
+});
 
 export default CustomPaper;

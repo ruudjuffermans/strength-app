@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@context/AuthContext";
 import { useTheme } from "@emotion/react";
-import { tokens } from "../theme";
+import { getColors } from "../theme";
 import { useMediaQuery } from "@mui/material";
 import PagePaper from "@components/CustomPaper/Pagepaper";
 
@@ -38,6 +38,20 @@ export class PageBuilder {
         return this;
     }
 
+    includeParams() {
+        const useHookedProps = this._useHookedProps;
+    
+        this._useHookedProps = () => {
+            const params = useParams();
+            return {
+                ...useHookedProps?.(),
+                params,
+            };
+        };
+    
+        return this;
+    }
+
     includeUserContext() {
         function useHookedProps() {
             const { user } = useAuth()
@@ -67,7 +81,7 @@ export class PageBuilder {
 
         this._useHookedProps = () => {
             const theme = useTheme();
-            const colors = tokens(theme.palette.mode);
+            const colors = getColors(theme.palette.mode);
             return {
                 ...useHookedProps?.(),
                 theme, colors,
@@ -102,11 +116,8 @@ export class PageBuilder {
         return props => {
             const hookedProps = useHookedProps();
 
-            const params = useParams();
-
             const content = (
                 <Element
-                    {...params}
                     {...props}
                     {...staticProps}
                     {...hookedProps}

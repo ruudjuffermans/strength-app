@@ -3,11 +3,13 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import TrafficIcon from "@mui/icons-material/Traffic";
+import {
+  DownloadIcon,
+  EmailIcon,
+  PointOfSaleIcon,
+  PersonAddIcon,
+  TrafficIcon,
+} from "@icons";
 
 import { mockTransactions } from "@data/mockData";
 import StatBox from "@components/StatBox";
@@ -135,7 +137,7 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
             </Box>
             <Box>
               <IconButton>
-                <DownloadOutlinedIcon
+                <DownloadIcon
                   sx={{ fontSize: "26px", color: colors.primary[500] }}
                 />
               </IconButton>

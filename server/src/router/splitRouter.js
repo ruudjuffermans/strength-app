@@ -21,6 +21,11 @@ function splitRouter(app) {
         "/api/exercise-split/:exerciseSplitId",
         asyncHandler(splitController.deleteSplitExercise)
     );
+
+    app.put(
+        "/api/exercise-split/reorder/:splitId",
+        asyncHandler(splitController.reorderSplitExercises)
+    );
 }
 
 module.exports = splitRouter;

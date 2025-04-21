@@ -5,6 +5,7 @@ import WorkoutItem from "./WorkoutItem";
 
 const Workout = ({colors, theme, user, navigate, isMobile, params}) => {
   const { workoutId } = params;
+  console.log(workoutId)
   const { workout, completeWorkout, logSet, updateLoggedSet } =
     useWorkout(workoutId);
 
@@ -38,9 +39,14 @@ const Workout = ({colors, theme, user, navigate, isMobile, params}) => {
     }));
   };
 
+  const handleCompleteWorkout = () => {
+    completeWorkout();
+    navigate("/workouts")
+  };
+
   return (
     <>
-      <h2>state: {workout.workout_state}</h2>
+      <div>state: {workout.workout_state}</div>
       <div>program: {workout.program}</div>
       <div>split: {workout.split}</div>
       <div>id: {workout.id}</div>
@@ -56,7 +62,7 @@ const Workout = ({colors, theme, user, navigate, isMobile, params}) => {
       ).map(([order, logs]) => (
         <WorkoutItem key={order} logs={logs} handleInputChange={handleInputChange} inputValues={inputValues} logSet={logSet} />
       ))}
-      <button onClick={() => completeWorkout()}>Complete Workout</button>
+      <button onClick={() => handleCompleteWorkout()}>Complete Workout</button>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { MenuItem, FormControl, Select, InputLabel, Typography, Box, IconButton } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
+import {ClearIcon} from "@icons";
 
 export default function CustomDropdown({
     label,

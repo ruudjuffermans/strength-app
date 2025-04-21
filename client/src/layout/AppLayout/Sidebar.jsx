@@ -1,168 +1,159 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useTheme,
+  useMediaQuery,
+  IconButton,
+  Backdrop,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-import { tokens } from "@theme";
+import { getColors } from "@theme";
 import {
-  LogoutOutlinedIcon,
-  MenuOutlinedIcon,
-  HomeOutlinedIcon,
-  HelpOutlineOutlinedIcon,
-  QuestionAnswerOutlinedIcon,
-  SettingsOutlinedIcon,
-  TableChartOutlinedIcon,
+  LogoutIcon,
+  MenuIcon,
+  HomeIcon,
+  HelpIcon,
+  SettingsIcon,
   FitnessCenterIcon,
-  WorkOutlineOutlinedIcon,
+  WorkOutlineIcon,
 } from "@icons";
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
-  const theme = useTheme();
+const Item = ({ title, to, icon, selected, setSelected, onItemClick }) => (
+  <MenuItem
+    active={selected === title}
+    onClick={() => {
+      setSelected(title);
+      onItemClick?.(); // Optional chaining in case it's undefined
+    }}
+    icon={icon}
+  >
+    <Typography>{title}</Typography>
+    <Link to={to} />
+  </MenuItem>
+);
 
-  return (
-    <MenuItem
-      active={selected === title}
-      onClick={() => setSelected(title)}
-      icon={icon}
-    >
-      <Typography>{title}</Typography>
-      <Link to={to} />
-    </MenuItem>
-  );
-};
-
-const Sidebar = () => {
+const ResponsiveSidebar = ({ open, setOpen }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const colors = getColors(theme.palette.mode);
+  const isMobile = useMediaQuery("(max-width:600px)");
   const [selected, setSelected] = useState("Dashboard");
+  const sidebarRef = useRef(null);
+
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        handleClose();
+      }
+    };
+
+    if (isMobile && open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [open, isMobile]);
 
   return (
-    <Box
-      sx={{
-        borderRight: `1px solid ${colors.base[500]}`,
-        "& .pro-sidebar-inner": {
-          minHeight: "100vh",
-          background: `${
-            theme.palette.mode === "dark" ? colors.base[200] : colors.base[100]
-          } !important`,
-        },
-        "& .pro-icon-wrapper": {
-          backgroundColor: "transparent !important",
-        },
-        "& .pro-inner-item": {
-          padding: "5px 0px 5px 5px !important",
-        },
-        "& .pro-menu-item": {
-          color: `${colors.contrast[200]}`,
-          padding: "0px 25px 0px 20px !important",
-        },
-        "& .pro-menu-item:hover:not(.active)": {
-          color: `${colors.contrast[100]}`,
-        },
-        "& .pro-menu-item.active": {
-          color: `${colors.primary[500]} !important`,
-        },
-      }}
-    >
-      <ProSidebar collapsed={isCollapsed}>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          flexDirection="column"
-          height={"100%"}
-        >
-          <Menu iconShape="square">
-            <MenuItem
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
-              style={{
-                margin: "0 0 40px 0",
-              }}
-            >
-              {!isCollapsed && (
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography variant="h3" color={colors.primary[500]}>
-                    CLIENT
-                  </Typography>
-                  <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                    <MenuOutlinedIcon />
-                  </IconButton>
-                </Box>
-              )}
-            </MenuItem>
+    <>
+      {isMobile && (
+        <Backdrop
+          open={open}
+          onClick={handleClose}
+          sx={{
+            zIndex: 1200,
+            bgcolor:
+              theme.palette.mode === "light"
+                ? "rgba(0, 0, 0, 0.3)"
+                : "rgba(255, 255, 255, 0.2)",
+            backdropFilter: "blur(3px)",
+            WebkitBackdropFilter: "blur(3px)",
+          }}
+        />
+      )}
 
-            <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-              <Item
-                title="Dashboard"
-                to="/"
-                icon={<HomeOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Programs"
-                to="/programs"
-                icon={<WorkOutlineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Exercises"
-                to="/exercises"
-                icon={<FitnessCenterIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Workouts"
-                to="/workouts"
-                icon={<FitnessCenterIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-                            <Item
-                title="Users"
-                to="/users"
-                icon={<FitnessCenterIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </Box>
-          </Menu>
-          <Menu>
-            <Box paddingLeft={isCollapsed ? undefined : "5%"}>
-              <Item
-                title="Settings"
-                to="/settings"
-                icon={<SettingsOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Help & Support"
-                to="/support"
-                icon={<HelpOutlineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Logout"
-                to="/login"
-                icon={<LogoutOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </Box>
-          </Menu>
-        </Box>
-      </ProSidebar>
-    </Box>
+      <Box
+        ref={sidebarRef}
+        sx={{
+          position: isMobile ? "fixed" : "relative",
+          top: 0,
+          left: isMobile ? (open ? "0px" : "-300px") : 0,
+          width: isMobile ? "250px" : "auto",
+          transition: isMobile ? "left 0.3s ease-in-out" : "none",
+          height: "100vh",
+          zIndex: 1301,
+          borderRight: `1px solid ${colors.base[500]}`,
+          "& .pro-sidebar-inner": {
+            background: `${
+              theme.palette.mode === "dark"
+                ? colors.base[200]
+                : colors.base[100]
+            } !important`,
+          },
+          "& .pro-icon-wrapper": {
+            backgroundColor: "transparent !important",
+          },
+          "& .pro-inner-item": {
+            padding: "5px 0px 5px 5px !important",
+          },
+          "& .pro-menu-item": {
+            color: `${colors.contrast[200]}`,
+            padding: "0px 25px 0px 20px !important",
+          },
+          "& .pro-menu-item:hover:not(.active)": {
+            color: `${colors.contrast[100]}`,
+          },
+          "& .pro-menu-item.active": {
+            color: `${colors.primary[500]} !important`,
+          },
+        }}
+      >
+        <ProSidebar collapsed={!isMobile ? open : false}>
+          <Box display="flex" flexDirection="column" height="100%">
+            <Menu iconShape="square">
+              <MenuItem
+                onClick={isMobile ? handleClose : () => setOpen(!open)}
+                icon={open ? <MenuIcon /> : undefined}
+                style={{ marginBottom: "40px" }}
+              >
+                {!open && !isMobile && (
+                  <Box display="flex" justifyContent="space-between" alignItems="center">
+                    <Typography variant="h3" color={colors.primary[500]}>
+                      CLIENT
+                    </Typography>
+                    <IconButton onClick={() => setOpen(!open)}>
+                      <MenuIcon />
+                    </IconButton>
+                  </Box>
+                )}
+              </MenuItem>
+
+              <Box paddingLeft={!open && !isMobile ? "10%" : undefined}>
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Dashboard" to="/" icon={<HomeIcon />} selected={selected} setSelected={setSelected} />
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Programs" to="/programs" icon={<WorkOutlineIcon />} selected={selected} setSelected={setSelected} />
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Exercises" to="/exercises" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Workouts" to="/workouts" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Users" to="/users" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
+              </Box>
+            </Menu>
+
+            <Menu>
+              <Box paddingLeft={!open && !isMobile ? "5%" : undefined}>
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Settings" to="/settings" icon={<SettingsIcon />} selected={selected} setSelected={setSelected} />
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Help & Support" to="/support" icon={<HelpIcon />} selected={selected} setSelected={setSelected} />
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Logout" to="/login" icon={<LogoutIcon />} selected={selected} setSelected={setSelected} />
+              </Box>
+            </Menu>
+          </Box>
+        </ProSidebar>
+      </Box>
+    </>
   );
 };
 
-export default Sidebar;
+export default ResponsiveSidebar;

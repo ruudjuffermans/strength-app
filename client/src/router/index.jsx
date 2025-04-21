@@ -1,4 +1,4 @@
-import React from "react";
+import { createElement } from "react";
 import { Route, Routes } from "react-router-dom";
 
 import AppLayout from "@layout/AppLayout";
@@ -13,9 +13,8 @@ import {
   usersPage,
   supportPage,
   exercisesPage,
-  exercisesEditPage,
   programsPage,
-  programsEditPage,
+  programPage,
   splitPage,
   workoutPage,
   workoutsPage,
@@ -26,24 +25,23 @@ const Router = () => {
     <Routes>
       {/* Public / Auth Pages */}
       <Route element={<AuthLayout />}>
-        <Route path="/login" element={loginPage()} />
-        <Route path="/register" element={registerPage()} />
-        <Route path="/forgot-password" element={forgotPasswordPage()} />
+        <Route path="/login" element={createElement(loginPage)} />
+        <Route path="/register" element={createElement(registerPage)} />
+        <Route path="/forgot-password" element={createElement(forgotPasswordPage)} />
       </Route>
 
       {/* Protected App Pages */}
       <Route element={<AppLayout />}>
-        <Route index element={homePage()} />
-        <Route path="/settings" element={settingsPage()} />
-        <Route path="/users" element={usersPage()} />
-        <Route path="/support" element={supportPage()} />
-        <Route path="/exercises" element={exercisesPage()} />
-        <Route path="/exercises/edit" element={exercisesEditPage()} />
-        <Route path="/programs" element={programsPage()} />
-        <Route path="/programs/edit" element={programsEditPage()} />
-        <Route path="/split/:splitId" element={splitPage()} />
-        <Route path="/workout/:workoutId" element={workoutPage()} />
-        <Route path="/workouts" element={workoutsPage()} />
+        <Route index element={createElement(homePage)} />
+        <Route path="/settings" element={createElement(settingsPage)} />
+        <Route path="/users" element={createElement(usersPage)} />
+        <Route path="/support" element={createElement(supportPage)} />
+        <Route path="/exercises" element={createElement(exercisesPage)} />
+        <Route path="/programs" element={createElement(programsPage)} />
+        <Route path="/program/:programId" element={createElement(programPage)} />
+        <Route path="/split/:splitId" element={createElement(splitPage)} />
+        <Route path="/workout/:workoutId" element={createElement(workoutPage)} />
+        <Route path="/workouts" element={createElement(workoutsPage)} />
       </Route>
     </Routes>
   );

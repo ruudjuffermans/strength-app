@@ -1,16 +1,16 @@
 import CustomPaper from '@components/CustomPaper';
 import Header from '@components/Header';
-import CustomButton from '@components/CustomButton';
 
 import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 
 const PagePaper = ({ children, title, subtitle, PageButton }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery("(max-width:600px)");
   
   return (
-    <Box m="20px">
-      <CustomPaper sx={{ padding: "20px" }}>
+    <Box m={isMobile ? "6px" : "18px"}>
+      <CustomPaper sx={{ minHeight: isMobile ? "calc(100vh - 60px)" : "calc(100vh - 100px)", padding: isMobile ? "6px" : "18px" }}>
         <Box display="flex" justifyContent="space-between">
           <Header title={title} subtitle={subtitle} />
           <Box>

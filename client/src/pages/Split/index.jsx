@@ -1,21 +1,47 @@
 import React, { useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { Box, FormControl, Select, MenuItem, IconButton } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  Select,
+  MenuItem,
+  IconButton,
+  Menu,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Add, DeleteOutline } from "@mui/icons-material";
+
 import CustomButton from "@components/CustomButton";
-import { PlusOneOutlined, DeleteOutline } from "@mui/icons-material";
 import { useExercises } from "@hooks/useExercises";
 import { useSplit } from "@hooks/useSplit";
-import CustomDropdown from "../../components/DropDown";
-import PagePaper from "../../components/CustomPaper/Pagepaper";
+import CustomDropdown from "@components/DropDown";
+import CustomPaper from "@components/CustomPaper";
 
 const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
   const { splitId } = params;
   const { exercises } = useExercises();
-  const { splitExercises, addExercise, createWorkout, deleteExercise } = useSplit(splitId);
+  const {
+    splitExercises,
+    addExercise,
+    createWorkout,
+    deleteExercise,
+    reorderExercises
+  } = useSplit(splitId);
 
   const [selectedExercise, setSelectedExercise] = useState("");
   const [reps, setReps] = useState("");
   const [sets, setSets] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const openMenu = Boolean(anchorEl);
 
   const repOptions = Array.from({ length: 15 }, (_, i) => ({
     value: i + 1,
@@ -29,112 +55,137 @@ const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
   const handleAddExercise = () => {
     if (!splitId || !selectedExercise) return;
     addExercise({ exerciseId: selectedExercise, reps, sets });
-    setReps("")
-    setSets("")
-    setSelectedExercise("")
+    setReps("");
+    setSets("");
+    setSelectedExercise("");
+    setDialogOpen(false);
+    setAnchorEl(null);
   };
 
-  const handleCreateWorkout = async () => {
-    const response = await createWorkout({ splitId })
-    console.log(response)
-    navigate(`/workout/${response.id}`)
-
-  }
-
-  const columns = [
-    { field: "order", headerName: "order", flex: 0.5 },
-    { field: "name", headerName: "Exercise Name", flex: 2 },
-    { field: "sets", headerName: "Sets", flex: 1 },
-    { field: "reps", headerName: "Reps", flex: 1 },
-    {
-      field: "actions",
-      headerName: "Actions",
-      flex: 1,
-      renderCell: (params) => (
-        <IconButton
-          onClick={() => deleteExercise({ exerciseSplitId: params.row.id })}
-          type="button"
-          sx={{ p: 1 }}
-        >
-          <DeleteOutline sx={{ color: "red" }} />
-        </IconButton>
-      ),
-    },
-  ];
-
-  const PageButton = (
-    <CustomButton
-      variant="outlined"
-      color="primary"
-      onClick={handleCreateWorkout}
-      Icon={PlusOneOutlined}
-      label={"Do Workout"}
-    />
-  );
-
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
+  
+    const reordered = Array.from(splitExercises.exercises);
+    const [moved] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, moved);
+  
+    const payload = reordered.map((item, index) => ({
+      id: item.id,         // this should be the splitExerciseId
+      order: index + 1     // 1-based order
+    }));
+  
+    reorderExercises(payload);
+  };
   return (
-    <PagePaper title={`Split: ${splitExercises.name}`} subtitle={`description: ${splitExercises.description}`} PageButton={PageButton}>
-      <Box
-        display="flex"
-        alignItems="center"
-        gap={2}
-        mt={2}
-        sx={{ width: "100%" }}
-      >
-        <FormControl sx={{ flex: 3 }}>
-          <Select
-            value={selectedExercise}
-            onChange={(e) => setSelectedExercise(e.target.value)}
-            displayEmpty
-          >
-            <MenuItem value="" disabled>
-              Select an exercise
-            </MenuItem>
-            {exercises.map((exercise) => (
-              <MenuItem key={exercise.id} value={exercise.id}>
-                {exercise.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+    <>
+      <Box mt={3} display="flex" flexDirection="column" gap={2}>
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="exercise-list">
+            {(provided) => (
+              <Box
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                display="flex"
+                flexDirection="column"
+                gap={2}
+              >
+                {(splitExercises.exercises || []).map((exercise, index) => (
+                  <Draggable key={exercise.id} draggableId={exercise.id.toString()} index={index}>
+                    {(provided) => (
+                      <CustomPaper
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        sx={{
+                          p: 2,
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Box>
+                          <Typography variant="subtitle1">{exercise.name}</Typography>
+                          <Typography variant="body2">
+                            Sets: {exercise.sets} • Reps: {exercise.reps} • Order: {exercise.order} • id: {exercise.id}
+                          </Typography>
+                        </Box>
+                        <IconButton onClick={() => deleteExercise({ exerciseSplitId: exercise.id })}>
+                          <DeleteOutline />
+                        </IconButton>
+                      </CustomPaper>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </Box>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </Box>
 
-        <Box sx={{ flex: 1, minWidth: "150px" }}>
-          <CustomDropdown
-            value={sets}
-            onChange={setSets}
-            options={setOptions}
-            placeholder="Sets"
-            sx={{ flexGrow: 1, minWidth: "100px" }}
-          />
-        </Box>
-        <Box sx={{ flex: 1, minWidth: "150px" }}>
-          <CustomDropdown
-            value={reps}
-            onChange={setReps}
-            options={repOptions}
-            placeholder="Reps"
-          />
-        </Box>
+      {/* Add Exercise Button */}
+      <Box display="flex" justifyContent="flex-end" mt={2}>
         <CustomButton
-          variant="contained"
+          variant="outlined"
           color="primary"
-          onClick={handleAddExercise}
-          Icon={PlusOneOutlined}
-          label={"Add Exercise"}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          Icon={Add}
+          label="Add Exercise"
         />
+        <Menu anchorEl={anchorEl} open={openMenu} onClose={() => setAnchorEl(null)}>
+          <MenuItem
+            onClick={() => {
+              setDialogOpen(true);
+              setAnchorEl(null);
+            }}
+          >
+            <ListItemIcon><Add fontSize="small" /></ListItemIcon>
+            <ListItemText primary="Add Exercise" />
+          </MenuItem>
+        </Menu>
       </Box>
 
-      {/* TABLE */}
-      <Box mt={3} height="50vh">
-        <DataGrid
-          rows={splitExercises.exercises || []}
-          columns={columns}
-          density="compact"
-          processRowUpdateMode="client"
-          rowCount={0}
-        />
-      </Box>
-    </PagePaper>
+      {/* Add Exercise Dialog */}
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="sm">
+        <DialogTitle>Add Exercise to Split</DialogTitle>
+        <DialogContent dividers>
+          <Box display="flex" flexDirection="column" gap={2} mt={1}>
+            <FormControl fullWidth>
+              <Select
+                value={selectedExercise}
+                onChange={(e) => setSelectedExercise(e.target.value)}
+                displayEmpty
+              >
+                <MenuItem value="" disabled>Select an exercise</MenuItem>
+                {exercises.map((exercise) => (
+                  <MenuItem key={exercise.id} value={exercise.id}>
+                    {exercise.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <CustomDropdown
+              value={sets}
+              onChange={setSets}
+              options={setOptions}
+              placeholder="Sets"
+            />
+            <CustomDropdown
+              value={reps}
+              onChange={setReps}
+              options={repOptions}
+              placeholder="Reps"
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleAddExercise} variant="contained" color="primary">
+            Add Exercise
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 

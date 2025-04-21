@@ -38,10 +38,13 @@ async function createWorkoutFromSplit(splitId) {
 
     for (const exercise of exercises.rows) {
         for (let i = 1; i <= exercise.sets; i++) {
+            console.log(exercise)
+            console.log(exercise)
+            console.log(exercise)
             await pool.query(
-                `INSERT INTO workout_log (workout_id, exercise_id, exercise_order, set_number, performed_reps, weight_used)
-                 VALUES ($1, $2, $3, $4, 0, NULL)`,
-                [workoutId, exercise.exercise_id, exercise.exercise_order, i]
+                `INSERT INTO workout_log (workout_id, exercise_id, exercise_name, target_reps, exercise_order, set_number, performed_reps, weight_used)
+                 VALUES ($1, $2, $3, $4, $5, $6, 0, NULL)`,
+                [workoutId, exercise.exercise_id, exercise.exercise_name, exercise.reps, exercise.exercise_order, i]
             );
         }
     }

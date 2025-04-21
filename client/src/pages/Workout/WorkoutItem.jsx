@@ -1,79 +1,71 @@
-import React from 'react'
-import CustomPaper from '../../components/CustomPaper'
-import { Box, Button } from '@mui/material'
-import WorkoutInput from '../../components/WoutkoutInput'
-import { useTheme } from '@emotion/react'
-import { tokens } from '../../theme'
+import React from 'react';
+import CustomPaper from '../../components/CustomPaper';
+import { Box, Button, TextField, InputAdornment } from '@mui/material';
+import { useTheme } from '@emotion/react';
+import { getColors } from '../../theme';
 
-const WorkoutItem = ({ logs, handleInputChange, inputValues, logSet
-}) => {
+const WorkoutItem = ({ logs, handleInputChange, inputValues, logSet }) => {
+  const theme = useTheme();
+  const colors = getColors(theme.palette.mode);
 
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
-    return (
-        <CustomPaper sx={{ mb: 1, p: 1 }}>
-            {logs[0].exercise_name}
-            {logs
-                .sort((a, b) => a.set_number - b.set_number) // Ensure sets are in correct order
-                .map((log) => (
-                    <Box sx={{ mb: 1, p: 1 }}>
-                        <p>Set #{log.set_number}</p>
-                        <p>Target Reps: {log.target_reps}</p>
-                        <Box display="flex" gap={1}>
-                            <Box
-                                backgroundColor={colors.base[300]}
-                                maxWidth={100}
-                                borderRadius="3px"
-                            >
-                                <WorkoutInput
-                                    type="number"
-                                    sx={{ px: 1, py: 0.5 }}
-                                    placeholder="Weight"
-                                    value={inputValues[log.id]?.weight || ""}
-                                    onChange={(e) =>
-                                        handleInputChange(log.id, "weight", e.target.value)
-                                    }
-                                />
-                            </Box>
-                            <Box
-                                backgroundColor={colors.base[300]}
-                                maxWidth={100}
-                                borderRadius="3px"
-                            >
-                                <WorkoutInput
-                                    type="number"
-                                    sx={{ px: 1, py: 0.5 }}
-                                    placeholder="Reps"
-                                    value={inputValues[log.id]?.reps || ""}
-                                    onChange={(e) =>
-                                        handleInputChange(log.id, "reps", e.target.value)
-                                    }
-                                />
-                            </Box>
-                            <Button
-                                onClick={() =>
-                                    logSet({
-                                        logId: log.id,
-                                        performedReps: Number(inputValues[log.id]?.reps) || 0,
-                                        weightUsed: Number(inputValues[log.id]?.weight) || 0,
-                                    })
-                                }
-                                type="button"
-                                sx={{ p: 1 }}
-                            >
-                                Submit
-                            </Button>
-                            <Box
-                                position="relative"
-                                backgroundColor={colors.base[300]}
-                                maxWidth={100}
-                                borderRadius="3px"
-                            ></Box>
-                        </Box>
-                    </Box>
-                ))}
-        </CustomPaper>
-    )
-}
+  return (
+    <CustomPaper sx={{ mb: 1, p: 1 }}>
+      <strong>{logs[0]?.exercise?.name}</strong>
 
-export default WorkoutItem
+      {logs
+        .sort((a, b) => a.set_number - b.set_number)
+        .map((log) => (
+          <Box key={log.id} sx={{ mb: 2 }}>
+            <p><strong>Set #{log.set_number}</strong> – Target Reps: {log.target_reps}</p>
+
+            <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+              <TextField
+                type="number"
+                label="Weight"
+                variant="outlined"
+                size="small"
+                value={inputValues[log.id]?.weight || ""}
+                onChange={(e) =>
+                  handleInputChange(log.id, 'weight', e.target.value)
+                }
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">kg</InputAdornment>,
+                }}
+              />
+
+              <TextField
+                type="number"
+                label="Reps"
+                variant="outlined"
+                size="small"
+                value={inputValues[log.id]?.reps || ""}
+                onChange={(e) =>
+                  handleInputChange(log.id, 'reps', e.target.value)
+                }
+                InputProps={{
+                  endAdornment: <InputAdornment position="end">reps</InputAdornment>,
+                }}
+              />
+
+              <Button
+                onClick={() =>
+                  logSet({
+                    logId: log.id,
+                    performedReps: Number(inputValues[log.id]?.reps) || 0,
+                    weightUsed: Number(inputValues[log.id]?.weight) || 0,
+                  })
+                }
+                variant="contained"
+                color="primary"
+                size="small"
+              >
+                Submit
+              </Button>
+            </Box>
+          </Box>
+        ))}
+    </CustomPaper>
+  );
+};
+
+export default WorkoutItem;

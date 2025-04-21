@@ -1,21 +1,25 @@
-import {
-    LogoutOutlined,
-    MenuOutlined,
-    HomeOutlined,
-    HelpOutlineOutlined,
-    QuestionAnswerOutlined,
-    SettingsOutlined,
-    TableChartOutlined,
-    FitnessCenter,
-    WorkOutlineOutlined,
-  } from "@mui/icons-material";
-
-  export const LogoutOutlinedIcon = LogoutOutlined;
-  export const MenuOutlinedIcon = MenuOutlined;
-  export const HomeOutlinedIcon = HomeOutlined;
-  export const HelpOutlineOutlinedIcon = HelpOutlineOutlined;
-  export const QuestionAnswerOutlinedIcon = QuestionAnswerOutlined;
-  export const SettingsOutlinedIcon = SettingsOutlined;
-  export const TableChartOutlinedIcon = TableChartOutlined;
-  export const FitnessCenterIcon = FitnessCenter;
-  export const WorkOutlineOutlinedIcon = WorkOutlineOutlined;
+export {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Add as AddIcon,
+  MoreVertOutlined as MoreIcon,
+  HomeOutlined as HomeIcon,
+  HelpOutlineOutlined as HelpIcon,
+  Link as LinkIcon,
+  ClearAllOutlined as ClearIcon,
+  LogoutOutlined as LogoutIcon,
+  MenuOutlined as MenuIcon,
+  SettingsOutlined as SettingsIcon,
+  FitnessCenter as FitnessCenterIcon,
+  WorkOutlineOutlined as WorkOutlineIcon,
+  LightMode as LightModeIcon,
+  DarkMode as DarkModeIcon,
+  NotificationsOutlined as NotificationsIcon,
+  PersonOutline as PersonIcon,
+  Search as SearchIcon,
+  DownloadOutlined as DownloadIcon,
+  Email as EmailIcon,
+  PointOfSale as PointOfSaleIcon,
+  PersonAdd as PersonAddIcon,
+  Traffic as TrafficIcon,
+} from "@mui/icons-material";

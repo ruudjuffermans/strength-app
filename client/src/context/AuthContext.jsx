@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
         withCredentials: true,
       });
       setSuccess("Logged in successfully!");
-      await getContext(); // Refresh user context
+      await getContext();
       return res.data;
     } catch (error) {
       console.error(error);

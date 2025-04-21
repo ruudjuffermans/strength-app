@@ -59,6 +59,7 @@ async function createProgram(name, description) {
 }
 
 async function updateProgram(id, name, description) {
+  console.log(description)
   const result = await pool.query(
     `UPDATE program 
      SET name = $2, description = $3
@@ -91,11 +92,6 @@ async function addSplit(programId, name, description) {
 
 
 async function editSplit(splitId, name, description) {
-  console.log(description)
-  console.log(description)
-  console.log(description)
-  console.log(description)
-  console.log(description)
   const result = await pool.query(
     `UPDATE split 
      SET name = $2,
