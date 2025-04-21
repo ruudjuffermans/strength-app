@@ -10,6 +10,27 @@ CREATE TYPE workout_state_enum AS ENUM (
     'Draft', 'Completed'
 );
 
+CREATE TYPE user_role_enum AS ENUM (
+    'User', 'Admin'
+);
+
+CREATE TYPE user_status_enum AS ENUM (
+    'Pending', 'Approved', 'Rejected'
+);
+
+CREATE TABLE user_account (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    full_name VARCHAR(255),
+    password_hash TEXT,
+    role user_role_enum DEFAULT 'User',
+    status user_status_enum DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT NOW(),
+    approved_at TIMESTAMP,
+    approved_by INTEGER,
+    FOREIGN KEY (approved_by) REFERENCES user_account(id) ON DELETE SET NULL
+);
+
 
 CREATE TABLE program (
     id SERIAL PRIMARY KEY,
@@ -66,6 +87,7 @@ CREATE TABLE workout_log (
     target_reps INTEGER NOT NULL,
     performed_reps INTEGER NOT NULL,
     weight_used DECIMAL(5,2) DEFAULT NULL,
+    updated BOOLEAN DEFAULT FALSE,
     notes TEXT,
     FOREIGN KEY (workout_id) REFERENCES workout(id) ON DELETE CASCADE,
     FOREIGN KEY (exercise_id) REFERENCES exercise(id) ON DELETE SET NULL

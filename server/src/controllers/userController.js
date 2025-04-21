@@ -36,7 +36,7 @@ const remove = async (req, res) => {
   try {
     const { userId } = req.params;
     await userHandler.removeUser(userId);
-    res.status(204).send(); // No content
+    res.status(204).send();
   } catch (error) {
     console.error("Error deleting user:", error);
     res.status(500).json({ error: "Failed to delete user." });

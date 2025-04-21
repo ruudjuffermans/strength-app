@@ -12,11 +12,6 @@ function authRouter(app) {
     asyncHandler(authController.login)
   );
 
-  app.post(
-    "/auth/approve/:userId",
-    asyncHandler(authController.approve)
-  );
-
   app.get("/auth/me", 
     asyncHandler(authController.getContext)
   );

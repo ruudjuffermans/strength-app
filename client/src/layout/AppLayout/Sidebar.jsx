@@ -89,11 +89,10 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
           zIndex: 1301,
           borderRight: `1px solid ${colors.base[500]}`,
           "& .pro-sidebar-inner": {
-            background: `${
-              theme.palette.mode === "dark"
+            background: `${theme.palette.mode === "dark"
                 ? colors.base[200]
                 : colors.base[100]
-            } !important`,
+              } !important`,
           },
           "& .pro-icon-wrapper": {
             backgroundColor: "transparent !important",
@@ -115,32 +114,34 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
       >
         <ProSidebar collapsed={!isMobile ? open : false}>
           <Box display="flex" flexDirection="column" height="100%">
-            <Menu iconShape="square">
-              <MenuItem
-                onClick={isMobile ? handleClose : () => setOpen(!open)}
-                icon={open ? <MenuIcon /> : undefined}
-                style={{ marginBottom: "40px" }}
-              >
-                {!open && !isMobile && (
-                  <Box display="flex" justifyContent="space-between" alignItems="center">
-                    <Typography variant="h3" color={colors.primary[500]}>
-                      CLIENT
-                    </Typography>
-                    <IconButton onClick={() => setOpen(!open)}>
-                      <MenuIcon />
-                    </IconButton>
-                  </Box>
-                )}
-              </MenuItem>
+            <Box sx={{ flex: 1 }}>
+              <Menu iconShape="square">
+                <MenuItem
+                  onClick={isMobile ? handleClose : () => setOpen(!open)}
+                  icon={open ? <MenuIcon /> : undefined}
+                  style={{ marginBottom: "40px" }}
+                >
+                  {!open && !isMobile && (
+                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                      <Typography variant="h3" color={colors.primary[500]}>
+                        CLIENT
+                      </Typography>
+                      <IconButton onClick={() => setOpen(!open)}>
+                        <MenuIcon />
+                      </IconButton>
+                    </Box>
+                  )}
+                </MenuItem>
 
-              <Box paddingLeft={!open && !isMobile ? "10%" : undefined}>
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Dashboard" to="/" icon={<HomeIcon />} selected={selected} setSelected={setSelected} />
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Programs" to="/programs" icon={<WorkOutlineIcon />} selected={selected} setSelected={setSelected} />
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Exercises" to="/exercises" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Workouts" to="/workouts" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Users" to="/users" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
-              </Box>
-            </Menu>
+                <Box paddingLeft={!open && !isMobile ? "10%" : undefined}>
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Dashboard" to="/" icon={<HomeIcon />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Programs" to="/programs" icon={<WorkOutlineIcon />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Exercises" to="/exercises" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Workouts" to="/workouts" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Users" to="/users" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
+                </Box>
+              </Menu>
+            </Box>
 
             <Menu>
               <Box paddingLeft={!open && !isMobile ? "5%" : undefined}>

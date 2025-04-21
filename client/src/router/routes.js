@@ -21,36 +21,32 @@ export const homePage = new PageBuilder()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
-  .includeParams()
   .build();
 
 export const loginPage = new PageBuilder()
-  .element(Login).title("login").subtitle("welcome to your dashboard")
+  .element(Login)
   .includeNavigate()
   .includeMobile()
   .includeTheme()
-  .includeParams()
   .build();
 
 export const registerPage = new PageBuilder()
-  .element(Register).title("register").subtitle("welcome to your dashboard")
+  .element(Register)
   .includeNavigate()
   .includeMobile()
   .includeTheme()
-  .includeParams()
   .build();
 
 export const forgotPasswordPage = new PageBuilder()
-  .element(ForgotPassword).title("forgot password").subtitle("welcome to your dashboard")
+  .element(ForgotPassword)
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
-  .includeParams()
   .build();
 
 export const settingsPage = new PageBuilder()
-  .element(Settings).title("settings").subtitle("welcome to your dashboard")
+  .element(Settings).title("Settings").subtitle("Welcome to your settings")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
@@ -59,7 +55,7 @@ export const settingsPage = new PageBuilder()
   .build();
 
 export const supportPage = new PageBuilder()
-  .element(Support).title("support").subtitle("welcome to your dashboard")
+  .element(Support).title("Help & Support").subtitle("Welcome to Help and Support")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
@@ -104,7 +100,7 @@ export const splitPage = new PageBuilder()
   .build();
 
 export const usersPage = new PageBuilder()
-  .element(Users).title("Users").subtitle("al list of all the users")
+  .element(Users).title("Users").subtitle("A list of all the users")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
@@ -113,7 +109,7 @@ export const usersPage = new PageBuilder()
   .build();
 
 export const workoutsPage = new PageBuilder()
-  .element(Workouts).title("workouts").subtitle("welcome to your dashboard")
+  .element(Workouts).title("Workouts").subtitle("A list of all the workouts")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()

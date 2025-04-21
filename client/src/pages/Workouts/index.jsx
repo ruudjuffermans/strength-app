@@ -84,7 +84,7 @@ const Workouts = ({ colors, theme, user, navigate, isAdmin, isMobile, params }) 
       density="compact"
       processRowUpdateMode="client"
       rowCount={0}
-      onRowClick={(params) => navigate(`/workout/${params.row.id}`)}
+      onRowClick={isAdmin ? undefined : (params) => navigate(`/workout/${params.row.id}`)}
       sx={{
         fontSize: "10px",
         p: 0,

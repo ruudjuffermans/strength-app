@@ -36,8 +36,8 @@ async function createWorkoutFromSplit(splitId) {
     for (const exercise of exercises.rows) {
         for (let i = 1; i <= exercise.sets; i++) {
             await pool.query(
-                `INSERT INTO workout_log (workout_id, exercise_id, exercise_name, target_reps, exercise_order, set_number, performed_reps, weight_used)
-                 VALUES ($1, $2, $3, $4, $5, $6, 0, NULL)`,
+                `INSERT INTO workout_log (workout_id, exercise_id, exercise_name, target_reps, exercise_order, set_number, performed_reps, weight_used, updated)
+                 VALUES ($1, $2, $3, $4, $5, $6, 0, NULL, FALSE)`,
                 [workoutId, exercise.exercise_id, exercise.exercise_name, exercise.reps, exercise.exercise_order, i]
             );
         }
@@ -138,7 +138,7 @@ async function deleteWorkout(workoutId) {
 async function logSet(id, performedReps, weightUsed) {
     const result = await pool.query(
         `UPDATE workout_log 
-       SET performed_reps = $2, weight_used = $3
+       SET performed_reps = $2, weight_used = $3, updated = TRUE
        WHERE id = $1
        RETURNING *`,
         [id, performedReps, weightUsed]
@@ -149,7 +149,7 @@ async function logSet(id, performedReps, weightUsed) {
 async function updateLoggedSet(id, performedReps, weightUsed) {
     const result = await pool.query(
         `UPDATE workout_log 
-       SET performed_reps = $2, weight_used = $3
+       SET performed_reps = $2, weight_used = $3, updated = TRUE
        WHERE id = $1
        RETURNING *`,
         [id, performedReps, weightUsed]

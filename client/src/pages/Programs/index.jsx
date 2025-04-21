@@ -112,7 +112,7 @@ const Programs = ({navigate}) => {
     deleteSplit({ splitId: id, programId });
   };
 
-
+console.log(programs)
   return (
     <>
       <Box display="flex" flexWrap="wrap" gap="10px">

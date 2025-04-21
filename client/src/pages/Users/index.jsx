@@ -19,7 +19,7 @@ const Users = ({ isAdmin, isMobile, colors }) => {
       renderCell: (params) => (
         <Chip
           label={params.value}
-          color={params.value === "Approved" ? "success" : "warning"}
+          color={params.value === "Approved" ? "success" : params.value === "Rejected" ? colors.base[300] : "warning"}
           size="small"
         />
       ),
@@ -38,9 +38,7 @@ const Users = ({ isAdmin, isMobile, colors }) => {
                     color="success"
                     onClick={() =>
                       approveUser({
-                        userId: params.row.id,
-                        password: "Temp123!", // Or prompt for password
-                        approvedByAdminId: 1, // Replace with actual admin ID
+                        userId: params.row.id
                       })
                     }
                   >

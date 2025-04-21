@@ -2,6 +2,7 @@ import React from "react";
 import CustomPaper from "@components/CustomPaper";
 import { Box } from "@mui/material";
 import SubHeader from "../../components/SubHeader";
+import SubSubHeader from "../../components/SubSubHeader";
 
 const ProgramTile = ({ id, name, description, splits, navigate }) => {
   return (
@@ -23,8 +24,8 @@ const ProgramTile = ({ id, name, description, splits, navigate }) => {
         }}
       >
         {splits.map(({ name, description, id }) => (
-          <Box key={id} p={2}>
-            <SubHeader title={name} subtitle={description} />
+          <Box key={id} p={1}>
+            <SubSubHeader title={name} subtitle={description} />
           </Box>
         ))}
       </Box>
