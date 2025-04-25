@@ -1,6 +1,6 @@
 const pool = require("../db");
 
-async function createWorkoutFromSplit(splitId) {
+async function createWorkoutFromSplit(splitId, userId) {
 
     const splitResult = await pool.query(
         `SELECT s.name AS split_name, p.name AS program_name
@@ -17,10 +17,10 @@ async function createWorkoutFromSplit(splitId) {
     const { split_name, program_name } = splitResult.rows[0];
 
     const workoutResult = await pool.query(
-        `INSERT INTO workout (program, split, created_at)
-         VALUES ($1, $2, NOW())
+        `INSERT INTO workout (program, split, created_by, created_at)
+         VALUES ($1, $2, $3, NOW())
          RETURNING *`,
-        [program_name, split_name]
+        [program_name, split_name, userId]
     );
 
     const workoutId = workoutResult.rows[0].id;
@@ -36,9 +36,9 @@ async function createWorkoutFromSplit(splitId) {
     for (const exercise of exercises.rows) {
         for (let i = 1; i <= exercise.sets; i++) {
             await pool.query(
-                `INSERT INTO workout_log (workout_id, exercise_id, exercise_name, target_reps, exercise_order, set_number, performed_reps, weight_used, updated)
-                 VALUES ($1, $2, $3, $4, $5, $6, 0, NULL, FALSE)`,
-                [workoutId, exercise.exercise_id, exercise.exercise_name, exercise.reps, exercise.exercise_order, i]
+                `INSERT INTO workout_log (workout_id, exercise_id, exercise_name, target_reps, exercise_order, set_number, performed_reps, weight_used, updated, created_by)
+                 VALUES ($1, $2, $3, $4, $5, $6, 0, NULL, FALSE, $7)`,
+                [workoutId, exercise.exercise_id, exercise.exercise_name, exercise.reps, exercise.exercise_order, i, userId]
             );
         }
     }
@@ -56,13 +56,13 @@ async function getWorkoutById(workoutId) {
             w.created_at, 
             w.completed_at, 
             w.notes,
-            w.body_weight,
             wl.id AS workout_log_id, 
             wl.set_number, 
             wl.target_reps, 
             wl.exercise_order, 
             wl.performed_reps, 
             wl.weight_used,
+            wl.updated,
             wl.notes AS workout_log_notes,
             e.id AS exercise_id,
             e.name AS exercise_name,
@@ -89,7 +89,6 @@ async function getWorkoutById(workoutId) {
         created_at: result.rows[0].created_at,
         completed_at: result.rows[0].completed_at,
         notes: result.rows[0].notes,
-        body_weight: result.rows[0].body_weight,
         logs: []
     };
 
@@ -103,6 +102,7 @@ async function getWorkoutById(workoutId) {
                 performed_reps: row.performed_reps,
                 weight_used: row.weight_used,
                 notes: row.workout_log_notes,
+                updated: row.updated,
                 exercise: {
                     id: row.exercise_id,
                     name: row.exercise_name,
@@ -117,8 +117,8 @@ async function getWorkoutById(workoutId) {
     return workout;
 }
 
-async function getAllWorkouts() {
-    const result = await pool.query(`SELECT * FROM workout`);
+async function getAllWorkouts(userId) {
+    const result = await pool.query(`SELECT * FROM workout WHERE created_by = $1 `, [userId]);
     return result.rows;
 }
 

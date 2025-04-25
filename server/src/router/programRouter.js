@@ -8,6 +8,11 @@ function exerciseRouter(app) {
         asyncHandler(programController.getProgramById)
     );
 
+    app.post(
+        "/program/:id/activate",
+        asyncHandler(programController.activateProgram)
+    );
+
     app.get(
         "/program",
         asyncHandler(programController.getAllPrograms)

@@ -1,18 +1,18 @@
 services:
-  server:
-    build:
-      context: ./server
-    environment:
-      PG_HOST: postgres
-      PG_USER: ${POSTGRES_USER}
-      PG_PASSWORD: ${POSTGRES_PASSWORD}
-      PG_DATABASE: ${POSTGRES_DB}
-      PG_PORT: ${POSTGRES_PORT}
-    restart: "always"
-    ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"
-    networks:
-      - networkA
+  # server:
+  #   build:
+  #     context: ./server
+  #   environment:
+  #     PG_HOST: postgres
+  #     PG_USER: ${POSTGRES_USER}
+  #     PG_PASSWORD: ${POSTGRES_PASSWORD}
+  #     PG_DATABASE: ${POSTGRES_DB}
+  #     PG_PORT: ${POSTGRES_PORT}
+  #   restart: "always"
+  #   ports:
+  #     - "${SERVER_PORT}:${SERVER_PORT}"
+  #   networks:
+  #     - networkA
   postgres:
     build:
       context: ./database

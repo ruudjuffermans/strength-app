@@ -11,16 +11,19 @@ import CustomButton from "@components/CustomButton";
 import { usePrograms } from "@hooks/usePrograms";
 import ProgramTile from "./ProgramTile";
 
-const Programs = ({navigate}) => {
+const Programs = ({ colors, navigate, user }) => {
   const {
     programs,
     createProgram,
     updateProgram,
     deleteProgram,
+    activateProgram,
     addSplit,
     editSplit,
     deleteSplit,
   } = usePrograms();
+
+  console.log(user)
 
   // State for Add/Edit Program Dialog
   const [openProgramDialog, setOpenProgramDialog] = useState(false);
@@ -69,7 +72,7 @@ const Programs = ({navigate}) => {
 
   const handleSaveProgram = () => {
     if (!programData.name.trim()) return setError({ ...error, name: "Program name is required." });
-    if (!programData.description.trim()) return setError({...error, description: "Program description is required."});
+    if (!programData.description.trim()) return setError({ ...error, description: "Program description is required." });
 
     if (programData.id) {
       updateProgram({
@@ -87,7 +90,7 @@ const Programs = ({navigate}) => {
   };
 
   // Handle Save Split (Create or Update)
-  const handleSaveSplit = ({colors, theme, user, navigate, isMobile, params}) => {
+  const handleSaveSplit = ({ colors, theme, user, navigate, isMobile, params }) => {
     if (!splitData.name.trim())
       return setError({ ...error, name: "Split name is required." });
 
@@ -107,12 +110,16 @@ const Programs = ({navigate}) => {
     deleteProgram({ programId: id });
   };
 
+  const handleActivateProgram = (id) => {
+    activateProgram({ programId: id });
+  };
+
   // Handle Delete Split
   const handleDeleteSplit = (id, programId) => {
     deleteSplit({ splitId: id, programId });
   };
 
-console.log(programs)
+  console.log(programs)
   return (
     <>
       <Box display="flex" flexWrap="wrap" gap="10px">
@@ -120,8 +127,10 @@ console.log(programs)
           <ProgramTile
             key={id}
             id={id}
+            colors={colors}
+            isActive={user.active_program == id}
             name={name}
-            navigate={navigate}
+            setActive={handleActivateProgram}
             description={description}
             splits={splits}
             onEdit={handleEditProgram}
@@ -171,7 +180,7 @@ console.log(programs)
             color="secondary"
             label={"Cancel"}
           />
-          <CustomButton onClick={handleSaveProgram} color="primary" label={"Save"}/>
+          <CustomButton onClick={handleSaveProgram} color="primary" label={"Save"} />
         </DialogActions>
       </Dialog>
 
@@ -189,16 +198,16 @@ console.log(programs)
             fullWidth
             value={splitData.name}
             onChange={handleSplitInputChange}
-          />         
+          />
           <TextField
-          autoFocus
-          margin="dense"
-          label="Split Description"
-          name="description"
-          fullWidth
-          value={splitData.description}
-          onChange={handleSplitInputChange}
-        />
+            autoFocus
+            margin="dense"
+            label="Split Description"
+            name="description"
+            fullWidth
+            value={splitData.description}
+            onChange={handleSplitInputChange}
+          />
         </DialogContent>
         <DialogActions>
           <CustomButton
@@ -210,7 +219,7 @@ console.log(programs)
           <CustomButton onClick={handleSaveSplit} color="primary" label={"Save"} />
         </DialogActions>
       </Dialog>
-      </>
+    </>
   );
 };
 

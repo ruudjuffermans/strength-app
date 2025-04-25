@@ -11,8 +11,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const getContext = useCallback(async () => {
-    if (user) return user; // ✅ already have it, no need to refetch
+  const getContext = useCallback(async (force = false) => {
+    if (user && !force) return user; // only skip if not forcing
   
     try {
       const res = await axiosInstance.get("/auth/me", {
@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   }, [user]);
+  
 
   useEffect(() => {
     getContext();

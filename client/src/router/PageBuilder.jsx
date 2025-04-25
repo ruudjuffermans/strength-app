@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@context/AuthContext";
 import { useTheme } from "@emotion/react";
-import { getColors } from "../theme";
 import { useMediaQuery } from "@mui/material";
 import PagePaper from "@components/CustomPaper/Pagepaper";
 
@@ -81,7 +80,7 @@ export class PageBuilder {
 
         this._useHookedProps = () => {
             const theme = useTheme();
-            const colors = getColors(theme.palette.mode);
+            const colors = theme.palette.colors
             return {
                 ...useHookedProps?.(),
                 theme, colors,
@@ -95,7 +94,8 @@ export class PageBuilder {
         const useHookedProps = this._useHookedProps;
 
         this._useHookedProps = () => {
-            const isMobile = useMediaQuery("(max-width:600px)");
+            const theme = useTheme();
+            const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
             return {
                 ...useHookedProps?.(),
                 isMobile,

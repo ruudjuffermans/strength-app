@@ -14,6 +14,23 @@ async function seedPrograms() {
             ON CONFLICT DO NOTHING;
         `);
 
+        await client.query(`
+            INSERT INTO split (id, program_id, name, description)
+            VALUES
+            (4, 2, 'Legs & Shoulders', 'A full lower body workout combined with shoulder isolation exercises.'),
+            (5, 2, 'Back & Biceps', 'Focused on pulling movements to strengthen the back and build biceps.'),
+            (6, 2, 'Chest & Triceps', 'A classic push day routine targeting the chest and triceps muscles.')
+            ON CONFLICT DO NOTHING;
+        `);
+
+        await client.query(`
+            INSERT INTO split (id, program_id, name, description)
+            VALUES
+            (7, 3, 'Legs & Shoulders', 'A full lower body workout combined with shoulder isolation exercises.'),
+            (8, 3, 'Back & Biceps', 'Focused on pulling movements to strengthen the back and build biceps.'),
+            (9, 3, 'Chest & Triceps', 'A classic push day routine targeting the chest and triceps muscles.')
+            ON CONFLICT DO NOTHING;
+        `);
         // await client.query(`
         //     INSERT INTO split_exercise (split_id, exercise_id, sets, reps, exercise_order)
         //     VALUES 
@@ -40,7 +57,7 @@ async function seedPrograms() {
 
     } finally {
         client.release();
-
+        pool.end();
     }
 }
 

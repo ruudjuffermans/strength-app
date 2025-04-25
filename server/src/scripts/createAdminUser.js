@@ -11,8 +11,8 @@ async function createAdminUser() {
     try {
         const result = await client.query(
             `INSERT INTO user_account (
-                email, full_name, password_hash, role, status, created_at, approved_at
-            ) VALUES ($1, $2, $3, 'Admin', 'Approved', NOW(), NOW())
+                id, email, full_name, password_hash, role, status, created_at, approved_at
+            ) VALUES (1, $1, $2, $3, 'Admin', 'Approved', NOW(), NOW())
             ON CONFLICT (email) DO NOTHING
             RETURNING id;`,
             [email, fullName, hashedPassword]
@@ -27,6 +27,7 @@ async function createAdminUser() {
         console.error('Error creating admin user:', err);
     } finally {
         client.release();
+        pool.end();
     }
 }
 

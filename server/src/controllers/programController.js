@@ -2,7 +2,7 @@ const { programHandler } = require('../handlers');
 
 const getAllPrograms = async (req, res) => {
   try {
-    const exercises = await programHandler.getAllPrograms();
+    const exercises = await programHandler.getAllPrograms(req.user.userId);
     res.status(200).json(exercises);
   } catch (error) {
     console.error("Error fetching all programs:", error);
@@ -29,6 +29,18 @@ const createProgram = async (req, res) => {
     const { name, description } = req.body;
     const createdProgram = await programHandler.createProgram(name, description);
     res.status(200).json(createdProgram);
+  } catch (error) {
+    console.error("Error updating program:", error);
+    res.status(500).json(error);
+  }
+}
+
+const activateProgram = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.user;
+    const updatedProgram = await programHandler.activateProgram(id, userId);
+    res.status(200).json(updatedProgram);
   } catch (error) {
     console.error("Error updating program:", error);
     res.status(500).json(error);
@@ -100,6 +112,7 @@ module.exports = {
   createProgram,
   updateProgram,
   deleteProgram,
+  activateProgram,
   addSplit,
   editSplit,
   removeSplit

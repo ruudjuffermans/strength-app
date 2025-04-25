@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, MenuItem, Box, Button } from "@mui/material";
-import { DeleteOutline } from "@mui/icons-material";
+import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, Box, Button, Menu, ListItemIcon, ListItemText } from "@mui/material";
 import { useExercises } from "@hooks/useExercises";
-import TextButton from "../../components/TextButton";
+import TextButton from "@components/TextButton";
+import Icon from "@components/Icon";
+import CustomIconButton from "../../components/IconButton";
 
 const muscleGroups = ["Chest", "Back", "Legs", "Shoulders", "Arms", "Core"];
 const equipmentTypes = ["Bodyweight", "Dumbbell", "Barbell", "Machine", "Cable", "Kettlebell"];
-
 
 const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params }) => {
   const { exercises, addExercise, updateExercise, deleteExercise } = useExercises();
@@ -45,19 +45,68 @@ const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params })
     ...(!isMobile ? [{ field: "description", headerName: "Description", flex: 4 }] : []),
     ...(isAdmin ? [{
       field: "actions",
-      headerName: "Actions",
-      flex: 0.5,
-      renderCell: (params) => (
-        <IconButton
-          onClick={() => deleteExercise({ id: params.row.id })
-          }
-          type="button"
-          size={"small"}
-          sx={{ opacity: 0.5 }}
-        >
-          <DeleteOutline />
-        </IconButton>
-      ),
+      headerName: "",
+      flex: 0.1,
+      renderCell: (params) => {
+        const [anchorEl, setAnchorEl] = useState(null);
+        const open = Boolean(anchorEl);
+
+        const handleMenuOpen = (event) => {
+          setAnchorEl(event.currentTarget);
+        };
+
+        const handleMenuClose = () => {
+          setAnchorEl(null);
+        };
+
+        const handleDelete = () => {
+          deleteExercise({ id: params.row.id })
+          handleMenuClose();
+        };
+
+        const handleView = () => {
+          console.log("view exercise")
+          handleMenuClose();
+        };
+
+        return (
+          <>
+            <CustomIconButton size={"small"} onClick={handleMenuOpen}>
+              <Icon size={"small"} name={"options"} />
+            </CustomIconButton>
+            <Menu
+
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleMenuClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+              <MenuItem onClick={handleDelete}>
+                <ListItemIcon>
+                  <Icon name={"look"} fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>View</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={handleView}>
+                <ListItemIcon>
+                  <Icon name={"approve"} fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Edit</ListItemText>
+              </MenuItem>
+              <MenuItem onClick={handleDelete}>
+                <ListItemIcon>
+
+                  <Icon name={"disable"} fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Delete</ListItemText>
+              </MenuItem>
+
+            </Menu>
+          </>
+        );
+      },
+
     }] : []),
   ];
 
@@ -75,7 +124,7 @@ const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params })
         paginationMode="server"
         rowCount={0}
         sx={{
-          fontSize: "10px",
+          // fontSize: "10px",
           p: 0,
           m: 0,
           '& .MuiDataGrid-header': {
@@ -124,8 +173,10 @@ const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params })
               <MenuItem key={group} value={group}>
                 {group}
               </MenuItem>
+
             ))}
           </TextField>
+
           <TextField
             select
             margin="dense"

@@ -1,7 +1,7 @@
 import { Box, IconButton, Paper, useMediaQuery } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
-import {LightModeIcon, DarkModeIcon} from "@icons";
+import Icon from "@components/Icon";
 import { useTheme } from "@emotion/react";
 import { ColorModeContext } from "../../theme";
 
@@ -16,9 +16,9 @@ const AuthLayout = () => {
         <div style={{position: "absolute", top: "10px", right: "10px"}}>
       <IconButton onClick={colorMode.toggleColorMode} >
           {theme.palette.mode === "dark" ? (
-            <DarkModeIcon />
+            <Icon name={"dark"} />
           ) : (
-            <LightModeIcon />
+            <Icon name={"light"} />
           )}
         </IconButton>
           </div>

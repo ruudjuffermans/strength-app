@@ -40,14 +40,58 @@ async function seedPrograms() {
             ON CONFLICT DO NOTHING;
         `);
 
-        // await client.query(`
-        //     INSERT INTO workout (program, split, workout_state, created_at, completed_at, notes)
-        //     VALUES
-        //     ('Main Program', 'Legs & Shoulders', 'Completed', NOW() - INTERVAL '3 days', NOW() - INTERVAL '3 days', 'Felt strong, increased squat weight.'),
-        //     ('Main Program', 'Back & Biceps', 'Completed', NOW() - INTERVAL '2 days', NOW() - INTERVAL '2 days', 'Good lat engagement.'),
-        //     ('Main Program', 'Chest & Triceps', 'Draft', NOW(), NULL, 'Plan to go heavier next session.')
-        //     ON CONFLICT DO NOTHING;
-        // `);
+        await client.query(`
+            INSERT INTO split_exercise (split_id, exercise_id, sets, reps, exercise_order)
+            VALUES 
+              (4, 29, 5, 5, 1),
+              (4, 38, 5, 5, 2),
+              (4, 19, 3, 4, 3),
+              (4, 40, 3, 10, 4),
+              (4, 42, 3, 10, 5),
+              (4, 32, 3, 12, 6),
+              (4, 30, 3, 12, 7),
+              (4, 36, 1, 6, 8),
+              (4, 33, 1, 6, 9),
+              (4, 37, 3, 12, 10),
+              (5, 21, 5, 5, 1),
+              (5, 20, 3, 12, 2),
+              (5, 24, 3, 10, 3),
+              (5, 27, 3, 10, 4),
+              (5, 28, 3, 10, 5),
+              (6, 1, 5, 5, 1),
+              (6, 3, 3, 12, 2),
+              (6, 6, 3, 10, 3),
+              (6, 15, 3, 12, 4),
+              (6, 16, 3, 10, 5)
+            ON CONFLICT DO NOTHING;
+        `);
+
+
+        await client.query(`
+            INSERT INTO split_exercise (split_id, exercise_id, sets, reps, exercise_order)
+            VALUES 
+              (7, 29, 5, 5, 1),
+              (7, 38, 5, 5, 2),
+              (7, 19, 3, 4, 3),
+              (7, 40, 3, 10, 4),
+              (7, 42, 3, 10, 5),
+              (7, 32, 3, 12, 6),
+              (7, 30, 3, 12, 7),
+              (7, 36, 1, 6, 8),
+              (7, 33, 1, 6, 9),
+              (7, 37, 3, 12, 10),
+              (8, 21, 5, 5, 1),
+              (8, 20, 3, 12, 2),
+              (8, 24, 3, 10, 3),
+              (8, 27, 3, 10, 4),
+              (8, 28, 3, 10, 5),
+              (9, 1, 5, 5, 1),
+              (9, 3, 3, 12, 2),
+              (9, 6, 3, 10, 3),
+              (9, 15, 3, 12, 4),
+              (9, 16, 3, 10, 5)
+            ON CONFLICT DO NOTHING;
+        `);
 
         await client.query('COMMIT');
         console.log("✅ Seed split data inserted successfully!");
@@ -58,7 +102,7 @@ async function seedPrograms() {
 
     } finally {
         client.release();
-
+        pool.end();
     }
 }
 

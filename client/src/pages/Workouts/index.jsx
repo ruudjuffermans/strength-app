@@ -8,11 +8,10 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useWorkouts } from "@hooks/useWorkouts";
-import { DeleteOutline, Link, MoreVert } from "@mui/icons-material";
+import Icon from "@components/Icon"
 
-const Workouts = ({ colors, theme, user, navigate, isAdmin, isMobile, params }) => {
+const Workouts = ({ navigate, isAdmin, user, isMobile }) => {
   const { workouts, deleteWorkout } = useWorkouts();
-
   const columns = [
     ...(!isMobile ? [{ field: "id", headerName: "ID", flex: 0.1 }] : []),
     { field: "program", headerName: "Program", flex: 1 },
@@ -22,8 +21,8 @@ const Workouts = ({ colors, theme, user, navigate, isAdmin, isMobile, params }) 
     ...(!isMobile ? [{ field: "completed_at", headerName: "Completed", flex: 1 }] : []),
     ...(isAdmin ? [{
       field: "actions",
-      headerName: "Actions",
-      flex: 0.5,
+      headerName: "",
+      flex: 0.1,
       renderCell: (params) => {
         const [anchorEl, setAnchorEl] = useState(null);
         const open = Boolean(anchorEl);
@@ -48,8 +47,8 @@ const Workouts = ({ colors, theme, user, navigate, isAdmin, isMobile, params }) 
 
         return (
           <>
-            <IconButton size={"small"} sx={{ opacity: 0.5 }} onClick={handleMenuOpen}>
-              <MoreVert />
+            <IconButton size={"small"} onClick={handleMenuOpen}>
+              <Icon size={"small"} name={"options"}  />
             </IconButton>
             <Menu
               anchorEl={anchorEl}
@@ -60,13 +59,13 @@ const Workouts = ({ colors, theme, user, navigate, isAdmin, isMobile, params }) 
             >
               <MenuItem onClick={handleView}>
                 <ListItemIcon>
-                  <Link fontSize="small" />
+                  <Icon name={"link"} fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>View</ListItemText>
               </MenuItem>
               <MenuItem onClick={handleDelete}>
                 <ListItemIcon>
-                  <DeleteOutline fontSize="small" />
+                  <Icon name={"delete"} fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Delete</ListItemText>
               </MenuItem>
@@ -86,7 +85,7 @@ const Workouts = ({ colors, theme, user, navigate, isAdmin, isMobile, params }) 
       rowCount={0}
       onRowClick={isAdmin ? undefined : (params) => navigate(`/workout/${params.row.id}`)}
       sx={{
-        fontSize: "10px",
+        // fontSize: "10px",
         p: 0,
         m: 0,
         '& .MuiDataGrid-header': {

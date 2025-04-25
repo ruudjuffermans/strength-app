@@ -38,7 +38,7 @@ async function seedDatabase() {
 
     } finally {
         client.release();
-
+        pool.end();
     }
 }
 

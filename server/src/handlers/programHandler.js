@@ -1,17 +1,20 @@
 const pool = require("../db");
 
-async function getAllPrograms() {
+async function getAllPrograms(userId) {
+  console.log(userId)
   const result = await pool.query(`
     SELECT 
       p.id AS program_id, 
       p.name AS program_name, 
       p.description AS program_description,
+      p.created_by AS program_owner,
       s.id AS split_id, 
       s.name AS split_name,
       s.description AS split_description
     FROM program p
     LEFT JOIN split s ON p.id = s.program_id
-  `);
+    WHERE p.created_by IN (2, $1)
+  `, [userId]);
 
   const programs = {};
 
@@ -23,6 +26,7 @@ async function getAllPrograms() {
         id: programId,
         name: row.program_name,
         description: row.program_description,
+        owner: row.program_owner,
         splits: [],
       };
     }
@@ -54,6 +58,17 @@ async function createProgram(name, description) {
     `INSERT INTO program (name, description)
      VALUES ($1, $2) RETURNING *`,
     [name, description]
+  );
+  return result.rows[0];
+}
+
+async function activateProgram(id, userId) {
+  const result = await pool.query(
+    `UPDATE user_account 
+     SET active_program = $1
+     WHERE id = $2
+     RETURNING *`,
+    [id, userId]
   );
   return result.rows[0];
 }
@@ -110,15 +125,13 @@ async function removeSplit(splitId) {
   );
 }
 
-
-
-
 module.exports = {
   createProgram,
   getProgramById,
   getAllPrograms,
   updateProgram,
   deleteProgram,
+  activateProgram,
   editSplit,
   removeSplit,
   addSplit

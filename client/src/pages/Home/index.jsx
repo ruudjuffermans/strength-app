@@ -3,22 +3,53 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import {
-  DownloadIcon,
-  EmailIcon,
-  PointOfSaleIcon,
-  PersonAddIcon,
-  TrafficIcon,
-} from "@icons";
 
-import { mockTransactions } from "@data/mockData";
+import Icon from "@components/Icon"
+
 import StatBox from "@components/StatBox";
 import ProgressCircle from "@components/ProgressCircle";
 import CustomPaper from "@components/CustomPaper";
+import { usePrograms } from "../../hooks/usePrograms";
+import TextButton from "../../components/TextButton";
+import { useWorkouts } from "../../hooks/useWorkouts";
+import CustomButton from "../../components/CustomButton";
+import { mockTransactions } from "../../data/mockData";
 
 const Home = ({colors, theme, user, navigate, isMobile, params}) => {
+  const {
+    programs,
+  } = usePrograms();
 
-  return (
+  const {
+    workouts,
+  } = useWorkouts();
+
+  const activeProgram = programs.find(program => user.active_program === program.id);
+  const completedWorkouts = workouts.filter(workout => workout.workout_state == 'Completed')
+  const activeWorkouts = workouts.filter(workout => workout.workout_state == 'Draft')
+
+
+
+  return isMobile ?  (
+  <Box>
+    <Box>
+      <Box>
+      <CustomButton label={"Set other program"} to={"/programs"}></CustomButton>
+      </Box>
+      <Box>
+      <CustomButton label={"Do next workout"}></CustomButton>
+      </Box>
+      <Box>
+      active program: {activeProgram?.name}
+      </Box>
+      <Box>
+      logged workouts: {completedWorkouts.length}
+      </Box>      
+      <Box>
+      active workouts: {activeWorkouts.length}
+      </Box>
+    </Box>
+  </Box>) :  (
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
@@ -42,7 +73,7 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
             progress="0.75"
             increase="+10%"
             icon={
-              <EmailIcon
+              <Icon name={"email"}
                 sx={{ color: colors.contrast[300], fontSize: "20px" }}
               />
             }
@@ -62,7 +93,7 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
             progress="0.50"
             increase="+21%"
             icon={
-              <PointOfSaleIcon
+              <Icon
                 sx={{ color: colors.contrast[300], fontSize: "20px" }}
               />
             }
@@ -82,7 +113,7 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
             progress="0.30"
             increase="+5%"
             icon={
-              <PersonAddIcon
+              <Icon name={"person"}
                 sx={{ color: colors.contrast[300], fontSize: "20px" }}
               />
             }
@@ -102,9 +133,7 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
             progress="0.80"
             increase="+43%"
             icon={
-              <TrafficIcon
-                sx={{ color: colors.contrast[300], fontSize: "20px" }}
-              />
+              <Icon />
             }
           />
         </CustomPaper>
@@ -137,9 +166,7 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
             </Box>
             <Box>
               <IconButton>
-                <DownloadIcon
-                  sx={{ fontSize: "26px", color: colors.primary[500] }}
-                />
+                <Icon name={"download"} />
               </IconButton>
             </Box>
           </Box>

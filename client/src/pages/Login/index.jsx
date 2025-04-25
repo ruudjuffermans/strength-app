@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import React, { useEffect } from "react";
 import * as yup from "yup";
 import { useAuth } from "@context/AuthContext";
+import CustomButton from "../../components/CustomButton";
 
 const checkoutSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("Required"),
@@ -79,10 +80,7 @@ const Login = ({ colors, theme, user, navigate, isMobile, params }) => {
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <button type="submit" color="primary" variant="contained">
-                Login
-              </button>
-              {/* <CustomButton onClick={handleSaveSplit} color="primary" label={"Save"} /> */}
+              <CustomButton label={"login"}  type={"submit"}  />
             </Box>
           </form>
         )}

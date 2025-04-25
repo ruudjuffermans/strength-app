@@ -10,16 +10,8 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-import { getColors } from "@theme";
-import {
-  LogoutIcon,
-  MenuIcon,
-  HomeIcon,
-  HelpIcon,
-  SettingsIcon,
-  FitnessCenterIcon,
-  WorkOutlineIcon,
-} from "@icons";
+
+import Icon from "@components/Icon";
 
 const Item = ({ title, to, icon, selected, setSelected, onItemClick }) => (
   <MenuItem
@@ -37,8 +29,8 @@ const Item = ({ title, to, icon, selected, setSelected, onItemClick }) => (
 
 const ResponsiveSidebar = ({ open, setOpen }) => {
   const theme = useTheme();
-  const colors = getColors(theme.palette.mode);
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const colors = theme.palette.colors
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [selected, setSelected] = useState("Dashboard");
   const sidebarRef = useRef(null);
 
@@ -118,7 +110,7 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
               <Menu iconShape="square">
                 <MenuItem
                   onClick={isMobile ? handleClose : () => setOpen(!open)}
-                  icon={open ? <MenuIcon /> : undefined}
+                  icon={open ? <Icon name={"menu"} /> : undefined}
                   style={{ marginBottom: "40px" }}
                 >
                   {!open && !isMobile && (
@@ -127,29 +119,31 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
                         CLIENT
                       </Typography>
                       <IconButton onClick={() => setOpen(!open)}>
-                        <MenuIcon />
+                        <Icon name={"menu"} />
                       </IconButton>
                     </Box>
                   )}
                 </MenuItem>
 
                 <Box paddingLeft={!open && !isMobile ? "10%" : undefined}>
-                  <Item onItemClick={isMobile ? handleClose : undefined} title="Dashboard" to="/" icon={<HomeIcon />} selected={selected} setSelected={setSelected} />
-                  <Item onItemClick={isMobile ? handleClose : undefined} title="Programs" to="/programs" icon={<WorkOutlineIcon />} selected={selected} setSelected={setSelected} />
-                  <Item onItemClick={isMobile ? handleClose : undefined} title="Exercises" to="/exercises" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
-                  <Item onItemClick={isMobile ? handleClose : undefined} title="Workouts" to="/workouts" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
-                  <Item onItemClick={isMobile ? handleClose : undefined} title="Users" to="/users" icon={<FitnessCenterIcon />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Dashboard" to="/" icon={<Icon name={"home"} />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Programs" to="/programs" icon={<Icon name={"work"} />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Exercises" to="/exercises" icon={<Icon name={"fitness"} />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Workouts" to="/workouts" icon={<Icon name={"workouts"} />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Users" to="/users" icon={<Icon name={"people"} />} selected={selected} setSelected={setSelected} />
                 </Box>
               </Menu>
             </Box>
+            <Box mb={20}>
 
             <Menu>
               <Box paddingLeft={!open && !isMobile ? "5%" : undefined}>
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Settings" to="/settings" icon={<SettingsIcon />} selected={selected} setSelected={setSelected} />
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Help & Support" to="/support" icon={<HelpIcon />} selected={selected} setSelected={setSelected} />
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Logout" to="/login" icon={<LogoutIcon />} selected={selected} setSelected={setSelected} />
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Settings" to="/settings" icon={<Icon name={"settings"} />} selected={selected} setSelected={setSelected} />
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Help & Support" to="/support" icon={<Icon name={"help"} />} selected={selected} setSelected={setSelected} />
+                <Item onItemClick={isMobile ? handleClose : undefined} title="Logout" to="/login" icon={<Icon name={"logout"} />} selected={selected} setSelected={setSelected} />
               </Box>
             </Menu>
+            </Box>
           </Box>
         </ProSidebar>
       </Box>

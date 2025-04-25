@@ -1,33 +1,38 @@
 import React from "react";
 import CustomPaper from "@components/CustomPaper";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import SubHeader from "../../components/SubHeader";
-import SubSubHeader from "../../components/SubSubHeader";
 
-const ProgramTile = ({ id, name, description, splits, navigate }) => {
+const ProgramTile = ({ id, name, colors, description, splits, setActive, isActive }) => {
   return (
-
     <CustomPaper sx={{
       padding: "10px",
       flex: "1 1 400px",
       cursor: "pointer",
-      "&:hover": {
-        background: "#123",
-      }
+        background: isActive && colors.base[700],
     }}
-      onClick={() => navigate(`/program/${id}`)}
+      onClick={() => setActive(id)}
     >
       <SubHeader title={name} subtitle={description} />
       <Box
         sx={{
-          m: "10px",
+          px: 4,
         }}
       >
-        {splits.map(({ name, description, id }) => (
-          <Box key={id} p={1}>
-            <SubSubHeader title={name} subtitle={description} />
-          </Box>
-        ))}
+        <ul style={{ paddingLeft: 10, margin: 0 }}>
+          {splits.map(({ name, description, id }) => (
+            <li key={id}>
+              <Box p={1} sx={{ pl: 1 }}>
+                <Typography variant="body1">
+                  {name}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {description}
+                </Typography>
+              </Box>
+            </li>
+          ))}
+        </ul>
       </Box>
     </CustomPaper>
   );

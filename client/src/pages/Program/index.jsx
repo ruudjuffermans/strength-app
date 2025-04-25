@@ -125,7 +125,7 @@ const Program = ({ params, navigate, isAdmin }) => {
           display="flex" flexWrap="wrap" gap="10px"
         >
           {program.splits.map(({ name, description, id }) => (
-            !isAdmin ? <SplitTileAdmin key={id} id={id} name={name} description={description} navigate={navigate} /> : <SplitTile key={id} id={id} name={name} description={description} navigate={navigate} />
+            isAdmin ? <SplitTileAdmin key={id} id={id} name={name} description={description} navigate={navigate} /> : <SplitTile key={id} id={id} name={name} description={description} navigate={navigate} />
           ))}
         </Box>
         {/* {programs.map(({ id, name, description, splits }) => (

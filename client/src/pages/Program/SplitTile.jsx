@@ -30,7 +30,7 @@ const SplitTile = ({ id, name, description, onDeleteSplit, onEditSplit, navigate
     }}>
         <SubHeader title={name} subtitle={description} />
         <Box mt={1} display="flex" flexDirection="column">
-        <TextButton style={{float: "right"}} text={"Do the Workout"} onClick={() => handleCreateWorkout({ splitId: id })} />
+        <TextButton style={{float: "right"}} label={"Do the Workout"} onClick={() => handleCreateWorkout({ splitId: id })} />
         </Box>
           <Box mt={3} display="flex" flexDirection="column" gap={1}>
             

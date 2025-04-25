@@ -8,11 +8,13 @@
         "dev": "nodemon src/server.js",
         "seed-admin": "node src/scripts/createAdminUser.js",
         "seed-base": "node src/scripts/createBaseUser.js",
+        "seed-test": "node src/scripts/createTestUser.js",
         "seed-exercises": "node src/scripts/seedExercises.js",
         "seed-programs": "node src/scripts/seedPrograms.js",
         "seed-splits": "node src/scripts/seedSplits.js",
         "seed-split-exercises": "node src/scripts/seedSplitExercises.js",
-        "clear-data": "node src/scripts/clearData.js"
+        "clear-data": "node src/scripts/clearData.js",
+        "seed-workouts": "node src/scripts/seedWorkouts.js"
     },
     "author": "",
     "license": "ISC",

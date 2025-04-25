@@ -1,22 +1,14 @@
-import { Typography, Box, useTheme, useMediaQuery } from "@mui/material";
-import { getColors } from "../theme";
+import { Typography, Box, useTheme } from "@mui/material";
 
 const Header = ({ title, subtitle }) => {
   const theme = useTheme();
-  const colors = getColors(theme.palette.mode);
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const colors = theme.palette.colors
   return (
-    <Box mb={isMobile ? "12px" : "24px"}>
-      <Typography
-      fontSize={isMobile ? "18px" : "32px"} 
-        variant="h2"
-        fontWeight="bold"
-        mb={isMobile ? 0.5 : 0.5}
-        color={colors.contrast[100]}
-      >
+    <Box mb={6}>
+      <Typography variant="h1" >
         {title}
       </Typography>
-      <Typography fontSize={isMobile ? "14px" : "17px"} fontStyle={'italic'} variant="h3" color={colors.contrast[200]}>
+      <Typography variant="subtitle1" color={colors.contrast[200]}>
         {subtitle}
       </Typography>
     </Box>

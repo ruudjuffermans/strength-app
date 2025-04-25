@@ -26,8 +26,9 @@ CREATE TABLE user_account (
     role user_role_enum DEFAULT 'User',
     status user_status_enum DEFAULT 'Pending',
     created_at TIMESTAMP DEFAULT NOW(),
+    active_program INTEGER,
     approved_at TIMESTAMP,
-    approved_by INTEGER,
+    approved_by INTEGER DEFAULT NULL,
     FOREIGN KEY (approved_by) REFERENCES user_account(id) ON DELETE SET NULL
 );
 
@@ -35,7 +36,9 @@ CREATE TABLE user_account (
 CREATE TABLE program (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    description TEXT
+    description TEXT,
+    created_by INTEGER,
+    FOREIGN KEY (created_by) REFERENCES user_account(id) ON DELETE CASCADE
 );
 
 CREATE TABLE exercise (
@@ -73,8 +76,9 @@ CREATE TABLE workout (
     workout_state workout_state_enum DEFAULT 'Draft',
     created_at TIMESTAMP DEFAULT now(),
     completed_at TIMESTAMP DEFAULT NULL,
-    body_weight DECIMAL(5,2) DEFAULT NULL,
-    notes TEXT
+    created_by INTEGER,
+    notes TEXT,
+    FOREIGN KEY (created_by) REFERENCES user_account(id) ON DELETE CASCADE
 );
 
 CREATE TABLE workout_log (
@@ -89,6 +93,8 @@ CREATE TABLE workout_log (
     weight_used DECIMAL(5,2) DEFAULT NULL,
     updated BOOLEAN DEFAULT FALSE,
     notes TEXT,
+    created_by INTEGER,
+    FOREIGN KEY (created_by) REFERENCES user_account(id) ON DELETE CASCADE,
     FOREIGN KEY (workout_id) REFERENCES workout(id) ON DELETE CASCADE,
     FOREIGN KEY (exercise_id) REFERENCES exercise(id) ON DELETE SET NULL
 );

@@ -1,10 +1,11 @@
 import { useWorkout } from "@hooks/useWorkout";
 import PagePaper from "@components/CustomPaper/Pagepaper";
 import { useState, useEffect } from "react";
-import WorkoutItem from "./WorkoutItem";
+import WorkoutExercise from "./WorkoutExercise";
 import { formatDate } from "../../utils/formatDate";
 import Bubble from "../../components/Bubble";
 import { Box, TextField, Typography } from "@mui/material";
+import CustomButton from "../../components/CustomButton";
 
 const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
   const { workoutId } = params;
@@ -55,23 +56,22 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
   };
 
   const isDraft = workout.workout_state === "Draft";
-  console.log(workout)
 
   return (
     <PagePaper title={workout.program} subtitle={workout.split}>
       <Box
         display="flex"
         flexDirection="row"
-        gap={2}
-        pb={4}
+        pb={6}
       >
         <Box
           display="flex"
           flexDirection="column"
-          gap={2}
+          gap={4}
+          my={4}
           flex={1}>
           <Box>
-            <Typography color="text.secondary" variant="body2" gutterBottom>
+            <Typography color="text.secondary" variant="body2" >
               Status:
             </Typography>
             <Box>
@@ -80,49 +80,77 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
           </Box>
 
           <Box>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="body2" color="text.secondary" >
               Created At
             </Typography>
             <Typography variant="body1">{formatDate(workout.created_at)}</Typography>
           </Box>
-
+          {!isDraft &&
           <Box>
-            <Typography variant="body2" color="text.secondary" gutterBottom>
+            <Typography variant="body2" color="text.secondary">
               Completed At
             </Typography>
             <Typography variant="body1">
               {workout.completed_at ? formatDate(workout.completed_at) : "—"}
             </Typography>
           </Box>
-        </Box>
-        <Box flex={1}>
-          <Typography variant="body2" color="text.secondary" gutterBottom>
-            Notes
-          </Typography>
-          <TextField
-            fullWidth
-            multiline
-            minRows={5}
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            InputProps={{
-              readOnly: !isDraft,
-            }}
-            sx={{
-              backgroundColor: isDraft ? colors.base[500] : "transparent",
-            }}
-          />
+}
+          {!isDraft &&
+            <Box>
+              <Typography variant="body2" color="text.secondary">
+                Notes
+              </Typography>
+              <TextField
+                fullWidth
+                multiline
+                minRows={5}
+                value={notes || ""}
+                onChange={(e) => setNotes(e.target.value)}
+                InputProps={{
+                  readOnly: !isDraft,
+                }}
+                sx={{
+                  backgroundColor: isDraft ? colors.base[500] : "transparent",
+                }}
+              />
+            </Box>
+          }
         </Box>
       </Box>
-      {Object.entries(
-        workout.logs?.reduce((acc, log) => {
-          (acc[log.exercise_order] = acc[log.exercise_order] || []).push(log);
-          return acc;
-        }, {})
-      ).map(([order, logs]) => (
-        <WorkoutItem key={order} isMobile={isMobile} logs={logs} handleInputChange={handleInputChange} inputValues={inputValues} logSet={logSet} />
-      ))}
-      <button onClick={() => handleCompleteWorkout()}>Complete Workout</button>
+      <Box display={"flex"} gap={12} flexDirection={"column"}>
+        {Object.entries(
+          workout.logs?.reduce((acc, log) => {
+            (acc[log.exercise_order] = acc[log.exercise_order] || []).push(log);
+            return acc;
+          }, {})
+        ).map(([order, logs]) => (
+          <WorkoutExercise key={order} logs={logs} handleInputChange={handleInputChange} inputValues={inputValues} logSet={logSet} />
+        ))}
+
+        {isDraft &&
+          <>
+            <Box>
+              <Typography variant="body2" color="text.secondary">
+                Notes
+              </Typography>
+              <TextField
+                fullWidth
+                multiline
+                minRows={5}
+                value={notes || ""}
+                onChange={(e) => setNotes(e.target.value)}
+                InputProps={{
+                  readOnly: !isDraft,
+                }}
+                sx={{
+                  backgroundColor: isDraft ? colors.base[500] : "transparent",
+                }}
+              />
+            </Box>
+            <CustomButton label={"Complete workout"} onClick={() => handleCompleteWorkout()}>Complete Workout</CustomButton>
+          </>
+        }
+      </Box>
     </PagePaper>
   );
 };

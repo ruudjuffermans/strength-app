@@ -17,7 +17,7 @@ import CustomDropdown from "@components/DropDown";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useExercises } from "@hooks/useExercises";
 import { useSplit } from '../../hooks/useSplit';
-import { DeleteOutline, DragIndicator } from '@mui/icons-material';
+import Icon from "@components/Icon"
 import SubHeader from '@components/SubHeader';
 import TextButton from '@components/TextButton';
 
@@ -82,8 +82,8 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
     }}>
       <SubHeader title={name} subtitle={description} />
       <Box mt={1} display="flex" flexDirection="column">
-        <TextButton style={{ float: "right" }} text={"Do the Workout"} onClick={() => handleCreateWorkout({ splitId: id })} />
-        <TextButton style={{ float: "right" }} text={"Add Exercise"} onClick={() => {
+        {/* <TextButton style={{ float: "right" }} label={"Do the Workout"} onClick={() => handleCreateWorkout({ splitId: id })} /> */}
+        <TextButton style={{ float: "right" }} label={"Add Exercise"} onClick={() => {
           setDialogOpen(true);
           setAnchorEl(null);
         }} />
@@ -114,7 +114,7 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
                       >
                         <Box display="flex" alignItems="center" gap={1}>
                           <IconButton size={"small"} sx={{ opacity: 0.5 }} {...provided.dragHandleProps}>
-                            <DragIndicator />
+                            <Icon name={"drag"} />
                           </IconButton>
 
                           <Box>
@@ -127,7 +127,7 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
                         </Box>
 
                         <IconButton size={"small"} sx={{ opacity: 0.5 }} onClick={() => deleteExercise({ exerciseSplitId: exercise.id })}>
-                          <DeleteOutline />
+                          <Icon size={"small"} name={"delete"}/>
                         </IconButton>
                       </CustomPaper>
                     )}

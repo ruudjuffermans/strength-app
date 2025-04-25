@@ -16,7 +16,7 @@ import {
   Button,
 } from "@mui/material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Add, DeleteOutline } from "@mui/icons-material";
+import Icon from "@components/Icon";
 
 import CustomButton from "@components/CustomButton";
 import { useExercises } from "@hooks/useExercises";
@@ -110,7 +110,7 @@ const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
                           </Typography>
                         </Box>
                         <IconButton onClick={() => deleteExercise({ exerciseSplitId: exercise.id })}>
-                          <DeleteOutline />
+                          <Icon name={"delete"} />
                         </IconButton>
                       </CustomPaper>
                     )}
@@ -139,7 +139,7 @@ const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
               setAnchorEl(null);
             }}
           >
-            <ListItemIcon><Add fontSize="small" /></ListItemIcon>
+            <ListItemIcon><Icon name={"add"} fontSize="small" /></ListItemIcon>
             <ListItemText primary="Add Exercise" />
           </MenuItem>
         </Menu>

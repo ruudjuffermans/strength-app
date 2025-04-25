@@ -4,21 +4,16 @@ import Header from '@components/Header';
 import { useTheme } from '@mui/material/styles';
 import { Box, useMediaQuery } from '@mui/material';
 
-const PagePaper = ({ children, title, subtitle, PageButton }) => {
+const PagePaper = ({ children, title, subtitle }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery("(max-width:600px)");
-  
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <Box m={isMobile ? "6px" : "18px"}>
-      <CustomPaper sx={{ minHeight: isMobile ? "calc(100vh - 80px)" : "calc(100vh - 100px)", padding: isMobile ? "12px" : "18px" }}>
-        <Box display="flex" justifyContent="space-between">
-          <Header title={title} subtitle={subtitle} />
-          <Box>
-            {PageButton}
-          </Box>
-        </Box>
-      {children}
-    </CustomPaper>
+    <Box m={isMobile ? "12px" : "18px"} pb={isMobile && "48px"}>
+      <CustomPaper sx={{ display: isMobile && "contents", minHeight: "calc(100vh - 80px)", padding: "18px" }}>
+        <Header title={title} subtitle={subtitle} />
+        {children}
+      </CustomPaper>
     </Box>
   );
 };

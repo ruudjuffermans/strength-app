@@ -50,7 +50,7 @@ async function getUserFromCookie(req) {
     const decoded = jwt.verify(token, JWT_SECRET);
 
     const result = await pool.query(
-      `SELECT id, email, full_name, role FROM user_account WHERE id = $1`,
+      `SELECT id, email, full_name, role, created_at, active_program, approved_at, approved_by  FROM user_account WHERE id = $1`,
       [decoded.userId]
     );
 

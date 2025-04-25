@@ -6,9 +6,18 @@ async function seedPrograms() {
         await client.query('BEGIN');
 
         await client.query(`
-            INSERT INTO program (id, name, description)
-            VALUES (1, 'Main Program', 'This is the Main Program')
-            ON CONFLICT DO NOTHING;
+            INSERT INTO program (id, name, description, created_by)
+            VALUES (1, 'Main Program', 'This is the Main Program', 2);
+        `);
+
+        await client.query(`
+            INSERT INTO program (id, name, description, created_by)
+            VALUES (2, 'Second Program', 'This is the Second Program', 2);
+        `);
+
+        await client.query(`
+            INSERT INTO program (id, name, description, created_by)
+            VALUES (3, 'Third Program', 'This is the Second Program', 3);
         `);
 
         // await client.query(`
@@ -46,7 +55,7 @@ async function seedPrograms() {
 
     } finally {
         client.release();
-
+        pool.end();
     }
 }
 

@@ -11,7 +11,7 @@ import _ from "lodash";
 
 const CustomButton = React.forwardRef((props, ref) => {
     const {
-        id, onClick, disabled, label, className, to, Icon, tooltip,
+        id, onClick, disabled, label, className, to, Icon, tooltip, type,
         outlined, text, positive, negative, disableAutoFocus = false
     } = props;
 
@@ -23,17 +23,24 @@ const CustomButton = React.forwardRef((props, ref) => {
         throw new Error("Button can either behave as clickable button or as link, but not both!")
     }
 
+    const variant = React.useMemo(() => {
+        if (outlined) return "outlined";
+        if (text) return "text";
+        return "contained";
+    }, [outlined, text]);
+
     const navigate = useNavigate();
     const button = (
         <Button
             id={ id }
             ref={ ref }
-            variant={ (outlined && "outlined") ?? (text && "text") ?? "contained" }
+            variant={variant}
             color='secondary'
             startIcon={ Icon ? <Icon fontSize='large'/> : undefined }
             className={ clsx("action-button", className, positive && 'positive', negative && 'negative') }
             onClick={ runWithoutPropagation(to ? () => navigate(to) : onClick) }
             disabled={ disabled }
+            type={ type }
             disableRipple
             autoFocus={ !disableAutoFocus }
         >
@@ -54,4 +61,4 @@ const CustomButton = React.forwardRef((props, ref) => {
     );
 });
 
-export default CustomButton
+export default React.memo(CustomButton);

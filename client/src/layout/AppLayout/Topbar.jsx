@@ -6,55 +6,47 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useContext } from "react";
-import CustomPaper from "@components/CustomPaper";
-import { ColorModeContext, getColors } from "@theme";
-import {
-  LightModeIcon,
-  DarkModeIcon,
-  NotificationsIcon,
-  SettingsIcon,
-  PersonIcon,
-  SearchIcon,
-  MenuIcon,
-} from "@icons";
+import { ColorModeContext  } from "@theme";
+import Icon from "@components/Icon";
+import useResponsive from "../../hooks/useResponsive";
 
 const Topbar = ({ open, setOpen }) => {
   const theme = useTheme();
-  const colors = getColors(theme.palette.mode);
+  const colors = theme.palette.colors;
   const colorMode = useContext(ColorModeContext);
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const {isMobile} = useResponsive();
 
   const content = (
-    <Box display="flex" justifyContent="space-between" alignItems="center" p={1}>
+    <Box display="flex" backgroundColor={ isMobile && colors.base[400]} justifyContent="space-between" alignItems="center" p={2}>
       {isMobile ? (
         <IconButton onClick={() => setOpen(!open)}>
-          <MenuIcon />
+          <Icon size={"large"} name={"menu"} />
         </IconButton>
       ) : (
         <>
           <Box
             display="flex"
-            backgroundColor={colors.base[300]}
-            borderRadius="3px"
+            backgroundColor={colors.base[200]} 
+            borderRadius={2}
           >
-            <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search" />
+            <InputBase sx={{ p: 2, pl:4,  flex: 1 }} placeholder="Search" />
             <IconButton type="button" sx={{ p: 1 }}>
-              <SearchIcon sx={{ color: colors.base[900] }} />
+              <Icon name={"search"} sx={{ color: colors.base[900] }} />
             </IconButton>
           </Box>
 
           <Box display="flex">
             <IconButton onClick={colorMode.toggleColorMode}>
-              {theme.palette.mode === "dark" ? <DarkModeIcon /> : <LightModeIcon />}
+              {theme.palette.mode === "dark" ? <Icon name={"dark"} /> : <Icon name={'light'} />}
             </IconButton>
             <IconButton>
-              <NotificationsIcon />
+              <Icon name="user" />
             </IconButton>
             <IconButton>
-              <SettingsIcon />
+              <Icon />
             </IconButton>
             <IconButton>
-              <PersonIcon />
+              <Icon />
             </IconButton>
           </Box>
         </>
@@ -62,10 +54,20 @@ const Topbar = ({ open, setOpen }) => {
     </Box>
   );
 
-  return (
-    <Box m={isMobile ? "6px" : "10px"}>
-      {isMobile ? <CustomPaper>{content}</CustomPaper> : content}
+  return isMobile ? (
+    <Box
+      sx={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+        backgroundColor: theme.palette.background.default,
+        mb: "12px",
+      }}
+    >
+      {content}
     </Box>
+  ) : (
+    <Box m="10px">{content}</Box>
   );
 };
 

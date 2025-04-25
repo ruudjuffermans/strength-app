@@ -3,14 +3,13 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 const Support = ({colors, theme, user, navigate, isMobile, params}) => {
 
     return (
       <>
         <Accordion sx={{margin: "15px 0"}} >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary expandIcon={<Icon name={"more"} />}>
             <Typography color={colors.primary[500]} variant="h5">
               An Important Question
             </Typography>
@@ -23,7 +22,7 @@ const Support = ({colors, theme, user, navigate, isMobile, params}) => {
           </AccordionDetails>
         </Accordion>
         <Accordion sx={{margin: "15px 0"}} >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary expandIcon={<Icon name={"more"} />}>
             <Typography color={colors.primary[500]} variant="h5">
               Another Important Question
             </Typography>
@@ -36,7 +35,7 @@ const Support = ({colors, theme, user, navigate, isMobile, params}) => {
           </AccordionDetails>
         </Accordion>
         <Accordion sx={{margin: "15px 0"}} >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary expandIcon={<Icon name={"more"} />}>
             <Typography color={colors.primary[500]} variant="h5">
               Your Favorite Question
             </Typography>
@@ -49,7 +48,7 @@ const Support = ({colors, theme, user, navigate, isMobile, params}) => {
           </AccordionDetails>
         </Accordion>
         <Accordion sx={{margin: "15px 0"}} >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary expandIcon={<Icon name={"more"} />}>
             <Typography color={colors.primary[500]} variant="h5">
               Some Random Question
             </Typography>
@@ -62,7 +61,7 @@ const Support = ({colors, theme, user, navigate, isMobile, params}) => {
           </AccordionDetails>
         </Accordion>
         <Accordion sx={{margin: "15px 0"}} >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <AccordionSummary expandIcon={<Icon name={"more"} />}>
             <Typography color={colors.primary[500]} variant="h5">
               The Final Question
             </Typography>

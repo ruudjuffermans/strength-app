@@ -1,6 +1,6 @@
 import React from "react";
 import { MenuItem, FormControl, Select, InputLabel, Typography, Box, IconButton } from "@mui/material";
-import {ClearIcon} from "@icons";
+import Icon from "@components/Icon";
 
 export default function CustomDropdown({
     label,
@@ -37,7 +37,7 @@ export default function CustomDropdown({
                             <Typography>{selected}</Typography>
                             {clearable && (
                                 <IconButton size="small" onClick={handleClear} sx={{ ml: 1 }}>
-                                    <ClearIcon fontSize="small" />
+                                    <Icon name={"clear"} fontSize="small" />
                                 </IconButton>
                             )}
                         </Box>

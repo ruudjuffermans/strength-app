@@ -1,13 +1,16 @@
 const { workoutHandler } = require("../handlers");
 
 const getAllWorkouts = async (req, res) => {
-  const workouts = await workoutHandler.getAllWorkouts();
+console.log(req.user.userId)
+  const workouts = await workoutHandler.getAllWorkouts(req.user.userId);
   res.status(200).json(workouts);
 };
 
 const createWorkout = async (req, res) => {
   const { splitId } = req.body;
-    const newWorkout = await workoutHandler.createWorkoutFromSplit(splitId);
+
+  console.log(req.user)
+    const newWorkout = await workoutHandler.createWorkoutFromSplit(splitId, req.user.userId);
     res.status(201).json(newWorkout);
 };
 
