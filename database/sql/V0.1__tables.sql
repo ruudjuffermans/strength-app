@@ -1,3 +1,5 @@
+SET search_path TO strength_app;
+
 CREATE TYPE muscle_group_enum AS ENUM (
     'Chest', 'Triceps', 'Back', 'Biceps', 'Calves', 'Quads', 'Glutes', 'Forearms', 'Hamstrings', 'Shoulders', 'Abs'
 );

@@ -1,0 +1,1 @@
+sudo -u postgres psql -f ./create_roles_and_schemas.sql
