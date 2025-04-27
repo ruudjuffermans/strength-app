@@ -1,7 +1,6 @@
 const pool = require("../db");
 
 async function getAllPrograms(userId) {
-  console.log(userId)
   const result = await pool.query(`
     SELECT 
       p.id AS program_id, 

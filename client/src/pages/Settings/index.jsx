@@ -48,12 +48,8 @@ const Settings = ({colors, theme, user, navigate, isMobile, params}) => {
             sx={{ mb: 2 }}
           />
           <Box display="flex" justifyContent="flex-end" gap={2}>
-            <CustomButton variant="outlined" color="secondary" onClick={handleClose}>
-              Cancel
-            </CustomButton>
-            <CustomButton variant="contained" color="primary" onClick={handleClose}>
-              Save
-            </CustomButton>
+            <CustomButton variant="outlined" label={"Cancel"} color="secondary" onClick={handleClose} />
+            <CustomButton variant="contained" label={"Save"} color="primary" onClick={handleClose} />
           </Box>
         </CustomPaper>
         </Box>

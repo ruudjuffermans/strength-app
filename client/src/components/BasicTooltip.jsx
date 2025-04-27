@@ -1,10 +1,6 @@
 import { Tooltip } from "@mui/material";
 import React from "react";
 
-
-/**
- * Anchor standard tooltip around the children elements.
- */
 function BasicTooltip(props) {
     const {title, placement, children, ...otherProps} = props;
 

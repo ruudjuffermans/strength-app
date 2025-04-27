@@ -9,7 +9,7 @@ const pool = new Pool({
   password: process.env.PG_PASSWORD,
   database: process.env.PG_DATABASE,
   port: process.env.PG_PORT,
-  host: process.env.DOCKER_ENABLED ? "postgres" : "localhost"
+  host: process.env.PG_HOST
 });
 
 

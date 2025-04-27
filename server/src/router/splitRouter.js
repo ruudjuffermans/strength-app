@@ -1,31 +1,15 @@
+const express = require('express');
 const { splitController } = require("../controllers");
 const { asyncHandler } = require("../utils/asyncHandler");
 
-function splitRouter(app) {
-    app.get(
-        "/split/:id",
-        asyncHandler(splitController.getSplitById)
-    );
+const router = express.Router();
 
-    app.post(
-        "/exercise-split/:splitId",
-        asyncHandler(splitController.createSplitExercise)
-    );
+router.get("/:splitId", asyncHandler(splitController.getSplitById));
+router.put("/:splitId/reorder/", asyncHandler(splitController.reorderSplitExercises));
 
-    app.put(
-        "/exercise-split/:exerciseSplitId",
-        asyncHandler(splitController.updateSplitExercise)
-    );
+router.post("/:splitId/add", asyncHandler(splitController.createSplitExercise));
+router.put("/exercise/:exerciseSplitId", asyncHandler(splitController.updateSplitExercise));
+router.delete("/exercise/:exerciseSplitId", asyncHandler(splitController.deleteSplitExercise));
 
-    app.delete(
-        "/exercise-split/:exerciseSplitId",
-        asyncHandler(splitController.deleteSplitExercise)
-    );
 
-    app.put(
-        "/exercise-split/reorder/:splitId",
-        asyncHandler(splitController.reorderSplitExercises)
-    );
-}
-
-module.exports = splitRouter;
+module.exports = router;

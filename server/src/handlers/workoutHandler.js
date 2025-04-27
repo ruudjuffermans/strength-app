@@ -118,7 +118,7 @@ async function getWorkoutById(workoutId) {
 }
 
 async function getAllWorkouts(userId) {
-    const result = await pool.query(`SELECT * FROM workout WHERE created_by = $1 `, [userId]);
+    const result = await pool.query(`SELECT * FROM workout WHERE created_by IN (2, $1) `, [userId]);
     return result.rows;
 }
 

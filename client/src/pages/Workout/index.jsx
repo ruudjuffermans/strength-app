@@ -8,6 +8,15 @@ import { Box, TextField, Typography } from "@mui/material";
 import CustomButton from "../../components/CustomButton";
 
 const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
+
+  useEffect(() => {
+    const content = document.querySelector('.content');
+    if (content) {
+      content.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, []);
+  
+
   const { workoutId } = params;
   const { workout, completeWorkout, logSet, updateLoggedSet } =
     useWorkout(workoutId);
@@ -27,6 +36,7 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
       setInputValues(initialValues);
     }
   }, [workout.logs]);
+
 
   const [notes, setNotes] = useState("");
 

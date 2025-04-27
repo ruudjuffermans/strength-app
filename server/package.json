@@ -14,6 +14,7 @@
         "seed-splits": "node src/scripts/seedSplits.js",
         "seed-split-exercises": "node src/scripts/seedSplitExercises.js",
         "clear-data": "node src/scripts/clearData.js",
+        "clear-users": "node src/scripts/clearUsers.js",
         "seed-workouts": "node src/scripts/seedWorkouts.js"
     },
     "author": "",

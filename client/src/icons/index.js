@@ -3,6 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import MoreIcon from '@mui/icons-material/MoreVertOutlined';
 import HomeIcon from '@mui/icons-material/HomeOutlined';
+import StarIcon from '@mui/icons-material/StarOutlined';
 import HelpIcon from '@mui/icons-material/HelpOutlineOutlined';
 import LinkIcon from '@mui/icons-material/Link';
 import ClearIcon from '@mui/icons-material/ClearAllOutlined';
@@ -25,6 +26,9 @@ import RemoveCircleOutlineTwoToneIcon from '@mui/icons-material/RemoveCircleOutl
 import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
 import PublishTwoToneIcon from '@mui/icons-material/PublishTwoTone';
 import PersonTwoToneIcon from '@mui/icons-material/PersonTwoTone';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 export default {
   edit: EditIcon,
@@ -51,8 +55,12 @@ export default {
   drag: DragIndicatorTwoToneIcon,
   options: MoreVertTwoToneIcon,
   disable: PauseCircleOutlineTwoToneIcon,
-  delete: RemoveCircleOutlineTwoToneIcon,
   approve:CheckCircleOutlineTwoToneIcon,
   submit: PublishTwoToneIcon,
-  user: PersonTwoToneIcon
+  user: PersonTwoToneIcon,
+  star: StarIcon,
+  go: KeyboardDoubleArrowRightIcon,
+  editTitle: EditNoteIcon,
+  editList: FormatListBulletedIcon
+
 };

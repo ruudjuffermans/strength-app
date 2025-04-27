@@ -5,7 +5,6 @@ export const useWorkouts = () => {
     const setSuccess = useSuccessSnackbar();
     const setError = useErrorSnackbar();
 
-    // ✅ Fetch the workout in "Draft" mode
     const workouts = useGetQuery(["workouts"], `/workout`);
 
     const addWorkout = usePostMutation(["workouts"], "/workouts", ["workouts"]);

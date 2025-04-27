@@ -5,13 +5,10 @@ import Sidebar from "@layout/AppLayout/Sidebar";
 import Topbar from "@layout/AppLayout/Topbar";
 import ModuleBoundary from "../../components/ModuleBoundary";
 import { useAuth } from "@context/AuthContext";
-import { useMediaQuery, useTheme } from "@mui/material";
 
 const AppLayout = () => {
   const [open, setOpen] = useState(false);
   const { user, loading } = useAuth();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   if (loading) return <div>Loading...</div>;
   if (!user) return <Navigate to="/login" replace />;

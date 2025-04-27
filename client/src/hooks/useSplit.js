@@ -10,14 +10,12 @@ export const useSplit = (splitId) => {
     throw new Error("useSplit requires a splitId to be provided.");
   }
 
-  const splitExercises = useGetQuery(["exerciseSplit", splitId], `/split/${splitId}`);
-
-  const addExercise = usePostMutation(["exerciseSplit", splitId], () => `/exercise-split/${splitId}`, ["split", splitId]);
-  const editExercise = usePutMutation(["exerciseSplit", splitId], ({ exerciseSplitId }) => `/exercise-split/${exerciseSplitId}`, ["exerciseSplit", splitId]);
-  const deleteExercise = useDeleteMutation(["exerciseSplit", splitId], ({ exerciseSplitId }) => `/exercise-split/${exerciseSplitId}`, ["exerciseSplit", splitId]);
+  const split = useGetQuery(["split", splitId], `/split/${splitId}`);
+  const addExercise = usePostMutation(["split", splitId], () => `/split/${splitId}/add`, ["split", splitId]);
+  const editExercise = usePutMutation(["split", splitId], ({ exerciseId }) => `/split/exercise/${exerciseId}`, ["split", splitId]);
+  const deleteExercise = useDeleteMutation(["split", splitId], ({ exerciseId }) => `/split/exercise/${exerciseId}`, ["split", splitId]);
   const createWorkout = usePostMutation(["workout", splitId], () => `/workout/create`, ["workout", splitId]);
-
-  const reorderExercises = usePutMutation(["exerciseSplit", splitId], () => `/exercise-split/reorder/${splitId}`, ["exerciseSplit", splitId]);
+  const reorderExercises = usePutMutation(["split", splitId], () => `/split/${splitId}/reorder/`, ["split", splitId]);
 
   const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
     try {
@@ -25,13 +23,12 @@ export const useSplit = (splitId) => {
       setSuccess(successMessage);
       return res;
     } catch (error) {
-      console.error(error);
       setError(errorMessage);
     }
   };
 
   return {
-    splitExercises,
+    split,
     addExercise: (data) => handleMutation(addExercise, data, "Exercise added successfully!", "Failed to add Exercise."),
     editExercise: (data) => handleMutation(editExercise, data, "Exercise updated successfully!", "Failed to update Exercise."),
     deleteExercise: (data) => handleMutation(deleteExercise, data, "Exercise deleted successfully!", "Failed to delete Exercise."),

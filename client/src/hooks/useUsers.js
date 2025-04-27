@@ -24,7 +24,6 @@ import {
         setSuccess(successMessage);
         return res;
       } catch (error) {
-        console.error(error);
         setError(errorMessage);
       }
     };

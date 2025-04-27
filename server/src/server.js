@@ -7,16 +7,15 @@ const authRouter = require('./router/authRouter.js');
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET || "your_default_secret_key";
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.SERVER_PORT || 5001;
 
 const app = express()
-
-
 
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true,
   }));
+
 app.use(express.json())
 
 app.get('/health', (req, res) => {
@@ -25,7 +24,7 @@ app.get('/health', (req, res) => {
 })
 app.use(cookieParser());
 
-authRouter(app);
+app.use("/auth", authRouter);
 
 app.use((req, res, next) => {
     const token = req.cookies.token;
@@ -43,6 +42,10 @@ app.use((req, res, next) => {
 });
 
 router(app);
+app.use((req, res, next) => {
+    console.log("404")
+    next()
+});
 
 app.use(errorHandler);
 

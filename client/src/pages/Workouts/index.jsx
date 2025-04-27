@@ -6,17 +6,30 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Chip,
 } from "@mui/material";
 import { useWorkouts } from "@hooks/useWorkouts";
 import Icon from "@components/Icon"
 
-const Workouts = ({ navigate, isAdmin, user, isMobile }) => {
+const Workouts = ({ navigate, isAdmin, colors, isMobile }) => {
   const { workouts, deleteWorkout } = useWorkouts();
+  console.log(workouts)
   const columns = [
     ...(!isMobile ? [{ field: "id", headerName: "ID", flex: 0.1 }] : []),
     { field: "program", headerName: "Program", flex: 1 },
     { field: "split", headerName: "Split", flex: 1 },
-    { field: "workout_state", headerName: "State", flex: 1 },
+    {
+      field: "workout_state",
+      headerName: "State",
+      flex: 1,
+      renderCell: (params) => (
+        <Chip
+          label={params.value}
+          color={params.value === "Completed" ? "success" : params.value === "Draft" ? "info" : "warning"}
+          size="small"
+        />
+      ),
+    },
     { field: "created_at", headerName: "Created", flex: 1 },
     ...(!isMobile ? [{ field: "completed_at", headerName: "Completed", flex: 1 }] : []),
     ...(isAdmin ? [{

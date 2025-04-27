@@ -16,55 +16,60 @@ const RepsInput = ({ handleInputChange, inputValues, id, isUpdated, submitButton
 
   return (
     <>
-      <Box display={"flex"} justifyContent={"flex-end"}>
-        <Typography
-          fontStyle="italic"
-          fontWeight={"light"}
-          variant="body2"
-          color={colors.contrast[200]}
-        >
-          sets
-        </Typography>
-      </Box>
-      <Box display={"flex"} gap={1} height={"40px"}>
-        <CustomIconButton
-          sx={{ backgroundColor: colors.contrast[300], borderRadius: 1, height: "40px", width: "40px" }}
-          disabled={isUpdated}
-          onClick={() =>
-            handleInputChange(
-              id,
-              "reps",
-              Math.max(0, (Number(inputValues[id]?.reps) || 0) - 1)
-            )
-          }
-          size="small"
-        >
-          -
-        </CustomIconButton>
-        <CustomIconButton
-          sx={{ backgroundColor: colors.contrast[300], borderRadius: 1, height: "40px", width: "40px" }}
-          disabled={isUpdated}
-          onClick={() =>
-            handleInputChange(
-              id,
-              "reps",
-              (Number(inputValues[id]?.reps) || 0) + 1
-            )
-          }
-          size="small"
-        >
-          +
-        </CustomIconButton>
-        <Box backgroundColor={isUpdated ? colors.base[300] : colors.base[900]} borderRadius={1} alignContent={"center"} flex={1}>
+      <Box display={"flex"}>
+        <Box flex={"auto"} mr={1}>
           <Typography
-            variant="body1"
-            color={colors.contrast[100]}
-            sx={{ mx: 2, minWidth: 24, textAlign: 'center' }}
+            fontStyle="italic"
+            fontWeight={"light"}
+            variant="body2"
+            color={colors.contrast[200]}
           >
-            {inputValues[id]?.reps || 0}
+            sets
           </Typography>
+          <Box backgroundColor={isUpdated ? colors.base[300] : colors.base[900]} borderRadius={1} alignContent={"center"} height={"40px"} flex={1}>
+            <Typography
+              variant="body1"
+              color={colors.contrast[100]}
+              sx={{ mx: 2, minWidth: 24, textAlign: 'center' }}
+            >
+              {inputValues[id]?.reps || 0}
+            </Typography>
+          </Box>
         </Box>
+        <Box display={"flex"} gap={1} height={"40px"} alignSelf={"end"}>
+
+          <CustomIconButton
+            sx={{ backgroundColor: colors.contrast[300], borderRadius: 1, height: "40px", width: "40px" }}
+            disabled={isUpdated}
+            onClick={() =>
+              handleInputChange(
+                id,
+                "reps",
+                Math.max(0, (Number(inputValues[id]?.reps) || 0) - 1)
+              )
+            }
+            size="small"
+          >
+            -
+          </CustomIconButton>
+          <CustomIconButton
+            sx={{ backgroundColor: colors.contrast[300], borderRadius: 1, height: "40px", width: "40px" }}
+            disabled={isUpdated}
+            onClick={() =>
+              handleInputChange(
+                id,
+                "reps",
+                (Number(inputValues[id]?.reps) || 0) + 1
+              )
+            }
+            size="small"
+          >
+            +
+          </CustomIconButton>
+          <Box ml={1}>
           {submitButton}
+          </Box>
+        </Box>
       </Box>
     </>
   )
@@ -121,12 +126,11 @@ const WeightInput = ({ value, onChange, type = "number", setNumber, isUpdated })
 const WorkoutSet = ({ log, logSet, inputValues, handleInputChange }) => {
   const theme = useTheme();
   const colors = theme.palette.colors
-
   const isUpdated = log.updated
 
   const submitButton = (
     <CustomIconButton
-      sx={{ backgroundColor: colors.contrast[300], borderRadius: 1, height: "40px", width: "40px" }}
+      sx={{ backgroundColor: isUpdated ? colors.contrast[400] : colors.contrast[200], borderRadius: 1, height: "40px", width: "40px" }}
       disabled={isUpdated}
       onClick={() =>
         logSet({

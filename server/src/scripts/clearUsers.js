@@ -20,6 +20,7 @@ async function clearUsers() {
     console.error('❌ Error clearing user data:', error);
   } finally {
     client.release();
+    pool.end()
   }
 }
 

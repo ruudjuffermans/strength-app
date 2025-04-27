@@ -24,7 +24,6 @@ export const usePrograms = () => {
             await mutationFn(data);
             setSuccess(successMessage);
         } catch (error) {
-            console.log(error)
             setError(errorMessage);
         }
     };

@@ -11,9 +11,8 @@ import CustomButton from "@components/CustomButton";
 import { usePrograms } from "@hooks/usePrograms";
 import Pagepaper from "@components/CustomPaper/Pagepaper";
 import SplitTile from "./SplitTile";
-import SplitTileAdmin from "./SplitTileAdmin";
 
-const Program = ({ params, navigate, isAdmin }) => {
+const Program = ({ params, navigate, user, isAdmin }) => {
   const {
     programs,
     createProgram,
@@ -45,23 +44,6 @@ const Program = ({ params, navigate, isAdmin }) => {
     description: ""
   });
 
-  // Open Edit Program Dialog
-  const handleEditProgram = (id, name, description) => {
-    setProgramData({ id, name, description });
-    setOpenProgramDialog(true);
-  };
-
-  // Open Add Split Dialog
-  const handleAddSplit = (programId) => {
-    setSplitData({ id: null, programId, name: "", description: "" });
-    setOpenSplitDialog(true);
-  };
-
-  // Open Edit Split Dialog
-  const handleEditSplit = (id, name, description) => {
-    setSplitData({ id, programId: null, name, description });
-    setOpenSplitDialog(true);
-  };
 
   // Handle Input Changes
   const handleInputChange = (event) => {
@@ -91,7 +73,6 @@ const Program = ({ params, navigate, isAdmin }) => {
     }
   };
 
-  // Handle Save Split (Create or Update)
   const handleSaveSplit = ({ colors, theme, user, navigate, isMobile, params }) => {
     if (!splitData.name.trim())
       return setError({ ...error, name: "Split name is required." });
@@ -107,16 +88,6 @@ const Program = ({ params, navigate, isAdmin }) => {
     }
   };
 
-  // // Handle Delete Program
-  // const handleDeleteProgram = (id) => {
-  //   deleteProgram({ programId: id });
-  // };
-
-  // // Handle Delete Split
-  // const handleDeleteSplit = (id, programId) => {
-  //   deleteSplit({ splitId: id, programId });
-  // };
-
 
   return (
     <Pagepaper m={2} title={program.name} subtitle={program.description}>
@@ -125,23 +96,9 @@ const Program = ({ params, navigate, isAdmin }) => {
           display="flex" flexWrap="wrap" gap="10px"
         >
           {program.splits.map(({ name, description, id }) => (
-            isAdmin ? <SplitTileAdmin key={id} id={id} name={name} description={description} navigate={navigate} /> : <SplitTile key={id} id={id} name={name} description={description} navigate={navigate} />
+            <SplitTile key={id} user={user} id={id} name={name} description={description} navigate={navigate} />
           ))}
         </Box>
-        {/* {programs.map(({ id, name, description, splits }) => (
-          <ProgramTile
-            key={id}
-            id={id}
-            name={name}
-            description={description}
-            splits={splits}
-            onEdit={handleEditProgram}
-            onDelete={handleDeleteProgram}
-            onAddSplit={handleAddSplit}
-            onEditSplit={handleEditSplit}
-            onDeleteSplit={handleDeleteSplit}
-          />
-        ))} */}
       </Box>
 
       <Dialog

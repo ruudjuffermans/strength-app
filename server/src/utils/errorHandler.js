@@ -7,14 +7,8 @@ if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir, { recursive: true });
 }
 
-// ✅ Define log file path (inside mounted `/app/logs`)
 const logFilePath = path.join(logDir, "error.log");
 
-/**
- * ✅ Writes error details to the log file **only if the error is unknown**
- * @param {Object} err - The error object
- * @param {Object} req - The request object (optional)
- */
 const logErrorToFile = (err, req) => {
   const { errorCode, errorMessage, isUnknown } = getErrorMessage(err);
 
@@ -40,11 +34,10 @@ ${requestInfo}
   fs.appendFileSync(logFilePath, logEntry, "utf8");
 };
 
-/**
- * ✅ Express Global Error Handler Middleware
- */
 const errorHandler = (err, req, res, next) => {
+  console.log("---------- ERROR HANDLER ---------")
   console.log(err)
+  console.log("---------- ERROR HANDLER ---------")
 
   logErrorToFile(err, req);
 

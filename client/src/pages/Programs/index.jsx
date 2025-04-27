@@ -23,8 +23,6 @@ const Programs = ({ colors, navigate, user }) => {
     deleteSplit,
   } = usePrograms();
 
-  console.log(user)
-
   // State for Add/Edit Program Dialog
   const [openProgramDialog, setOpenProgramDialog] = useState(false);
   const [programData, setProgramData] = useState({
@@ -119,27 +117,23 @@ const Programs = ({ colors, navigate, user }) => {
     deleteSplit({ splitId: id, programId });
   };
 
-  console.log(programs)
   return (
     <>
-      <Box display="flex" flexWrap="wrap" gap="10px">
+      <Box display="flex" flexWrap="wrap" gap={4}>
         {programs.map(({ id, name, description, splits }) => (
           <ProgramTile
             key={id}
             id={id}
-            colors={colors}
-            isActive={user.active_program == id}
             name={name}
-            setActive={handleActivateProgram}
+            colors={colors}
             description={description}
             splits={splits}
-            onEdit={handleEditProgram}
-            onDelete={handleDeleteProgram}
-            onAddSplit={handleAddSplit}
-            onEditSplit={handleEditSplit}
-            onDeleteSplit={handleDeleteSplit}
+            navigate={navigate}
+            setActive={handleActivateProgram}
+            isActive={user.active_program == id}
           />
         ))}
+        <CustomButton label={"Create New Program"} to={"/programs"} />
       </Box>
 
       <Dialog

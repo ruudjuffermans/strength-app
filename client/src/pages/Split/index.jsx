@@ -4,36 +4,34 @@ import {
   FormControl,
   Select,
   MenuItem,
-  IconButton,
   Menu,
   ListItemIcon,
   ListItemText,
-  Typography,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Button,
 } from "@mui/material";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Icon from "@components/Icon";
 
 import CustomButton from "@components/CustomButton";
 import { useExercises } from "@hooks/useExercises";
 import { useSplit } from "@hooks/useSplit";
 import CustomDropdown from "@components/DropDown";
-import CustomPaper from "@components/CustomPaper";
+import SplitTileAdmin from "./SplitTileAdmin";
+import SplitTile from "./SplitTile";
+import PagePaper from "../../components/CustomPaper/Pagepaper";
 
-const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
+const Split = ({ colors, theme, user, navigate, isMobile, params, isAdmin }) => {
   const { splitId } = params;
   const { exercises } = useExercises();
   const {
-    splitExercises,
+    split,
     addExercise,
-    createWorkout,
-    deleteExercise,
-    reorderExercises
   } = useSplit(splitId);
+
+  console.log(split)
 
   const [selectedExercise, setSelectedExercise] = useState("");
   const [reps, setReps] = useState("");
@@ -62,76 +60,18 @@ const Split = ({ colors, theme, user, navigate, isMobile, params }) => {
     setAnchorEl(null);
   };
 
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-  
-    const reordered = Array.from(splitExercises.exercises);
-    const [moved] = reordered.splice(result.source.index, 1);
-    reordered.splice(result.destination.index, 0, moved);
-  
-    const payload = reordered.map((item, index) => ({
-      id: item.id,         // this should be the splitExerciseId
-      order: index + 1     // 1-based order
-    }));
-  
-    reorderExercises(payload);
-  };
   return (
     <>
-      <Box mt={3} display="flex" flexDirection="column" gap={2}>
-        <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="exercise-list">
-            {(provided) => (
-              <Box
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                display="flex"
-                flexDirection="column"
-                gap={2}
-              >
-                {(splitExercises.exercises || []).map((exercise, index) => (
-                  <Draggable key={exercise.id} draggableId={exercise.id.toString()} index={index}>
-                    {(provided) => (
-                      <CustomPaper
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        sx={{
-                          p: 2,
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Box>
-                          <Typography variant="subtitle1">{exercise.name}</Typography>
-                          <Typography variant="body2">
-                            Sets: {exercise.sets} • Reps: {exercise.reps} • Order: {exercise.order} • id: {exercise.id}
-                          </Typography>
-                        </Box>
-                        <IconButton onClick={() => deleteExercise({ exerciseSplitId: exercise.id })}>
-                          <Icon name={"delete"} />
-                        </IconButton>
-                      </CustomPaper>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </Box>
-            )}
-          </Droppable>
-        </DragDropContext>
+
+      <Box display="flex" flexDirection="column" gap={2}>
+
+        <SplitTileAdmin key={splitId} id={splitId} name={split.name} description={split.description} navigate={navigate} />
+
       </Box>
 
-      {/* Add Exercise Button */}
+
       <Box display="flex" justifyContent="flex-end" mt={2}>
-        <CustomButton
-          variant="outlined"
-          color="primary"
-          onClick={(e) => setAnchorEl(e.currentTarget)}
-          icon={Add}
-          label="Add Exercise"
-        />
+
         <Menu anchorEl={anchorEl} open={openMenu} onClose={() => setAnchorEl(null)}>
           <MenuItem
             onClick={() => {

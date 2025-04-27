@@ -1,52 +1,18 @@
+const express = require('express');
 const { programController } = require("../controllers");
 const { asyncHandler } = require("../utils/asyncHandler");
 
-function exerciseRouter(app) {
+const router = express.Router();
 
-    app.get(
-        "/program/:id",
-        asyncHandler(programController.getProgramById)
-    );
+router.get("/:id", asyncHandler(programController.getProgramById));
+router.post("/:id/activate", asyncHandler(programController.activateProgram));
+router.get("/", asyncHandler(programController.getAllPrograms));
+router.put("/:id", asyncHandler(programController.updateProgram));
+router.post("/", asyncHandler(programController.createProgram));
+router.delete("/:id", asyncHandler(programController.deleteProgram));
 
-    app.post(
-        "/program/:id/activate",
-        asyncHandler(programController.activateProgram)
-    );
+router.post("/split/:programId", asyncHandler(programController.addSplit));
+router.put("/split/:splitId", asyncHandler(programController.editSplit));
+router.delete("/split/:splitId", asyncHandler(programController.removeSplit));
 
-    app.get(
-        "/program",
-        asyncHandler(programController.getAllPrograms)
-    );
-
-    app.put(
-        "/program/:id",
-        asyncHandler(programController.updateProgram)
-    );
-
-    app.post(
-        "/program",
-        asyncHandler(programController.createProgram)
-    );
-
-    app.delete(
-        "/program/:id",
-        asyncHandler(programController.deleteProgram)
-    );
-
-    app.post(
-        "/split/:programId",
-        asyncHandler(programController.addSplit)
-    );
-
-    app.put(
-        "/split/:splitId",
-        asyncHandler(programController.editSplit)
-    );
-
-    app.delete(
-        "/split/:splitId",
-        asyncHandler(programController.removeSplit)
-    );
-}
-
-module.exports = exerciseRouter;
+module.exports = router;

@@ -7,7 +7,6 @@ export const useExercises = () => {
 
     const exercises = useGetQuery(["exercises"], "/exercise");
   
-
     const addExercise = usePostMutation(["exercises"], "/exercise", ["exercises"]);
     const updateExercise = usePutMutation(["exercises"], ({ id }) => `/exercise/${id}`, ["exercises"]);
     const deleteExercise = useDeleteMutation(["exercises"], ({ id }) => `/exercise/${id}`, ["exercises"]);

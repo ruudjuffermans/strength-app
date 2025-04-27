@@ -5,6 +5,7 @@ import { useExercises } from "@hooks/useExercises";
 import TextButton from "@components/TextButton";
 import Icon from "@components/Icon";
 import CustomIconButton from "../../components/IconButton";
+import OptionsMenu from "../../components/OptionsMenu";
 
 const muscleGroups = ["Chest", "Back", "Legs", "Shoulders", "Arms", "Core"];
 const equipmentTypes = ["Bodyweight", "Dumbbell", "Barbell", "Machine", "Cable", "Kettlebell"];
@@ -48,65 +49,26 @@ const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params })
       headerName: "",
       flex: 0.1,
       renderCell: (params) => {
-        const [anchorEl, setAnchorEl] = useState(null);
-        const open = Boolean(anchorEl);
-
-        const handleMenuOpen = (event) => {
-          setAnchorEl(event.currentTarget);
-        };
-
-        const handleMenuClose = () => {
-          setAnchorEl(null);
-        };
-
         const handleDelete = () => {
-          deleteExercise({ id: params.row.id })
-          handleMenuClose();
+          deleteExercise({ id: params.row.id });
         };
-
+    
         const handleView = () => {
-          console.log("view exercise")
-          handleMenuClose();
+          console.log("View exercise", params.row.id);
         };
-
-        return (
-          <>
-            <CustomIconButton size={"small"} onClick={handleMenuOpen}>
-              <Icon size={"small"} name={"options"} />
-            </CustomIconButton>
-            <Menu
-
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleMenuClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              transformOrigin={{ vertical: "top", horizontal: "right" }}
-            >
-              <MenuItem onClick={handleDelete}>
-                <ListItemIcon>
-                  <Icon name={"look"} fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>View</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={handleView}>
-                <ListItemIcon>
-                  <Icon name={"approve"} fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Edit</ListItemText>
-              </MenuItem>
-              <MenuItem onClick={handleDelete}>
-                <ListItemIcon>
-
-                  <Icon name={"disable"} fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Delete</ListItemText>
-              </MenuItem>
-
-            </Menu>
-          </>
-        );
+    
+        const handleEdit = () => {
+          console.log("Edit exercise", params.row.id);
+        };
+    
+        const options = [
+          { label: "View", icon: "look", onClick: handleView },
+          { label: "Edit", icon: "approve", onClick: handleEdit },
+          { label: "Delete", icon: "disable", onClick: handleDelete },
+        ];
+    
+        return <OptionsMenu options={options} />;
       },
-
     }] : []),
   ];
 

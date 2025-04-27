@@ -58,7 +58,6 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
           open={open}
           onClick={handleClose}
           sx={{
-            zIndex: 1200,
             bgcolor:
               theme.palette.mode === "light"
                 ? "rgba(0, 0, 0, 0.3)"
@@ -78,7 +77,7 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
           width: isMobile ? "250px" : "auto",
           transition: isMobile ? "left 0.3s ease-in-out" : "none",
           height: "100vh",
-          zIndex: 1301,
+          zIndex: 101,
           borderRight: `1px solid ${colors.base[500]}`,
           "& .pro-sidebar-inner": {
             background: `${theme.palette.mode === "dark"

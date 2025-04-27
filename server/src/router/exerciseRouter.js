@@ -1,32 +1,13 @@
+const express = require('express');
 const { exerciseController } = require("../controllers");
 const { asyncHandler } = require("../utils/asyncHandler");
 
-function exerciseRouter(app) {
+const router = express.Router();
 
-    app.get(
-        "/exercise",
-        asyncHandler(exerciseController.getAllExercises)
-    );
+router.get("/", asyncHandler(exerciseController.getAllExercises));
+router.get("/:id", asyncHandler(exerciseController.getExerciseById));
+router.put("/:id", asyncHandler(exerciseController.updateExercise));
+router.post("/", asyncHandler(exerciseController.createExercise));
+router.delete("/:id", asyncHandler(exerciseController.deleteExercise));
 
-    app.get(
-        "/exercise/:id",
-        asyncHandler(exerciseController.getExerciseById)
-    );
-
-    app.put(
-        "/exercise/:id",
-        asyncHandler(exerciseController.updateExercise)
-    );
-
-    app.post(
-        "/exercise",
-        asyncHandler(exerciseController.createExercise)
-    );
-
-    app.delete(
-        "/exercise/:id",
-        asyncHandler(exerciseController.deleteExercise)
-    );
-}
-
-module.exports = exerciseRouter;
+module.exports = router;

@@ -1,4 +1,4 @@
-SET search_path TO strength_app;
+
 
 CREATE TYPE muscle_group_enum AS ENUM (
     'Chest', 'Triceps', 'Back', 'Biceps', 'Calves', 'Quads', 'Glutes', 'Forearms', 'Hamstrings', 'Shoulders', 'Abs'
@@ -23,12 +23,14 @@ CREATE TYPE user_status_enum AS ENUM (
 CREATE TABLE user_account (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE NOT NULL,
-    full_name VARCHAR(255),
+    firstname VARCHAR(255),
+    lastname VARCHAR(255),
     password_hash TEXT,
     role user_role_enum DEFAULT 'User',
     status user_status_enum DEFAULT 'Pending',
     created_at TIMESTAMP DEFAULT NOW(),
-    active_program INTEGER,
+    active_program INTEGER DEFAULT NULL,
+    active_workout INTEGER DEFAULT NULL,
     approved_at TIMESTAMP,
     approved_by INTEGER DEFAULT NULL,
     FOREIGN KEY (approved_by) REFERENCES user_account(id) ON DELETE SET NULL

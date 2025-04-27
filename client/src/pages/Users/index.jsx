@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { IconButton, Box, Chip, Menu, MenuItem, ListItemText, ListItemIcon } from "@mui/material";
-import { useUsers } from "@hooks/useUser";
+import { Box, Chip, Menu, MenuItem, ListItemText, ListItemIcon } from "@mui/material";
+import { useUsers } from "@hooks/useUsers";
 import TextButton from "@components/TextButton";
 import Icon from "@components/Icon";
 import CustomIconButton from "../../components/IconButton";
 
-const Users = ({ navigate, isAdmin, isMobile, colors }) => {
+const Users = ({ isAdmin, isMobile, colors }) => {
   const { users, approveUser, disableUser, deleteUser } = useUsers();
 
   console.log(users)
   const columns = [
     ...(!isMobile ? [{ field: "id", headerName: "id", flex: 0.1 }] : []),
     { field: "email", headerName: "email", flex: 2 },
-    { field: "full_name", headerName: "name", flex: 1 },
+    { field: "firstname", headerName: "firstname", flex: 1 },
+    { field: "lastname", headerName: "lastname", flex: 1 },
     { field: "role", headerName: "admin", type: "booleam", flex: 1 },
     {
       field: "status",

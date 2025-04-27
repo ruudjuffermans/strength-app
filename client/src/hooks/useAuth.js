@@ -6,24 +6,20 @@ export const useAuth = () => {
     const setSuccess = useSuccessSnackbar();
     const setError = useErrorSnackbar();
 
-    // Define mutations
     const login = usePostMutation(["auth", "login"], () => `/auth/login`);
     const register = usePostMutation(["auth", "register"], () => `/auth/register`);
     const approveUser = usePostMutation(["auth", "approve"], () => `/auth/approve`);
 
-    // Generic handler
     const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
         try {
             const res = await mutationFn(data);
             setSuccess(successMessage);
             return res;
         } catch (error) {
-            console.error(error);
             setError(errorMessage);
         }
     };
 
-    // 🔍 Get current user context from cookie
     const getContext = async () => {
         try {
             const res = await axiosInstance.get("/auth/me", {

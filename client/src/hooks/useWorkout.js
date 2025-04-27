@@ -5,17 +5,16 @@ export const useWorkout = (workoutId) => {
     const setSuccess = useSuccessSnackbar();
     const setError = useErrorSnackbar();
 
+    if (!workoutId) {
+        throw new Error("useWorkout requires a workoutId to be provided.");
+      }
+
     const workout = useGetQuery(["workout", workoutId], `/workout/${workoutId}`);
-
-    // ✅ Mutations for workout management
     const completeWorkout = usePutMutation(["workout", workoutId], () => `/workout/${workoutId}/complete`, ["workout", workoutId]);
-    const deleteWorkout = useDeleteMutation(["workout", workoutId], () => `/workouts`, ["workout", workoutId]);
+    const deleteWorkout = useDeleteMutation(["workout", workoutId], () => `/workout/${workoutId}`, ["workout", workoutId]);
+    const logSet = usePutMutation(["workout", workoutId], ({ logId }) => `/workout/log/${logId}`, ["workout", workoutId]);
+    const updateLoggedSet = usePutMutation(["workout", workoutId], ({ logId }) => `/log/${logId}/update`, ["workoutLogs", workoutId]);
 
-    // ✅ Mutations for logging sets
-    const logSet = usePutMutation(["workoutLogs", workoutId], ({ logId }) => `/log/${logId}`, ["workout", workoutId]);
-    const updateLoggedSet = usePutMutation(["workoutLogs", workoutId], ({ logId }) => `/log/${logId}/update`, ["workoutLogs", workoutId]);
-
-    // ✅ Handles API requests with notifications
     const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
         try {
             await mutationFn(data);

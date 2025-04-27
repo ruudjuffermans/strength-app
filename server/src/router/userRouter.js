@@ -1,26 +1,12 @@
+const express = require('express');
 const { userController } = require("../controllers");
 const { asyncHandler } = require("../utils/asyncHandler");
 
-function userRouter(app) {
-  app.get(
-    "/user",
-    asyncHandler(userController.getAll)
-  );
+const router = express.Router();
 
-  app.post(
-    "/user/approve/:userId",
-    asyncHandler(userController.approve)
-  );
+router.get("/", asyncHandler(userController.getAll));
+router.post("/approve/:userId", asyncHandler(userController.approve));
+router.post("/disable/:userId", asyncHandler(userController.disable));
+router.delete("/remove/:userId", asyncHandler(userController.remove));
 
-  app.post(
-    "/user/disable/:userId",
-    asyncHandler(userController.disable)
-  );
-
-  app.delete(
-    "/user/remove/:userId",
-    asyncHandler(userController.remove)
-  );
-}
-
-module.exports = userRouter;
+module.exports = router;

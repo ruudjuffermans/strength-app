@@ -2,8 +2,8 @@ const splitHandler = require('../handlers/splitHandler');
 
 const getSplitById = async (req, res) => {
   try {
-    const { id } = req.params;
-    const split = await splitHandler.getSplitById(id);
+    const { splitId } = req.params;
+    const split = await splitHandler.getSplitById(splitId);
     if (!split) {
       return res.status(404).json({ error: "Split not found." });
     }

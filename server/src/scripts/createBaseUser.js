@@ -3,7 +3,8 @@ const pool = require('../db');
 
 async function createBaseUser() {
     const email = 'base@example.com';
-    const fullName = 'Base User';
+    const firstname = 'Base';
+    const lastname = 'User';
     const password = 'SuperSecure456!';
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -12,11 +13,11 @@ async function createBaseUser() {
         
         const result = await client.query(
             `INSERT INTO user_account (
-                id, email, full_name, password_hash, role, status, created_at, approved_at
-            ) VALUES (2, $1, $2, $3, 'User', 'Approved', NOW(), NOW())
+                id, email, firstname, lastname, password_hash, role, status, created_at, approved_at
+            ) VALUES (2, $1, $2, $3, $4, 'User', 'Approved', NOW(), NOW())
             ON CONFLICT (email) DO NOTHING
             RETURNING id;`,
-            [email, fullName, hashedPassword]
+            [email, firstname, lastname, hashedPassword]
         );
 
         if (result.rows.length) {

@@ -6,18 +6,20 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET || "your_default_secret_key";
 
 // REGISTER: Adds a pending user
-async function register({ email, full_name }) {
+async function register({ email, firstname, lastname, password }) {
+  const hashedPassword = await bcrypt.hash(password, 10);
   const result = await pool.query(
-    `INSERT INTO user_account (email, full_name)
-     VALUES ($1, $2)
-     RETURNING id, email, full_name, status`,
-    [email, full_name]
+    `INSERT INTO user_account (email, firstname, lastname, password_hash)
+     VALUES ($1, $2, $3, $4)
+     RETURNING id, email, firstname, lastname, status`,
+    [email, firstname, lastname, hashedPassword]
   );
   return result.rows[0];
 }
 
 // LOGIN: Checks credentials and returns token
 async function login({ email, password }) {
+  console.log(email, password)
   const result = await pool.query(
     `SELECT * FROM user_account WHERE email = $1 AND status = 'Approved'`,
     [email]
@@ -50,7 +52,7 @@ async function getUserFromCookie(req) {
     const decoded = jwt.verify(token, JWT_SECRET);
 
     const result = await pool.query(
-      `SELECT id, email, full_name, role, created_at, active_program, approved_at, approved_by  FROM user_account WHERE id = $1`,
+      `SELECT id, email, firstname, lastname, role, created_at, active_program, approved_at, approved_by  FROM user_account WHERE id = $1`,
       [decoded.userId]
     );
 

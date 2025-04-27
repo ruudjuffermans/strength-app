@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "@service/api"
 import _ from "lodash";
+import { useErrorSnackbar, useSuccessSnackbar } from "../hooks/useSnackbar";
 
 const DEFAULT_HEADERS = {
     'Content-Type': 'application/json'
@@ -47,3 +48,16 @@ function useGenericMutation(key, fn, invalidations) {
     });
     return mutateAsync;
 }
+
+
+export const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
+    const setSuccess = useSuccessSnackbar();
+    const setError = useErrorSnackbar();
+    try {
+      const res = await mutationFn(data);
+      setSuccess(successMessage);
+      return res;
+    } catch (error) {
+      setError(errorMessage);
+    }
+  };

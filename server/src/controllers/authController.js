@@ -2,6 +2,7 @@ const { authHandler } = require('../handlers');
 
 const register = async (req, res) => {
   try {
+    console.log(req.body)
     const user = await authHandler.register(req.body);
     res.status(201).json(user);
   } catch (error) {

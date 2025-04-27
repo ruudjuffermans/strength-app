@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Button,
 } from "@mui/material";
 import CustomDropdown from "@components/DropDown";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
@@ -18,7 +19,6 @@ import { useExercises } from "@hooks/useExercises";
 import { useSplit } from '../../hooks/useSplit';
 import Icon from "@components/Icon"
 import SubHeader from '@components/SubHeader';
-import TextButton from '@components/TextButton';
 import CustomButton from '../../components/CustomButton';
 
 const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, navigate }) => {
@@ -30,12 +30,10 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
   const {
     split,
     addExercise,
-    createWorkout,
     deleteExercise,
     reorderExercises
   } = useSplit(id);
   const { exercises } = useExercises();
-  const openMenu = Boolean(anchorEl);
 
   const repOptions = Array.from({ length: 15 }, (_, i) => ({
     value: i + 1,
@@ -55,15 +53,25 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
     setAnchorEl(null);
   };
 
-  const handleCreateWorkout = async () => {
-    const res = await createWorkout({ splitId: id });
-    navigate(`/workout/${res.id}`)
-
+  const handleDeleteExercise = (id) => {
+    console.log(id)
+    deleteExercise({exerciseId: id})
   };
+
+  const handleEditExercise = () => {
+    if (!id || !selectedExercise) return;
+    addExercise({ exerciseId: selectedExercise, reps, sets });
+    setReps("");
+    setSets("");
+    setSelectedExercise("");
+    setDialogOpen(false);
+    setAnchorEl(null);
+  };
+
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
-    const reordered = Array.from(splitExercises.exercises);
+    const reordered = Array.from(split.exercises);
     const [moved] = reordered.splice(result.source.index, 1);
     reordered.splice(result.destination.index, 0, moved);
 
@@ -81,14 +89,13 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
       width: "100%",
     }}>
       <SubHeader title={name} subtitle={description} />
-
-
       <Box mt={1} display="flex" flexDirection="column">
-        {/* <TextButton style={{ float: "right" }} label={"Do the Workout"} onClick={() => handleCreateWorkout({ splitId: id })} /> */}
-        <TextButton style={{ float: "right" }} label={"Add Exercise"} onClick={() => {
-          setDialogOpen(true);
-          setAnchorEl(null);
-        }} />
+        <Box >
+          <CustomButton label={"Add Exercise"} onClick={() => {
+            setDialogOpen(true);
+            setAnchorEl(null);
+          }} />
+        </Box>
       </Box>
       <Box mt={3} display="flex" flexDirection="column" gap={1}>
         <DragDropContext onDragEnd={handleDragEnd}>
@@ -121,16 +128,21 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
 
                           <Box>
                             <Typography variant="subtitle1">{exercise.name}</Typography>
-                            <Typography variant="body2">
+                            <Typography variant="body2" color={"grey"}>
                               Sets: {exercise.sets} -
                               Reps: {exercise.reps}
                             </Typography>
                           </Box>
                         </Box>
+                        <Box>
 
-                        <IconButton size={"small"} sx={{ opacity: 0.5 }} onClick={() => deleteExercise({ exerciseSplitId: exercise.id })}>
-                          <Icon size={"small"} name={"delete"}/>
-                        </IconButton>
+                          <IconButton size={"small"} sx={{ opacity: 0.5 }} onClick={() => handleEditExercise(exercise.id)}>
+                            <Icon size={"small"} name={"edit"} />
+                          </IconButton>
+                          <IconButton size={"small"} sx={{ opacity: 0.5 }} onClick={() => handleDeleteExercise(exercise.id)}>
+                            <Icon size={"small"} name={"delete"} />
+                          </IconButton>
+                        </Box>
                       </CustomPaper>
                     )}
                   </Draggable>
@@ -142,7 +154,7 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
           </Droppable>
         </DragDropContext>
       </Box>
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="md">
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)} fullWidth maxWidth="sm">
         <DialogTitle>Add Exercise to Split</DialogTitle>
         <DialogContent dividers>
           <Box display="flex" flexDirection="column" gap={2} mt={1}>
@@ -175,12 +187,12 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
           </Box>
         </DialogContent>
         <DialogActions>
-          <CustomButton label={"Cancel"} onClick={() => setDialogOpen(false)} />
-          <CustomButton label={"Add Exercise"} onClick={handleAddExercise} variant="contained" color="primary" />
+          <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleAddExercise} variant="contained" color="primary">
+            Add Exercise
+          </Button>
         </DialogActions>
       </Dialog>
-
-      
     </CustomPaper>
   );
 };
