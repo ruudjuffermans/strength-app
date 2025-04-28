@@ -2,7 +2,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useAuth } from "@context/AuthContext";
 import { useTheme } from "@emotion/react";
 import { useMediaQuery } from "@mui/material";
-import PagePaper from "@components/papers/Pagepaper";
+import PagePaper from "@components/papers/PagePaper";
 
 
 export class PageBuilder {
