@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Button from "@components/buttons/Button";
 import { usePrograms } from "@hooks/usePrograms";
-import Pagepaper from "@components/papers/Pagepaper";
+import PagePaper from "@components/papers/PagePaper";
 import SplitTileAdmin from "./SplitTileAdmin";
 
 const ProgramEdit = ({ params, navigate, user, isAdmin }) => {
@@ -86,7 +86,7 @@ const ProgramEdit = ({ params, navigate, user, isAdmin }) => {
 
 
   return (
-    <Pagepaper m={2} title={program.name} subtitle={program.description}>
+    <PagePaper m={2} title={program.name} subtitle={program.description}>
       <Box display="flex" flexWrap="wrap" gap="10px" >
         <Box
           display="flex" flexWrap="wrap" gap="10px"
@@ -173,7 +173,7 @@ const ProgramEdit = ({ params, navigate, user, isAdmin }) => {
           <Button onClick={handleSaveSplit} color="primary" label={"Save"} />
         </DialogActions>
       </Dialog>
-    </Pagepaper>
+    </PagePaper>
   );
 };
 
