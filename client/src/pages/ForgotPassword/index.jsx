@@ -3,6 +3,7 @@ import CustomInput from "@components/CustomInput";
 import { Formik } from "formik";
 import React from "react";
 import * as yup from "yup";
+import { useAuth } from "@context/AuthContext";
 
 const checkoutSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
@@ -14,11 +15,12 @@ const initialValues = {
 };
 
 const ForgotPassword = ({colors, theme, user, navigate, isMobile, params}) => {
+  const {forgotPassword} = useAuth()
 
-  const handleFormSubmit = (values) => {
-    console.log(values);
+  const handleFormSubmit = async (values, { resetForm }) => {
+    await forgotPassword(values.email);
+    resetForm();
   };
-
   return (
       <Box sx={!isMobile? {minWidth: "500px"} : {height: "100%"}} p={4}>
         <Formik

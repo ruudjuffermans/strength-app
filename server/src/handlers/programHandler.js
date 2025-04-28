@@ -52,11 +52,11 @@ async function getProgramById(groupId) {
   return result.rows[0];
 }
 
-async function createProgram(name, description) {
+async function createProgram(name, description, userId) {
   const result = await pool.query(
-    `INSERT INTO program (name, description)
-     VALUES ($1, $2) RETURNING *`,
-    [name, description]
+    `INSERT INTO program (name, description, created_by)
+     VALUES ($1, $2, $3) RETURNING *`,
+    [name, description, userId]
   );
   return result.rows[0];
 }

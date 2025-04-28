@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import MuiIconButton from '@mui/material/IconButton';
 import BasicTooltip from '../BasicTooltip';
 import clsx from 'clsx';
+import Icon from '../Icon';
 
 const StyledIconButton = styled(MuiIconButton)(({ theme, ownerState }) => ({
   backgroundColor: ownerState.backgroundColor || 'transparent',
@@ -28,8 +29,9 @@ const StyledIconButton = styled(MuiIconButton)(({ theme, ownerState }) => ({
   },
 }));
 
-const CustomIconButton = ({
+const IconButton = ({
   id,
+  icon,
   onClick,
   disabled = false,
   tooltip,
@@ -42,7 +44,7 @@ const CustomIconButton = ({
   sx = {},
   ...rest
 }) => {
-  const ownerState = { size, backgroundColor, color, borderRadius };
+  const ownerState = { size, icon, backgroundColor, color, borderRadius };
 
   const button = (
     <StyledIconButton
@@ -54,7 +56,7 @@ const CustomIconButton = ({
       sx={{ ...sx }}
       {...rest}
     >
-      {children}
+      <Icon name={icon} size={size} />
     </StyledIconButton>
   );
 
@@ -69,4 +71,4 @@ const CustomIconButton = ({
   );
 };
 
-export default CustomIconButton;
+export default IconButton;

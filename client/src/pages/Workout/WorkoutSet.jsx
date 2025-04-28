@@ -1,8 +1,6 @@
 import React from 'react'
-import { Box, InputBase, Typography, Grid, IconButton, InputAdornment, useTheme } from '@mui/material';
-import CustomButton from '../../components/CustomButton';
-import CustomIconButton from '../../components/IconButton';
-import Icon from '../../components/Icon';
+import { Box, InputBase, Typography, Grid, InputAdornment, useTheme } from '@mui/material';
+import IconButton from '@components/buttons/IconButton';
 
 const FieldRow = ({ children }) => (
   <Box display="flex" gap={1} alignItems="center" flexWrap="wrap" position={"relative"}>
@@ -26,7 +24,7 @@ const RepsInput = ({ handleInputChange, inputValues, id, isUpdated, submitButton
           >
             sets
           </Typography>
-          <Box backgroundColor={isUpdated ? colors.base[300] : colors.base[900]} borderRadius={1} alignContent={"center"} height={"40px"} flex={1}>
+          <Box backgroundColor={isUpdated ? colors.base[300] : colors.base[900]} borderRadius={0} alignContent={"center"} height={"40px"} flex={1}>
             <Typography
               variant="body1"
               color={colors.contrast[100]}
@@ -38,8 +36,9 @@ const RepsInput = ({ handleInputChange, inputValues, id, isUpdated, submitButton
         </Box>
         <Box display={"flex"} gap={1} height={"40px"} alignSelf={"end"}>
 
-          <CustomIconButton
-            sx={{ backgroundColor: colors.contrast[300], borderRadius: 1, height: "40px", width: "40px" }}
+          <IconButton
+            icon="remove"
+            sx={{ backgroundColor: colors.contrast[300], borderRadius: 0, height: "40px", width: "40px" }}
             disabled={isUpdated}
             onClick={() =>
               handleInputChange(
@@ -49,11 +48,10 @@ const RepsInput = ({ handleInputChange, inputValues, id, isUpdated, submitButton
               )
             }
             size="small"
-          >
-            -
-          </CustomIconButton>
-          <CustomIconButton
-            sx={{ backgroundColor: colors.contrast[300], borderRadius: 1, height: "40px", width: "40px" }}
+          />
+          <IconButton
+            icon="add"
+            sx={{ backgroundColor: colors.contrast[300], borderRadius: 0, height: "40px", width: "40px" }}
             disabled={isUpdated}
             onClick={() =>
               handleInputChange(
@@ -63,11 +61,9 @@ const RepsInput = ({ handleInputChange, inputValues, id, isUpdated, submitButton
               )
             }
             size="small"
-          >
-            +
-          </CustomIconButton>
+          />
           <Box ml={1}>
-          {submitButton}
+            {submitButton}
           </Box>
         </Box>
       </Box>
@@ -97,13 +93,13 @@ const WeightInput = ({ value, onChange, type = "number", setNumber, isUpdated })
           weight
         </Typography>
       </Box>
-      <Box display="flex" sx={{ flex: 2, height: "40px" }} backgroundColor={isUpdated ? colors.base[300] : colors.base[900]} borderRadius={1}>
+      <Box display="flex" sx={{ flex: 2, height: "40px" }} backgroundColor={isUpdated ? colors.base[300] : colors.base[900]} borderRadius={0}>
         <InputBase
           type={type}
           value={value}
           disabled={isUpdated}
           onChange={onChange}
-          sx={{ p: 2 }}
+          sx={{ p: 2}}
           endAdornment={
             <InputAdornment position="end">
               <Typography
@@ -123,26 +119,25 @@ const WeightInput = ({ value, onChange, type = "number", setNumber, isUpdated })
 };
 
 
-const WorkoutSet = ({ log, logSet, inputValues, handleInputChange }) => {
+const WorkoutSet = ({ log, handleLogSet, inputValues, handleInputChange }) => {
   const theme = useTheme();
   const colors = theme.palette.colors
   const isUpdated = log.updated
 
   const submitButton = (
-    <CustomIconButton
-      sx={{ backgroundColor: isUpdated ? colors.contrast[400] : colors.contrast[200], borderRadius: 1, height: "40px", width: "40px" }}
+    <IconButton
+      sx={{ backgroundColor: isUpdated ? colors.contrast[400] : colors.contrast[200], borderRadius: 0, height: "40px", width: "40px" }}
       disabled={isUpdated}
+      icon={"submit"}
       onClick={() =>
-        logSet({
+        handleLogSet({
           logId: log.id,
           performedReps: Number(inputValues[log.id]?.reps) || 0,
           weightUsed: Number(inputValues[log.id]?.weight) || 0,
         })
       }
       size="small"
-    >
-      <Icon name={"submit"} />
-    </CustomIconButton>
+   />
   )
 
   return (

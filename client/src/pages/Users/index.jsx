@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Chip, Menu, MenuItem, ListItemText, ListItemIcon } from "@mui/material";
 import { useUsers } from "@hooks/useUsers";
-import TextButton from "@components/TextButton";
+import TextButton from "@components/buttons/TextButton";
 import Icon from "@components/Icon";
-import CustomIconButton from "../../components/IconButton";
+import IconButton from "@components/buttons/IconButton";
 
-const Users = ({ isAdmin, isMobile, colors }) => {
+const Users = ({ isAdmin, isMobile, colors, user }) => {
   const { users, approveUser, disableUser, deleteUser } = useUsers();
-
+  console.log(user)
   console.log(users)
   const columns = [
     ...(!isMobile ? [{ field: "id", headerName: "id", flex: 0.1 }] : []),
@@ -64,9 +64,7 @@ const Users = ({ isAdmin, isMobile, colors }) => {
 
             return (
               <>
-                <CustomIconButton size={"small"} onClick={handleMenuOpen}>
-                  <Icon size={"small"} name={"options"} />
-                </CustomIconButton>
+                <IconButton size={"small"} icon={"options"} onClick={handleMenuOpen} />
                 <Menu
 
                   anchorEl={anchorEl}
@@ -97,36 +95,6 @@ const Users = ({ isAdmin, isMobile, colors }) => {
               </>
             );
           },
-          // renderCell: (params) => (
-          //   <Box display="flex" gap={1}>
-          //     {params.row.status !== "Approved" && (
-          //       <IconButton
-
-          //         onClick={() =>
-          //           approveUser({
-          //             userId: params.row.id
-          //           })
-          //         }
-          //       >
-          //         <Icon name={"options"} size="small" />
-          //       </IconButton>
-          //     )}
-          //     {/* <IconButton
-          //       size="small"
-          //       color="warning"
-          //       onClick={() => disableUser({ userId: params.row.id })}
-          //     >
-          //       <Icon name={"menu"} size="small"/>
-          //     </IconButton>
-          //     <IconButton
-          //       size="small"
-          //       color="error"
-          //       onClick={() => deleteUser({ userId: params.row.id })}
-          //     >
-          //       <Icon name={"delete"} size="small" />
-          //     </IconButton> */}
-          //   </Box>
-          // ),
         },
       ]
       : []),

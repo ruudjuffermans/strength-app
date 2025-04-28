@@ -11,17 +11,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
 } from "@mui/material";
 import Icon from "@components/Icon";
 
-import CustomButton from "@components/CustomButton";
 import { useExercises } from "@hooks/useExercises";
 import { useSplit } from "@hooks/useSplit";
 import CustomDropdown from "@components/DropDown";
 import SplitTileAdmin from "./SplitTileAdmin";
-import SplitTile from "./SplitTile";
-import PagePaper from "../../components/CustomPaper/Pagepaper";
+import Button from "@components/buttons/Button";
 
 const Split = ({ colors, theme, user, navigate, isMobile, params, isAdmin }) => {
   const { splitId } = params;
@@ -31,7 +28,6 @@ const Split = ({ colors, theme, user, navigate, isMobile, params, isAdmin }) => 
     addExercise,
   } = useSplit(splitId);
 
-  console.log(split)
 
   const [selectedExercise, setSelectedExercise] = useState("");
   const [reps, setReps] = useState("");
@@ -64,14 +60,10 @@ const Split = ({ colors, theme, user, navigate, isMobile, params, isAdmin }) => 
     <>
 
       <Box display="flex" flexDirection="column" gap={2}>
-
         <SplitTileAdmin key={splitId} id={splitId} name={split.name} description={split.description} navigate={navigate} />
-
       </Box>
 
-
       <Box display="flex" justifyContent="flex-end" mt={2}>
-
         <Menu anchorEl={anchorEl} open={openMenu} onClose={() => setAnchorEl(null)}>
           <MenuItem
             onClick={() => {

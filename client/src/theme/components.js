@@ -25,8 +25,8 @@ const components = (theme) => {
       MuiPaper: {
         styleOverrides: {
           root: {
-            // borderRadius: 12,
-            padding: 16,
+            borderRadius: 0,
+            padding: 9,
             background: mode === "dark" ? colors.base[200] : colors.base[100],
           },
         },
@@ -36,7 +36,8 @@ const components = (theme) => {
           root: {
             border: `1px solid ${colors.base[500]}`,
             boxShadow: "none",
-            borderRadius: "2px",
+            padding: 0,
+            borderRadius: 4,
             "&:before": {
               display: "none",
             },
@@ -61,7 +62,7 @@ const components = (theme) => {
       MuiButton: {
         styleOverrides: {
           root: {
-            // // borderRadius: 8,
+            borderRadius: 0,
             // fontSize: 16,
             // textTransform: 'none',
             // height: "40px",

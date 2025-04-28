@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, MenuItem, Box, Button, Menu, ListItemIcon, ListItemText } from "@mui/material";
 import { useExercises } from "@hooks/useExercises";
-import TextButton from "@components/TextButton";
-import Icon from "@components/Icon";
-import CustomIconButton from "../../components/IconButton";
-import OptionsMenu from "../../components/OptionsMenu";
+import TextButton from "@components/buttons/TextButton";
+import OptionsMenu from "@components/OptionsMenu";
 
 const muscleGroups = ["Chest", "Back", "Legs", "Shoulders", "Arms", "Core"];
 const equipmentTypes = ["Bodyweight", "Dumbbell", "Barbell", "Machine", "Cable", "Kettlebell"];

@@ -12,6 +12,9 @@ import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 
 import Icon from "@components/Icon";
+import { useAuth } from "@context/AuthContext";
+
+
 
 const Item = ({ title, to, icon, selected, setSelected, onItemClick }) => (
   <MenuItem
@@ -27,14 +30,21 @@ const Item = ({ title, to, icon, selected, setSelected, onItemClick }) => (
   </MenuItem>
 );
 
-const ResponsiveSidebar = ({ open, setOpen }) => {
+const Sidebar = ({ open, setOpen, user }) => {
   const theme = useTheme();
+  const { logout } = useAuth();
   const colors = theme.palette.colors
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [selected, setSelected] = useState("Dashboard");
   const sidebarRef = useRef(null);
 
+  const isAdmin = user.role === "Admin"
   const handleClose = () => setOpen(false);
+
+  const handleLogout = async () => {
+    await logout();
+
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -81,8 +91,8 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
           borderRight: `1px solid ${colors.base[500]}`,
           "& .pro-sidebar-inner": {
             background: `${theme.palette.mode === "dark"
-                ? colors.base[200]
-                : colors.base[100]
+              ? colors.base[200]
+              : colors.base[100]
               } !important`,
           },
           "& .pro-icon-wrapper": {
@@ -117,9 +127,7 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
                       <Typography variant="h3" color={colors.primary[500]}>
                         CLIENT
                       </Typography>
-                      <IconButton onClick={() => setOpen(!open)}>
-                        <Icon name={"menu"} />
-                      </IconButton>
+                      <IconButton icon={"menu"} onClick={() => setOpen(!open)} />
                     </Box>
                   )}
                 </MenuItem>
@@ -129,19 +137,26 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
                   <Item onItemClick={isMobile ? handleClose : undefined} title="Programs" to="/programs" icon={<Icon name={"work"} />} selected={selected} setSelected={setSelected} />
                   <Item onItemClick={isMobile ? handleClose : undefined} title="Exercises" to="/exercises" icon={<Icon name={"fitness"} />} selected={selected} setSelected={setSelected} />
                   <Item onItemClick={isMobile ? handleClose : undefined} title="Workouts" to="/workouts" icon={<Icon name={"workouts"} />} selected={selected} setSelected={setSelected} />
-                  <Item onItemClick={isMobile ? handleClose : undefined} title="Users" to="/users" icon={<Icon name={"people"} />} selected={selected} setSelected={setSelected} />
+                  {isAdmin && <Item onItemClick={isMobile ? handleClose : undefined} title="Users" to="/users" icon={<Icon name={"people"} />} selected={selected} setSelected={setSelected} />}
                 </Box>
               </Menu>
             </Box>
-            <Box mb={20}>
+            <Box mb={40}>
 
-            <Menu>
-              <Box paddingLeft={!open && !isMobile ? "5%" : undefined}>
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Settings" to="/settings" icon={<Icon name={"settings"} />} selected={selected} setSelected={setSelected} />
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Help & Support" to="/support" icon={<Icon name={"help"} />} selected={selected} setSelected={setSelected} />
-                <Item onItemClick={isMobile ? handleClose : undefined} title="Logout" to="/login" icon={<Icon name={"logout"} />} selected={selected} setSelected={setSelected} />
-              </Box>
-            </Menu>
+              <Menu>
+                <Box paddingLeft={!open && !isMobile ? "5%" : undefined}>
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Settings" to="/settings" icon={<Icon name={"settings"} />} selected={selected} setSelected={setSelected} />
+                  <Item onItemClick={isMobile ? handleClose : undefined} title="Help & Support" to="/support" icon={<Icon name={"help"} />} selected={selected} setSelected={setSelected} />
+                  <MenuItem
+                    icon={<Icon name={"logout"} />}
+                    onClick={async () => {
+                      if (isMobile) handleClose();
+                      await handleLogout();
+                    }}
+                  >
+                    <Typography>Logout</Typography>
+                  </MenuItem> </Box>
+              </Menu>
             </Box>
           </Box>
         </ProSidebar>
@@ -150,4 +165,4 @@ const ResponsiveSidebar = ({ open, setOpen }) => {
   );
 };
 
-export default ResponsiveSidebar;
+export default Sidebar;

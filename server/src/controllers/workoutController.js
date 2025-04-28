@@ -1,82 +1,55 @@
 const { workoutHandler } = require("../handlers");
 
 const getAllWorkouts = async (req, res) => {
-console.log(req.user.userId)
-  const workouts = await workoutHandler.getAllWorkouts(req.user.userId);
+  console.log(req.user)
+  const workouts = await workoutHandler.getAllWorkouts(req.user.id);
   res.status(200).json(workouts);
 };
 
 const createWorkout = async (req, res) => {
   const { splitId } = req.body;
-
-  console.log(req.user)
-    const newWorkout = await workoutHandler.createWorkoutFromSplit(splitId, req.user.userId);
-    res.status(201).json(newWorkout);
+  const newWorkout = await workoutHandler.createWorkoutFromSplit(splitId, req.user.id);
+  res.status(201).json(newWorkout);
 };
 
 const getWorkoutById = async (req, res) => {
-    const { workoutId } = req.params;
-    const workout = await workoutHandler.getWorkoutById(workoutId);
-    res.status(200).json(workout);
+  const { workoutId } = req.params;
+  const workout = await workoutHandler.getWorkoutById(workoutId);
+  res.status(200).json(workout);
 };
 
 const completeWorkout = async (req, res) => {
-  try {
-    const { workoutId } = req.params;
-    const { notes } = req.body;
-    console.log(notes)
-    const updatedWorkout = await workoutHandler.completeWorkout(workoutId, notes);
+  const { workoutId } = req.params;
+  const { notes } = req.body;
+  const updatedWorkout = await workoutHandler.completeWorkout(workoutId, notes);
 
-    res.status(200).json(updatedWorkout);
-  } catch (error) {
-    console.error("Error updating workout state:", error);
-    res.status(500).json({ error: "Failed to update workout state." });
-  }
+  res.status(200).json(updatedWorkout);
 };
 
 const deleteWorkout = async (req, res) => {
-  try {
-    const { workoutId } = req.params;
-    console.log(`Deleting workout with ID: ${workoutId}`);
+  const { workoutId } = req.params;
 
-    await workoutHandler.deleteWorkout(workoutId);
+  await workoutHandler.deleteWorkout(workoutId);
 
-    res.status(204).send();
-  } catch (error) {
-    console.error("Error deleting workout:", error);
-    res.status(500).json({ error: "Failed to delete workout." });
-  }
+  res.status(204).send();
 };
 
 const logSet = async (req, res) => {
-  try {
-    const { logId } = req.params;
-    const { performedReps, weightUsed } = req.body;
+  const { logId } = req.params;
+  const { performedReps, weightUsed } = req.body;
 
-    const updatedLog = await workoutHandler.logSet(logId, performedReps, weightUsed);
+  const updatedLog = await workoutHandler.logSet(logId, performedReps, weightUsed);
 
-    res.status(200).json(updatedLog);
-  } catch (error) {
-    console.error("Error logging set:", error);
-    res.status(500).json({ error: "Failed to log set." });
-  }
+  res.status(200).json(updatedLog);
 };
 
-// ✅ 6️⃣ Update a logged set
 const updateLoggedSet = async (req, res) => {
-  try {
-    const { logId } = req.params;
-    const { performedReps, weightUsed } = req.body;
+  const { logId } = req.params;
+  const { performedReps, weightUsed } = req.body;
 
-    console.log(`Updating logged set ${logId}`);
+  const updatedLog = await workoutHandler.updateLoggedSet(logId, performedReps, weightUsed);
 
-    const updatedLog = await workoutHandler.updateLoggedSet(logId, performedReps, weightUsed);
-
-    res.status(200).json(updatedLog);
-  } catch (error) {
-    console.error("Error updating logged set:", error);
-    res.status(500).json({ error: "Failed to update logged set." });
-  }
+  res.status(200).json(updatedLog);
 };
 
 module.exports = {

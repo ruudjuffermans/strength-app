@@ -1,70 +1,83 @@
 const pool = require("../db");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
-// You can store this in an .env file
-const JWT_SECRET = process.env.JWT_SECRET || "your_default_secret_key";
-
-// REGISTER: Adds a pending user
 async function register({ email, firstname, lastname, password }) {
-  const hashedPassword = await bcrypt.hash(password, 10);
   const result = await pool.query(
     `INSERT INTO user_account (email, firstname, lastname, password_hash)
      VALUES ($1, $2, $3, $4)
      RETURNING id, email, firstname, lastname, status`,
-    [email, firstname, lastname, hashedPassword]
+    [email, firstname, lastname, password]
   );
   return result.rows[0];
 }
 
-// LOGIN: Checks credentials and returns token
-async function login({ email, password }) {
-  console.log(email, password)
-  const result = await pool.query(
-    `SELECT * FROM user_account WHERE email = $1 AND status = 'Approved'`,
-    [email]
+async function createDefaultUserSettings(userId) {
+  await pool.query(
+    `INSERT INTO user_settings (user_id) VALUES ($1)`,
+    [userId]
   );
-  const user = result.rows[0];
-  if (!user) return null;
-
-  const valid = await bcrypt.compare(password, user.password_hash);
-  if (!valid) return null;
-
-  const token = jwt.sign(
-    { userId: user.id, email: user.email, role: user.role },
-    JWT_SECRET,
-    { expiresIn: "7d" }
-  );
-
-  return {
-    token,
-    user: {
-      ...user
-    },
-  };
 }
 
-async function getUserFromCookie(req) {
-  const token = req.cookies?.token;
-  if (!token) return null;
+async function setVerified(id) {
+  const result = await pool.query(`
+    UPDATE user_account
+    SET status = 'Verifed'
+    WHERE id = $1
+    RETURNING id, email, firstname, lastname, status`,
+    [id]
+  );
+  return result.rows[0];
+}
 
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+async function getUserById(userId) {
+  const result = await pool.query(
+    `SELECT * FROM user_account WHERE id = $1`,
+    [userId]
+  );
+  return result.rows[0];
+}
 
-    const result = await pool.query(
-      `SELECT id, email, firstname, lastname, role, created_at, active_program, approved_at, approved_by  FROM user_account WHERE id = $1`,
-      [decoded.userId]
-    );
+async function getUserByEmail(email) {
+  const result = await pool.query(
+    `SELECT * FROM user_account WHERE email = $1`,
+    [email]
+  );
+  return result.rows[0];
+}
 
-    return result.rows[0] || null;
-  } catch (err) {
-    console.error("Invalid token:", err);
-    return null;
-  }
+async function setResetToken(userId, hashedToken, expires) {
+  await pool.query(`
+    UPDATE user_account
+    SET reset_password_token = $1,
+        reset_password_expires = $2
+    WHERE id = $3
+  `, [hashedToken, expires, userId]);
+}
+
+// 🆕 Get user by reset token
+async function getUserByResetToken(hashedToken) {
+  const result = await pool.query(
+    `SELECT * FROM user_account WHERE reset_password_token = $1`,
+    [hashedToken]
+  );
+  return result.rows[0];
+}
+
+// 🆕 Update user password
+async function updatePassword(userId, newPasswordHash) {
+  await pool.query(`
+    UPDATE user_account
+    SET password_hash = $1
+    WHERE id = $2
+  `, [newPasswordHash, userId]);
 }
 
 module.exports = {
   register,
-  login,
-  getUserFromCookie
+  setVerified,
+  getUserById,
+  getUserByEmail,
+  setResetToken,
+  getUserByResetToken,
+  updatePassword,
+  createDefaultUserSettings
 };

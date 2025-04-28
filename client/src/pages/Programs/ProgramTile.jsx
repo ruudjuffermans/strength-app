@@ -1,54 +1,40 @@
 import React from "react";
-import CustomPaper from "@components/CustomPaper";
+import BasePaper from "@components/papers/BasePaper";
 import { Box, Typography } from "@mui/material";
-import SubHeader from "../../components/SubHeader";
-import OptionsMenu from "../../components/OptionsMenu";
-
-const handleEdit = () => {}
-const handleDelete = () => {}
+import Header from "@components/Header";
+import IconButton from "../../components/buttons/IconButton";
+import Icon from "../../components/Icon";
 
 
+const ProgramTile = ({ id, name, colors, description, splits, navigate, setActive, isActive }) => {
 
-const ProgramTile = ({ id, name, colors, description, splits, setActive, navigate, isActive }) => {
-  const options = [
-    { label: "Set Active", icon: "star", onClick: () => setActive(id) },
-    { label: "View Details", icon: "look", onClick: () => navigate(`/program/${id}`) },
-  ];
-  
   return (
-    <CustomPaper sx={{
+    <BasePaper sx={{
       position: "relative",
-      padding: "10px",
-      flex: "1 1 400px",
-      cursor: "pointer",
-        background: isActive && colors.base[700],
+      background: isActive && colors.primary[100],
     }}
     >
-      <SubHeader title={name} subtitle={description} />
+      <Header sub={true} title={name} subtitle={description} />
       <Box position={"absolute"} right={10} top={10}>
-      <OptionsMenu options={options} />
+        <IconButton icon={isActive ? "radioOn" : "radioOff"} onClick={() =>setActive(id)}  />
       </Box>
-      <Box
-        sx={{
-          px: 4,
-        }}
-      >
+      <Box position={"absolute"} right={10} bottom={10}>
+        <IconButton icon={"info"} onClick={() =>navigate(`/program/${id}`)} />
+      </Box>
+      <Box px={4}>
         <ul style={{ paddingLeft: 10, margin: 0 }}>
           {splits.map(({ name, description, id }) => (
             <li key={id}>
-              <Box p={1} sx={{ pl: 1 }}>
-                <Typography variant="body1">
+              <Box sx={{ pl: 1 }}>
+                <Typography variant="body1" fontWeight={300}>
                   {name}
                 </Typography>
-                {/* <Typography variant="body2" color="text.secondary">
-                  {description}
-                </Typography> */}
               </Box>
             </li>
           ))}
         </ul>
       </Box>
-    </CustomPaper>
+    </BasePaper>
   );
 };
 

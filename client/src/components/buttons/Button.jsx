@@ -1,6 +1,6 @@
 
 
-import { Button } from "@mui/material";
+import { Button as Base } from "@mui/material";
 import React from "react";
 import clsx from "clsx";
 import { runWithoutPropagation } from "@utils/util";
@@ -9,7 +9,7 @@ import BasicTooltip from "../BasicTooltip";
 import _ from "lodash";
 
 
-const CustomButton = React.forwardRef((props, ref) => {
+const Button = React.forwardRef((props, ref) => {
     const {
         id, onClick, disabled, label, className, to, Icon, tooltip, type,
         outlined, text, positive, negative, disableAutoFocus = false
@@ -31,11 +31,11 @@ const CustomButton = React.forwardRef((props, ref) => {
 
     const navigate = useNavigate();
     const button = (
-        <Button
+        <Base
             id={ id }
             ref={ ref }
             variant={variant}
-            color='secondary'
+            color='primary'
             startIcon={ Icon ? <Icon fontSize='large'/> : undefined }
             className={ clsx("action-button", className, positive && 'positive', negative && 'negative') }
             onClick={ runWithoutPropagation(to ? () => navigate(to) : onClick) }
@@ -47,7 +47,7 @@ const CustomButton = React.forwardRef((props, ref) => {
             <span className="label">
                 { label }
             </span>
-        </Button>
+        </Base>
     );
     if (tooltip == null) {
         return button;
@@ -61,4 +61,4 @@ const CustomButton = React.forwardRef((props, ref) => {
     );
 });
 
-export default React.memo(CustomButton);
+export default React.memo(Button);

@@ -8,12 +8,12 @@ import Icon from "@components/Icon"
 
 import StatBox from "@components/StatBox";
 import ProgressCircle from "@components/ProgressCircle";
-import CustomPaper from "@components/CustomPaper";
+import BasePaper from "@components/papers/BasePaper";
 import { usePrograms } from "../../hooks/usePrograms";
-import TextButton from "../../components/TextButton";
 import { useWorkouts } from "../../hooks/useWorkouts";
-import CustomButton from "../../components/CustomButton";
+import Button from "@components/buttons/Button";;
 import { mockTransactions } from "../../data/mockData";
+import ProgramTile from "./ProgramTile";
 
 const Home = ({colors, theme, user, navigate, isMobile, params}) => {
   const {
@@ -26,22 +26,17 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
 
   const activeProgram = programs.find(program => user.active_program === program.id);
   const completedWorkouts = workouts.filter(workout => workout.workout_state == 'Completed')
-  const activeWorkouts = workouts.filter(workout => workout.workout_state == 'Draft')
+  const activeWorkouts = workouts.filter(workout => workout.workout_state == 'Active')
 
 
 
+  console.log(activeProgram)
   return isMobile ?  (
   <Box>
-    <Box>
-      <Box>
-      <CustomButton label={"Set other program"} to={"/programs"}></CustomButton>
-      </Box>
-      <Box>
-      <CustomButton label={"Do next workout"}></CustomButton>
-      </Box>
-      <Box>
-      active program: {activeProgram?.name}
-      </Box>
+<Box>
+      active program: 
+      <ProgramTile name={activeProgram.name} description={activeProgram.description} colors={colors} splits={activeProgram.splits} navigate={navigate} />
+
       <Box>
       logged workouts: {completedWorkouts.length}
       </Box>      
@@ -56,9 +51,9 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
         gridAutoRows="140px"
         gap="20px"
       >
-        {/* ROW 1 */}
 
-        <CustomPaper
+
+        <BasePaper
           variant="outlined"
           sx={{
             gridColumn: "span 3",
@@ -78,8 +73,8 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
               />
             }
           />
-        </CustomPaper>
-        <CustomPaper
+        </BasePaper>
+        <BasePaper
           sx={{
             gridColumn: "span 3",
             display: "flex",
@@ -98,8 +93,8 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
               />
             }
           />
-        </CustomPaper>
-        <CustomPaper
+        </BasePaper>
+        <BasePaper
           sx={{
             gridColumn: "span 3",
             display: "flex",
@@ -118,8 +113,8 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
               />
             }
           />
-        </CustomPaper>
-        <CustomPaper
+        </BasePaper>
+        <BasePaper
           sx={{
             gridColumn: "span 3",
             display: "flex",
@@ -136,10 +131,10 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
               <Icon />
             }
           />
-        </CustomPaper>
+        </BasePaper>
 
         {/* ROW 2 */}
-        <CustomPaper
+        <BasePaper
           sx={{
             gridColumn: "span 8",
             gridRow: "span 2",
@@ -173,8 +168,8 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
           <Box height="250px" m="-20px 0 0 0">
 
           </Box>
-        </CustomPaper>
-        <CustomPaper
+        </BasePaper>
+        <BasePaper
           sx={{
             gridColumn: "span 4",
             gridRow: "span 2",
@@ -231,10 +226,10 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
               </Box>
             ))}
           </Box>
-        </CustomPaper>
+        </BasePaper>
 
         {/* ROW 3 */}
-        <CustomPaper
+        <BasePaper
           sx={{
             padding: "15px",
             gridColumn: "span 4",
@@ -261,7 +256,7 @@ const Home = ({colors, theme, user, navigate, isMobile, params}) => {
             </Typography>
             <Typography color={colors.contrast[200]}>Includes extra misc expenditures and costs</Typography>
           </Box>
-        </CustomPaper>
+        </BasePaper>
       </Box>
   );
 };

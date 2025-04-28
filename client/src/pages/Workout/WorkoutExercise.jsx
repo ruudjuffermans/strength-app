@@ -1,21 +1,23 @@
 import React from 'react';
-import { useTheme } from '@emotion/react';
-import SubHeader from '../../components/SubHeader';
+import Header from '../../components/Header';
 import WorkoutSet from './WorkoutSet';
 import { Box } from '@mui/material';
+import BasePaper from '../../components/papers/BasePaper';
+import Button from '../../components/buttons/Button';
 
-const WorkoutExercise = ({ logs, handleInputChange, inputValues, logSet }) => {
-  const theme = useTheme();
+const WorkoutExercise = ({ logs, handleInputChange, inputValues, handleLogSet }) => {
 
   return (
-    <Box>
-      <SubHeader title={logs[0]?.exercise?.name} subtitle={`target reps: ${logs[0]?.target_reps} | 1RM: 20kg | TRM: 18kg`} />
+    <BasePaper>
+      <Header sub={true} title={logs[0]?.exercise?.name} subtitle={`target reps: ${logs[0]?.target_reps} | 1RM: 20kg | TRM: 18kg`} />
       {logs
         .sort((a, b) => a.set_number - b.set_number)
         .map((log) => (
-          <WorkoutSet key={log.id} log={log} inputValues={inputValues} handleInputChange={handleInputChange} logSet={logSet} />
+          <WorkoutSet key={log.id} log={log} inputValues={inputValues} targetReps={logs[0]?.target_reps} handleInputChange={handleInputChange} handleLogSet={handleLogSet} />
         ))}
-    </Box>
+        <Box mt={2}>
+        </Box>
+    </BasePaper>
   );
 };
 

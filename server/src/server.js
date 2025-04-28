@@ -2,17 +2,18 @@ const express = require('express')
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const router = require('./router');
-const { errorHandler } = require("./utils/errorHandler.js");
+const errorHandler = require("./utils/errorHandler.js");
 const authRouter = require('./router/authRouter.js');
-const jwt = require("jsonwebtoken");
-const JWT_SECRET = process.env.JWT_SECRET || "your_default_secret_key";
+const config = require("./utils/config.js");
+const requireAuth = require('./middleware/requiresAuth.js');
+const { decodeToken } = require('./utils/cryptography.js');
 
-const PORT = process.env.SERVER_PORT || 5001;
+const PORT = config.SERVER_PORT;
 
 const app = express()
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: config.CLIENT_URL,
     credentials: true,
   }));
 
@@ -30,7 +31,7 @@ app.use((req, res, next) => {
     const token = req.cookies.token;
     if (token) {
         try {
-            const decoded = jwt.verify(token, JWT_SECRET);
+            const decoded = decodeToken(token);
             req.user = decoded;
         } catch (err) {
             console.log("Invalid token:", err.message);
@@ -41,7 +42,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(requireAuth)
+
 router(app);
+
 app.use((req, res, next) => {
     console.log("404")
     next()
@@ -50,5 +54,6 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
+    console.log(config.ENV)
     console.log(`Server is listenissssng on port ${PORT}`)
 })

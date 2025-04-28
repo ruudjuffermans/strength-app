@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import CustomPaper from "@components/CustomPaper";
+import BasePaper from "@components/papers/BasePaper";
 import {
   Box,
   FormControl,
   Select,
   MenuItem,
-  IconButton,
   Typography,
   Dialog,
   DialogTitle,
@@ -17,11 +16,12 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useExercises } from "@hooks/useExercises";
 import { useSplit } from '../../hooks/useSplit';
 import Icon from "@components/Icon"
-import SubHeader from '@components/SubHeader';
-import TextButton from '@components/TextButton';
-import CustomButton from '../../components/CustomButton';
+import Header from '@components/Header';
+import TextButton from '@components/buttons/TextButton';
+import Button from '@components/buttons/Button';
+import IconButton from '@components/buttons/IconButton';
 
-const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, navigate }) => {
+const SplitTileAdmin = ({ id, name, description, navigate }) => {
   const [selectedExercise, setSelectedExercise] = useState("");
   const [reps, setReps] = useState("");
   const [sets, setSets] = useState("");
@@ -30,8 +30,8 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
   const {
     split,
     addExercise,
-    createWorkout,
     deleteExercise,
+    editExercise,
     reorderExercises
   } = useSplit(id);
   const { exercises } = useExercises();
@@ -45,6 +45,7 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
     value: i + 1,
     label: `${i + 1} sets`,
   }));
+
   const handleAddExercise = () => {
     if (!id || !selectedExercise) return;
     addExercise({ exerciseId: selectedExercise, reps, sets });
@@ -55,11 +56,6 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
     setAnchorEl(null);
   };
 
-  const handleCreateWorkout = async () => {
-    const res = await createWorkout({ splitId: id });
-    navigate(`/workout/${res.id}`)
-
-  };
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
@@ -68,23 +64,21 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
     reordered.splice(result.destination.index, 0, moved);
 
     const payload = reordered.map((item, index) => ({
-      id: item.id,         // this should be the splitExerciseId
-      order: index + 1     // 1-based order
+      id: item.id,   
+      order: index + 1    
     }));
 
     reorderExercises(payload);
   };
   return (
-    <CustomPaper sx={{
-      padding: "10px",
+    <BasePaper sx={{
       flex: "1 1 400px",
       width: "100%",
     }}>
-      <SubHeader title={name} subtitle={description} />
+      <Header sub={true} title={name} subtitle={description} />
 
 
       <Box mt={1} display="flex" flexDirection="column">
-        {/* <TextButton style={{ float: "right" }} label={"Do the Workout"} onClick={() => handleCreateWorkout({ splitId: id })} /> */}
         <TextButton style={{ float: "right" }} label={"Add Exercise"} onClick={() => {
           setDialogOpen(true);
           setAnchorEl(null);
@@ -104,34 +98,32 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
                 {(split.exercises || []).map((exercise, index) => (
                   <Draggable key={exercise.id} draggableId={exercise.id.toString()} index={index}>
                     {(provided) => (
-                      <CustomPaper
+                      <BasePaper
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         sx={{
-                          p: 1,
                           display: "flex",
+                          p: 0,
                           justifyContent: "space-between",
                           alignItems: "center",
                         }}
                       >
                         <Box display="flex" alignItems="center" gap={1}>
-                          <IconButton size={"small"} sx={{ opacity: 0.5 }} {...provided.dragHandleProps}>
-                            <Icon name={"drag"} />
-                          </IconButton>
+                          <IconButton icon={"drag"} size={"small"} sx={{ opacity: 0.5 }} {...provided.dragHandleProps} />
 
                           <Box>
-                            <Typography variant="subtitle1">{exercise.name}</Typography>
-                            <Typography variant="body2">
-                              Sets: {exercise.sets} -
-                              Reps: {exercise.reps}
+                            <Typography variant="body">
+                              {exercise.name}{" - "}
+                              {exercise.sets}{" sets - "}
+                              {exercise.reps}{" reps"}
                             </Typography>
                           </Box>
                         </Box>
+                        <Box>
 
-                        <IconButton size={"small"} sx={{ opacity: 0.5 }} onClick={() => deleteExercise({ exerciseSplitId: exercise.id })}>
-                          <Icon size={"small"} name={"delete"}/>
-                        </IconButton>
-                      </CustomPaper>
+                          <IconButton size={"small"} icon={"delete"} sx={{ opacity: 0.5 }} onClick={() => deleteExercise({ exerciseId: exercise.id })} />
+                       </Box>
+                      </BasePaper>
                     )}
                   </Draggable>
 
@@ -175,13 +167,13 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
           </Box>
         </DialogContent>
         <DialogActions>
-          <CustomButton label={"Cancel"} onClick={() => setDialogOpen(false)} />
-          <CustomButton label={"Add Exercise"} onClick={handleAddExercise} variant="contained" color="primary" />
+          <Button label={"Cancel"} onClick={() => setDialogOpen(false)} />
+          <Button label={"Add Exercise"} onClick={handleAddExercise} variant="contained" color="primary" />
         </DialogActions>
       </Dialog>
 
-      
-    </CustomPaper>
+
+    </BasePaper>
   );
 };
 

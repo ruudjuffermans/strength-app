@@ -20,8 +20,7 @@ const getPalette = (mode = 'light') => {
       primary: mode === 'light' ? '#111' : '#fff',
       secondary: mode === 'light' ? '#555' : '#aaa',
     },
-    // 🎯 Custom tokens attached to palette
-    colors, // <-- now accessible as theme.palette.colors.base[400], etc.
+    colors,
   };
 };
 

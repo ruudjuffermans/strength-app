@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
-import CustomIconButton from "./IconButton";
-import Icon from "./Icon";
+import IconButton from "@components/buttons/IconButton";
+import Icon from "@components/Icon";
 
 const OptionsMenu = ({ options = [], triggerButton = null }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -25,9 +25,7 @@ const OptionsMenu = ({ options = [], triggerButton = null }) => {
       {triggerButton ? (
         React.cloneElement(triggerButton, { onClick: handleMenuOpen })
       ) : (
-        <CustomIconButton size="small" onClick={handleMenuOpen}>
-          <Icon size="small" name="options" />
-        </CustomIconButton>
+        <IconButton size={"small"} icon={"options"} onClick={handleMenuOpen} />
       )}
 
       <Menu

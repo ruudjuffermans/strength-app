@@ -13,15 +13,28 @@ import Register from "@pages/Register";
 
 import { PageBuilder } from "./PageBuilder";
 import Users from "@pages/Users";
-import Program from "../pages/Program";
+import ProgramEdit from "@pages/ProgramEdit";
+import Program from "@pages/Program";
+import ActivateAccount from "@pages/ActivateAccount";
+import ResetPassword from "@pages/ResetPassword";
+import Profile from "@pages/Profile";
+import CreateProgram from "../pages/CreateProgram";
 
 export const homePage = new PageBuilder()
-  .element(Home).title("home").subtitle("welcome to your dashboard")
+  .element(Home).title("Home").subtitle("welcome to your dashboard")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
   .build();
+
+export const profilePage = new PageBuilder()
+  .element(Profile).title("Profile").subtitle("welcome to your profile")
+  .includeUserContext()
+  .includeNavigate()
+  .includeMobile()
+  .includeTheme()
+  .build()
 
 export const loginPage = new PageBuilder()
   .element(Login)
@@ -39,11 +52,26 @@ export const registerPage = new PageBuilder()
 
 export const forgotPasswordPage = new PageBuilder()
   .element(ForgotPassword)
-  .includeUserContext()
   .includeNavigate()
   .includeMobile()
   .includeTheme()
   .build();
+
+export const resetPasswordPage = new PageBuilder()
+  .element(ResetPassword)
+  .includeNavigate()
+  .includeMobile()
+  .includeTheme()
+  .build();
+ 
+export const activateAccountPage = new PageBuilder()
+  .element(ActivateAccount)
+  .includeParams()
+  .includeNavigate()
+  .includeMobile()
+  .includeTheme()
+  .build();
+
 
 export const settingsPage = new PageBuilder()
   .element(Settings).title("Settings").subtitle("Welcome to your settings")
@@ -64,7 +92,7 @@ export const supportPage = new PageBuilder()
   .build();
 
 export const programsPage = new PageBuilder()
-  .element(Programs).title("Programs").subtitle("All available programs")
+  .element(Programs).title("Programs").subtitle("Select a Program")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()
@@ -74,6 +102,24 @@ export const programsPage = new PageBuilder()
 
 export const programPage = new PageBuilder()
   .element(Program)
+  .includeUserContext()
+  .includeNavigate()
+  .includeMobile()
+  .includeTheme()
+  .includeParams()
+  .build();
+
+  export const programEditPage = new PageBuilder()
+  .element(ProgramEdit)
+  .includeUserContext()
+  .includeNavigate()
+  .includeMobile()
+  .includeTheme()
+  .includeParams()
+  .build();
+
+  export const createProgramPage = new PageBuilder()
+  .element(CreateProgram).title("Create New Program").subtitle("fill in the details of your new program")
   .includeUserContext()
   .includeNavigate()
   .includeMobile()

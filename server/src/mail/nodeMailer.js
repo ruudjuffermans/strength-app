@@ -1,17 +1,17 @@
-import nodemailer from "nodemailer";
-import config from "../utils/config.js";
+const nodemailer = require("nodeMailer");
 
+const config = require("../utils/config.js");
 
 let transporter = nodemailer.createTransport({
-  host: "localhost",
-  port: 25,
-  secure: false,
+  host: config.MAIL_SMTP_HOST,
+  port: config.MAIL_PORT,
+  secure: config.MAIL_SECURE,
   tls: {
-      rejectUnauthorized: false // allow self-signed certs
+      rejectUnauthorized: config.MAIL_TLS_REJECT
   }
 });
 
-const smtpSender = async function (to, subject, body) {
+const sender = async function (to, subject, body) {
   try {
     const response = await transporter.sendMail({
       from: {
@@ -29,4 +29,4 @@ const smtpSender = async function (to, subject, body) {
   }
 };
 
-export default smtpSender;
+module.exports = sender;

@@ -1,10 +1,10 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import CustomInput from "@components/CustomInput";
 import { Formik } from "formik";
 import React from "react";
 import * as yup from "yup";
-import { useAuth } from "../../hooks/useAuth";
-import CustomButton from "../../components/CustomButton";
+import { useAuth } from "@context/AuthContext";
+import Button from "@components/buttons/Button";
 
 const checkoutSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
@@ -27,10 +27,8 @@ const Register = ({ colors, theme, user, navigate, isMobile, params }) => {
   } = useAuth();
 
   const handleFormSubmit = async (values) => {
-    const res = await register(values);
-    if (res?.token) {
-      localStorage.setItem('token', res.token);
-    }
+    register(values).then(navigate("/login"))
+    
   };
 
   return (
@@ -104,7 +102,7 @@ const Register = ({ colors, theme, user, navigate, isMobile, params }) => {
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <CustomButton label={"Register"} type="submit" color="secondary" variant="contained" />
+              <Button label={"Register"} type="submit" color="secondary" variant="contained" />
             </Box>
           </form>
         )}

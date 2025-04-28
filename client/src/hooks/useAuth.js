@@ -8,15 +8,18 @@ export const useAuth = () => {
 
     const login = usePostMutation(["auth", "login"], () => `/auth/login`);
     const register = usePostMutation(["auth", "register"], () => `/auth/register`);
+    const activate = usePostMutation(["auth", "activate"], () => `/auth/activate`);
     const approveUser = usePostMutation(["auth", "approve"], () => `/auth/approve`);
 
     const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
         try {
             const res = await mutationFn(data);
+            console.log(res)
             setSuccess(successMessage);
             return res;
         } catch (error) {
-            setError(errorMessage);
+            console.log(error.response.data.error)
+            setError(error.response.data.error);
         }
     };
 
@@ -35,6 +38,7 @@ export const useAuth = () => {
     return {
         login: (data) => handleMutation(login, data, "Logged in successfully!", "Failed to login."),
         register: (data) => handleMutation(register, data, "Registered successfully! Awaiting approval.", "Failed to register."),
+        activate: (data) => handleMutation(activate, data, "Activation successfully! Awaiting approval.", "Failed to activate."),
         approveUser: (data) => handleMutation(approveUser, data, "User approved successfully!", "Failed to approve user."),
         getContext,
     };

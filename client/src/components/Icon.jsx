@@ -4,8 +4,8 @@ import { useTheme } from '@mui/material/styles';
 
 const Icon = ({
   name,
-  color = 'inherit',      // 'primary', 'secondary', 'error', etc.
-  size = 'medium',        // 'small' | 'medium' | 'large' | number
+  color = 'inherit',
+  size = 'medium',
   bold = false,
   sx = {},
   ...props

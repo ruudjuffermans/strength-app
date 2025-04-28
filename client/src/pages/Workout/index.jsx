@@ -1,11 +1,11 @@
 import { useWorkout } from "@hooks/useWorkout";
-import PagePaper from "@components/CustomPaper/Pagepaper";
+import PagePaper from "@components/papers/Pagepaper";
 import { useState, useEffect } from "react";
 import WorkoutExercise from "./WorkoutExercise";
 import { formatDate } from "../../utils/formatDate";
 import Bubble from "../../components/Bubble";
-import { Box, TextField, Typography } from "@mui/material";
-import CustomButton from "../../components/CustomButton";
+import { Box, Chip, TextField, Typography } from "@mui/material";
+import Button from "@components/buttons/Button";
 
 const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
 
@@ -15,7 +15,7 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
       content.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, []);
-  
+
 
   const { workoutId } = params;
   const { workout, completeWorkout, logSet, updateLoggedSet } =
@@ -28,8 +28,8 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
     if (workout.logs) {
       const initialValues = workout.logs.reduce((acc, log) => {
         acc[log.id] = {
-          weight: log.weight_used || "", // Use existing value or empty string
-          reps: log.performed_reps || "", // Use existing value or empty string
+          weight: log.weight_used || "",
+          reps: log.performed_reps || "",
         };
         return acc;
       }, {});
@@ -49,7 +49,10 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
   if (workout.isLoading) return <p>Loading...</p>;
   if (workout.error) return <p>Error loading workout</p>;
 
-  // Handle input change
+  const handleLogSet = ({logId, performedReps, weightUsed}) => {
+    console.log(logId)
+    logSet({ logId, performedReps, weightUsed });
+  };
   const handleInputChange = (logId, field, value) => {
     setInputValues((prev) => ({
       ...prev,
@@ -65,37 +68,29 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
     navigate("/workouts")
   };
 
-  const isDraft = workout.workout_state === "Draft";
+  const isActive = workout.workout_state === "Active";
 
   return (
     <PagePaper title={workout.program} subtitle={workout.split}>
       <Box
         display="flex"
-        flexDirection="row"
-        pb={6}
-      >
-        <Box
-          display="flex"
-          flexDirection="column"
-          gap={4}
-          my={4}
-          flex={1}>
-          <Box>
-            <Typography color="text.secondary" variant="body2" >
-              Status:
-            </Typography>
-            <Box>
-              <Bubble label={workout.workout_state} />
-            </Box>
-          </Box>
-
-          <Box>
-            <Typography variant="body2" color="text.secondary" >
-              Created At
-            </Typography>
-            <Typography variant="body1">{formatDate(workout.created_at)}</Typography>
-          </Box>
-          {!isDraft &&
+        flexDirection="column"
+        gap={4}
+        my={12}
+        flex={1}>
+        <Box>
+          <Typography color="text.secondary" variant="body2" >
+            Status:
+          </Typography>
+          <Chip label={workout.workout_state} />
+        </Box>
+        <Box>
+          <Typography variant="body2" color="text.secondary" >
+            Created At
+          </Typography>
+          <Typography variant="body1">{formatDate(workout.created_at)}</Typography>
+        </Box>
+        {!isActive && (
           <Box>
             <Typography variant="body2" color="text.secondary">
               Completed At
@@ -104,28 +99,27 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
               {workout.completed_at ? formatDate(workout.completed_at) : "—"}
             </Typography>
           </Box>
-}
-          {!isDraft &&
-            <Box>
-              <Typography variant="body2" color="text.secondary">
-                Notes
-              </Typography>
-              <TextField
-                fullWidth
-                multiline
-                minRows={5}
-                value={notes || ""}
-                onChange={(e) => setNotes(e.target.value)}
-                InputProps={{
-                  readOnly: !isDraft,
-                }}
-                sx={{
-                  backgroundColor: isDraft ? colors.base[500] : "transparent",
-                }}
-              />
-            </Box>
-          }
-        </Box>
+        )}
+        {!isActive && (
+          <Box>
+            <Typography variant="body2" color="text.secondary">
+              Notes
+            </Typography>
+            <TextField
+              fullWidth
+              multiline
+              minRows={5}
+              value={notes || ""}
+              onChange={(e) => setNotes(e.target.value)}
+              InputProps={{
+                readOnly: !isActive,
+              }}
+              sx={{
+                backgroundColor: isActive ? colors.base[500] : "transparent",
+              }}
+            />
+          </Box>
+        )}
       </Box>
       <Box display={"flex"} gap={12} flexDirection={"column"}>
         {Object.entries(
@@ -134,10 +128,10 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
             return acc;
           }, {})
         ).map(([order, logs]) => (
-          <WorkoutExercise key={order} logs={logs} handleInputChange={handleInputChange} inputValues={inputValues} logSet={logSet} />
+          <WorkoutExercise key={order} logs={logs} handleInputChange={handleInputChange} inputValues={inputValues} handleLogSet={handleLogSet} />
         ))}
 
-        {isDraft &&
+        {isActive &&
           <>
             <Box>
               <Typography variant="body2" color="text.secondary">
@@ -150,17 +144,18 @@ const Workout = ({ colors, theme, user, navigate, isMobile, params }) => {
                 value={notes || ""}
                 onChange={(e) => setNotes(e.target.value)}
                 InputProps={{
-                  readOnly: !isDraft,
+                  readOnly: !isActive,
                 }}
                 sx={{
-                  backgroundColor: isDraft ? colors.base[500] : "transparent",
+                  backgroundColor: isActive ? colors.base[500] : "transparent",
                 }}
               />
             </Box>
-            <CustomButton label={"Complete workout"} onClick={() => handleCompleteWorkout()}>Complete Workout</CustomButton>
+            <Button label={"Complete workout"} onClick={() => handleCompleteWorkout()}>Complete Workout</Button>
           </>
         }
       </Box>
+
     </PagePaper>
   );
 };

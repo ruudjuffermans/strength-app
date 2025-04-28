@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import CustomPaper from "@components/CustomPaper";
+import BasePaper from "@components/papers/BasePaper";
 import {
   Box,
   FormControl,
@@ -11,15 +11,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
 } from "@mui/material";
 import CustomDropdown from "@components/DropDown";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useExercises } from "@hooks/useExercises";
 import { useSplit } from '../../hooks/useSplit';
 import Icon from "@components/Icon"
-import SubHeader from '@components/SubHeader';
-import CustomButton from '../../components/CustomButton';
+import Header from '@components/Header';
+import Button from '@components/buttons/Button';
 
 const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, navigate }) => {
   const [selectedExercise, setSelectedExercise] = useState("");
@@ -83,15 +82,14 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
     reorderExercises(payload);
   };
   return (
-    <CustomPaper sx={{
-      padding: "10px",
+    <BasePaper sx={{
       flex: "1 1 400px",
       width: "100%",
     }}>
-      <SubHeader title={name} subtitle={description} />
+      <Header sub={true} title={name} subtitle={description} />
       <Box mt={1} display="flex" flexDirection="column">
         <Box >
-          <CustomButton label={"Add Exercise"} onClick={() => {
+          <Button label={"Add Exercise"} onClick={() => {
             setDialogOpen(true);
             setAnchorEl(null);
           }} />
@@ -111,20 +109,17 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
                 {(split.exercises || []).map((exercise, index) => (
                   <Draggable key={exercise.id} draggableId={exercise.id.toString()} index={index}>
                     {(provided) => (
-                      <CustomPaper
+                      <BasePaper
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         sx={{
-                          p: 1,
                           display: "flex",
                           justifyContent: "space-between",
                           alignItems: "center",
                         }}
                       >
                         <Box display="flex" alignItems="center" gap={1}>
-                          <IconButton size={"small"} sx={{ opacity: 0.5 }} {...provided.dragHandleProps}>
-                            <Icon name={"drag"} />
-                          </IconButton>
+                          <IconButton icon={"drag"} size={"small"} sx={{ opacity: 0.5 }} {...provided.dragHandleProps} />
 
                           <Box>
                             <Typography variant="subtitle1">{exercise.name}</Typography>
@@ -143,7 +138,7 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
                             <Icon size={"small"} name={"delete"} />
                           </IconButton>
                         </Box>
-                      </CustomPaper>
+                      </BasePaper>
                     )}
                   </Draggable>
 
@@ -193,7 +188,7 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
           </Button>
         </DialogActions>
       </Dialog>
-    </CustomPaper>
+    </BasePaper>
   );
 };
 

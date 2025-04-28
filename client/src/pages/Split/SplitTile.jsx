@@ -1,11 +1,11 @@
 import React from 'react'
-import CustomPaper from "@components/CustomPaper";
+import BasePaper from "@components/papers/BasePaper";
 import {
   Box,
   Typography,
 } from "@mui/material";
 import { useSplit } from '../../hooks/useSplit';
-import SubHeader from '../../components/SubHeader';
+import Header from '@components/Header';
 import TextButton from '../../components/TextButton';
 
 const SplitTile = ({ id, name, description, navigate }) => {
@@ -23,19 +23,18 @@ const SplitTile = ({ id, name, description, navigate }) => {
   };
 
   return (
-    <CustomPaper sx={{
-      padding: "10px",
+    <BasePaper sx={{
       flex: "1 1 400px",
       width: "100%",
     }}>
-        <SubHeader title={name} subtitle={description} />
+        <Header sub={true} title={name} subtitle={description} />
         <Box mt={1} display="flex" flexDirection="column">
         <TextButton style={{float: "right"}} label={"Do the Workout"} onClick={() => handleCreateWorkout({ splitId: id })} />
         </Box>
           <Box mt={3} display="flex" flexDirection="column" gap={1}>
             
             {(split.exercises || []).map((exercise, index) => (
-              <CustomPaper
+              <BasePaper
                 key={index}
                 sx={{
                   p: 1,
@@ -53,10 +52,10 @@ const SplitTile = ({ id, name, description, navigate }) => {
                     </Typography>
                   </Box>
                 </Box>
-              </CustomPaper>
+              </BasePaper>
             ))}
           </Box>
-    </CustomPaper>
+    </BasePaper>
   );
 };
 

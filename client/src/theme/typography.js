@@ -14,73 +14,71 @@ const typography = {
       'Arial',
       'sans-serif',
     ].join(','),
-    fontSize: 16, // base = 1rem
-  
     h1: {
-      fontSize: '2.5rem', // 40px
+      fontSize: '3.5rem', 
       fontWeight: 700,
       lineHeight: 1.2,
       letterSpacing: '-0.01562em',
     },
     h2: {
-      fontSize: '2rem', // 32px
-      fontWeight: 700,
+      fontSize: '2rem', 
+      fontWeight: 900,
       lineHeight: 1.3,
       letterSpacing: '-0.00833em',
     },
     h3: {
-      fontSize: '1.75rem', // 28px
+      fontSize: '1.75rem', 
       fontWeight: 600,
       lineHeight: 1.4,
       letterSpacing: '0em',
     },
     h4: {
-      fontSize: '1.5rem', // 24px
+      fontSize: '1.5rem', 
       fontWeight: 600,
       lineHeight: 1.4,
       letterSpacing: '0.00735em',
     },
     h5: {
-      fontSize: '1.25rem', // 20px
+      fontSize: '1.25rem', 
       fontWeight: 500,
       lineHeight: 1.5,
       letterSpacing: '0em',
     },
     h6: {
-      fontSize: '1.125rem', // 18px
+      fontSize: '1.125rem', 
       fontWeight: 500,
       lineHeight: 1.5,
       letterSpacing: '0.0075em',
     },
   
     subtitle1: {
-      fontSize: '1.25rem', // 16px
+      fontSize: '1.25rem',
       fontWeight: 500,
       lineHeight: 1.6,
       letterSpacing: '0.00938em',
     },
     subtitle2: {
-      fontSize: '1rem', // 14px
+      fontSize: '1rem',
       fontWeight: 500,
       lineHeight: 1.6,
       letterSpacing: '0.00714em',
     },
   
     body1: {
-      fontSize: '1rem', // 16px
+      fontSize: '1rem',
       fontWeight: 400,
       lineHeight: 1.6,
       letterSpacing: '0.03125em',
     },
     body2: {
-      fontSize: '0.875rem', // 14px
+      fontSize: '0.875rem',
       fontWeight: 400,
       lineHeight: 1.5,
       letterSpacing: '0.01786em',
     },
   
     caption: {
-      fontSize: '0.75rem', // 12px
+      fontSize: '0.75rem',
       fontWeight: 400,
       lineHeight: 1.4,
       color: '#777',
@@ -88,7 +86,7 @@ const typography = {
     },
   
     overline: {
-      fontSize: '0.75rem', // 12px
+      fontSize: '0.75rem',
       fontWeight: 500,
       textTransform: 'uppercase',
       letterSpacing: '0.08333em',
@@ -96,10 +94,10 @@ const typography = {
     },
   
     button: {
-      fontSize: '0.875rem', // 14px
+      fontSize: '0.875rem',
       fontWeight: 500,
       lineHeight: 1.75,
-      textTransform: 'none', // or 'uppercase'
+      textTransform: 'none',
       letterSpacing: '0.02857em',
     },
   };

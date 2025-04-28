@@ -14,7 +14,7 @@ export const useSplit = (splitId) => {
   const addExercise = usePostMutation(["split", splitId], () => `/split/${splitId}/add`, ["split", splitId]);
   const editExercise = usePutMutation(["split", splitId], ({ exerciseId }) => `/split/exercise/${exerciseId}`, ["split", splitId]);
   const deleteExercise = useDeleteMutation(["split", splitId], ({ exerciseId }) => `/split/exercise/${exerciseId}`, ["split", splitId]);
-  const createWorkout = usePostMutation(["workout", splitId], () => `/workout/create`, ["workout", splitId]);
+  const createWorkout = usePostMutation(["workout", splitId], () => `workout/create`, ["workout"]);
   const reorderExercises = usePutMutation(["split", splitId], () => `/split/${splitId}/reorder/`, ["split", splitId]);
 
   const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {

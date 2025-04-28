@@ -1,38 +1,45 @@
-import { Box, IconButton, Paper, useMediaQuery } from "@mui/material";
-import React, { useContext, useState } from "react";
+import { Box, useMediaQuery } from "@mui/material";
+import React, { useContext } from "react";
 import { Outlet } from "react-router-dom";
-import Icon from "@components/Icon";
 import { useTheme } from "@emotion/react";
 import { ColorModeContext } from "../../theme";
+import Header from "./Header";
+import Footer from "./Footer";
+import Navigation from "./Navigation";
 
 const AuthLayout = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <div className="app">
-      <main className="content">
-        <div style={{position: "absolute", top: "10px", right: "10px"}}>
-      <IconButton onClick={colorMode.toggleColorMode} >
-          {theme.palette.mode === "dark" ? (
-            <Icon name={"dark"} />
-          ) : (
-            <Icon name={"light"} />
-          )}
-        </IconButton>
-          </div>
-        {isNonMobile ? (
-          <Box className="center-div">
-            <Outlet />
-          </Box>
-        ) : (
-          <Box p={1} height={"100%"}>
-            <Outlet />
-          </Box>
-        )}
-      </main>
-    </div>
+    <Box 
+      display="flex"
+      flexDirection="column"
+      minHeight="100vh"
+    >
+      <Header />
+      <Box 
+        flexGrow={1}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flexDirection="column"
+      >
+        <Box
+          width="100%"
+          maxWidth="400px"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap={2}
+        >
+          <Outlet />
+          <Navigation />
+        </Box>
+      </Box>
+      <Footer />
+    </Box>
   );
 };
 

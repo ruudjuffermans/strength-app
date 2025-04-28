@@ -22,13 +22,19 @@ import PeopleTwoToneIcon from '@mui/icons-material/PeopleTwoTone';
 import TocTwoToneIcon from '@mui/icons-material/TocTwoTone';
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
 import PauseCircleOutlineTwoToneIcon from '@mui/icons-material/PauseCircleOutlineTwoTone';
-import RemoveCircleOutlineTwoToneIcon from '@mui/icons-material/RemoveCircleOutlineTwoTone';
 import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
 import PublishTwoToneIcon from '@mui/icons-material/PublishTwoTone';
 import PersonTwoToneIcon from '@mui/icons-material/PersonTwoTone';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import InfoOutlineIcon from '@mui/icons-material/InfoOutlined';
+import RemoveIcon from '@mui/icons-material/Remove';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 export default {
   edit: EditIcon,
@@ -58,9 +64,15 @@ export default {
   approve:CheckCircleOutlineTwoToneIcon,
   submit: PublishTwoToneIcon,
   user: PersonTwoToneIcon,
-  star: StarIcon,
+  admin: SupervisorAccountIcon,
+  starFilled: StarIcon,
+  star: StarOutlineIcon,
   go: KeyboardDoubleArrowRightIcon,
   editTitle: EditNoteIcon,
-  editList: FormatListBulletedIcon
-
+  editList: FormatListBulletedIcon,
+  info: InfoOutlineIcon,
+  remove: RemoveIcon,
+  radioOn: RadioButtonCheckedIcon,
+  radioOff: RadioButtonUncheckedIcon,
+  arrow: KeyboardArrowDownIcon
 };

@@ -1,10 +1,10 @@
 import { Box } from "@mui/material";
 import CustomInput from "@components/CustomInput";
 import { Formik } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
 import * as yup from "yup";
 import { useAuth } from "@context/AuthContext";
-import CustomButton from "../../components/CustomButton";
+import Button from "@components/buttons/Button";
 
 const checkoutSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("Required"),
@@ -17,22 +17,18 @@ const initialValues = {
 };
 
 const Login = ({ colors, theme, user, navigate, isMobile, params }) => {
-  const { login, logout } = useAuth();
-
-  useEffect(() => {
-    logout();
-  }, []);
+  const { login } = useAuth();
 
   const handleFormSubmit = async (values) => {
     const res = await login(values);
-    if (res?.token) {
-      localStorage.setItem('token', res.token);
+    if (res) {
+      console.log(res)
       navigate("/");
     }
   };
 
   return (
-    <Box sx={!isMobile ? { minWidth: "500px" } : { height: "100%" }} p={4}>
+    <Box sx={{ minWidth: "100%" }} p={4}>
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
@@ -80,7 +76,7 @@ const Login = ({ colors, theme, user, navigate, isMobile, params }) => {
               />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
-              <CustomButton label={"login"}  type={"submit"}  />
+              <Button label={"login"} type={"submit"} />
             </Box>
           </form>
         )}

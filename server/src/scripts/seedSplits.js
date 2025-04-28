@@ -44,7 +44,7 @@ async function seedPrograms() {
         //     VALUES
         //     ('Main Program', 'Legs & Shoulders', 'Completed', NOW() - INTERVAL '3 days', NOW() - INTERVAL '3 days', 'Felt strong, increased squat weight.'),
         //     ('Main Program', 'Back & Biceps', 'Completed', NOW() - INTERVAL '2 days', NOW() - INTERVAL '2 days', 'Good lat engagement.'),
-        //     ('Main Program', 'Chest & Triceps', 'Draft', NOW(), NULL, 'Plan to go heavier next session.')
+        //     ('Main Program', 'Chest & Triceps', 'Active', NOW(), NULL, 'Plan to go heavier next session.')
         //     ON CONFLICT DO NOTHING;
         // `);
 

@@ -1,8 +1,8 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useAuth } from "@context/AuthContext";
 import { useTheme } from "@emotion/react";
 import { useMediaQuery } from "@mui/material";
-import PagePaper from "@components/CustomPaper/Pagepaper";
+import PagePaper from "@components/papers/Pagepaper";
 
 
 export class PageBuilder {
@@ -38,36 +38,46 @@ export class PageBuilder {
     }
 
     includeParams() {
-        const useHookedProps = this._useHookedProps;
-
+        const previousHookedProps = this._useHookedProps;
         this._useHookedProps = () => {
             const params = useParams();
+            const [searchParams] = useSearchParams();
+
+            const searchParamsObject = {};
+            for (const [key, value] of searchParams.entries()) {
+                searchParamsObject[key] = value;
+            }
+    
             return {
-                ...useHookedProps?.(),
+                ...previousHookedProps?.(),
                 params,
+                searchParams: searchParamsObject,
             };
         };
-
         return this;
     }
+    
 
     includeUserContext() {
-        function useHookedProps() {
-            const { user } = useAuth()
-            return { user, isAdmin: user.role == "Admin" };
-        }
-
-        this._useHookedProps = useHookedProps;
+        const previousHookedProps = this._useHookedProps;
+        this._useHookedProps = () => {
+            const { user } = useAuth();
+            return {
+                ...previousHookedProps?.(),
+                user,
+                isAdmin: user.role === "Admin",
+            };
+        };
         return this;
     }
 
     includeNavigate() {
-        const useHookedProps = this._useHookedProps;
+        const previousHookedProps = this._useHookedProps;
 
         this._useHookedProps = () => {
             const navigate = useNavigate();
             return {
-                ...useHookedProps?.(),
+                ...previousHookedProps?.(),
                 navigate,
             };
         };
@@ -76,13 +86,13 @@ export class PageBuilder {
     }
 
     includeTheme() {
-        const useHookedProps = this._useHookedProps;
+        const previousHookedProps = this._useHookedProps;
 
         this._useHookedProps = () => {
             const theme = useTheme();
             const colors = theme.palette.colors
             return {
-                ...useHookedProps?.(),
+                ...previousHookedProps?.(),
                 theme, colors,
             };
         };
@@ -91,13 +101,13 @@ export class PageBuilder {
     }
 
     includeMobile() {
-        const useHookedProps = this._useHookedProps;
+        const previousHookedProps = this._useHookedProps;
 
         this._useHookedProps = () => {
             const theme = useTheme();
             const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
             return {
-                ...useHookedProps?.(),
+                ...previousHookedProps?.(),
                 isMobile,
             };
         };

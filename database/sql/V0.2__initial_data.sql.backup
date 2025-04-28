@@ -75,7 +75,7 @@ INSERT INTO workout (program, split, workout_state, created_at, completed_at, no
 VALUES
     ('MAIN PROGRAM', 'LEGS & SHOULDERS', 'Completed', NOW() - INTERVAL '3 days', NOW() - INTERVAL '3 days', 'Felt strong, increased squat weight.'),
     ('MAIN PROGRAM', 'BACK & BICEPS', 'Completed', NOW() - INTERVAL '2 days', NOW() - INTERVAL '2 days', 'Good lat engagement.'),
-    ('MAIN PROGRAM', 'CHEST & TRICPES', 'Draft', NOW(), NULL, 'Plan to go heavier next session.');
+    ('MAIN PROGRAM', 'CHEST & TRICPES', 'Active', NOW(), NULL, 'Plan to go heavier next session.');
 
 -- Insert sample workout logs
 INSERT INTO workout_log (workout_id, exercise_id, exercise_name, set_number, target_reps, exercise_order, performed_reps, weight_used)
@@ -96,7 +96,7 @@ VALUES
     (2, 24, 'Barbell Curl', 1, 10, 3, 10, 40.0),
     (2, 24, 'Barbell Curl', 2, 10, 3, 9, 42.5),
 
-    -- CHEST & TRICEPS Workout (Draft, still planning)
+    -- CHEST & TRICEPS Workout (Active, still planning)
     (3, 1, 'Bench Press', 1, 8, 1, 0, NULL),
     (3, 1, 'Bench Press', 2, 8, 1, 0, NULL),
     (3, 13, 'Close-Grip Bench Press', 1, 10, 2, 0, NULL),

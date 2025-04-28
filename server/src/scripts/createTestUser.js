@@ -1,12 +1,12 @@
-const bcrypt = require('bcrypt');
 const pool = require('../db');
+const { hashPassword } = require('../utils/cryptography');
 
 async function createTestUser() {
     const email = 'test@example.com';
     const firstname = 'Test';
     const lastname = 'User';
     const password = 'SuperSecure789!';
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hashPassword(password)
 
     const client = await pool.connect();
     try {

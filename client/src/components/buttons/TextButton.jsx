@@ -1,7 +1,7 @@
 import React from 'react';
 import { ButtonBase, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import BasicTooltip from "./BasicTooltip";
+import BasicTooltip from "../BasicTooltip";
 import { runWithoutPropagation } from "@utils/util";
 import clsx from "clsx";
 import _ from "lodash";
