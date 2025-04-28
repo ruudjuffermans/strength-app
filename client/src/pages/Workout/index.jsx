@@ -1,5 +1,5 @@
 import { useWorkout } from "@hooks/useWorkout";
-import PagePaper from "@components/papers/Pagepaper";
+import PagePaper from "@components/papers/PagePaper";
 import { useState, useEffect } from "react";
 import WorkoutExercise from "./WorkoutExercise";
 import { formatDate } from "../../utils/formatDate";
