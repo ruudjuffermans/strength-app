@@ -3,7 +3,7 @@ import {
   Box,
 } from "@mui/material";
 import { usePrograms } from "@hooks/usePrograms";
-import Pagepaper from "@components/papers/Pagepaper";
+import PagePaper from "@components/papers/PagePaper";
 import SplitTile from "./SplitTile";
 
 const Program = ({ params, navigate, user, isAdmin }) => {
@@ -13,7 +13,7 @@ const Program = ({ params, navigate, user, isAdmin }) => {
   const program = programs.find(program => program.id == programId);
 
   return (
-    <Pagepaper m={2} title={program.name} subtitle={program.description}>
+    <PagePaper m={2} title={program.name} subtitle={program.description}>
       <Box display="flex" flexWrap="wrap" gap="10px" >
         <Box
           display="flex" flexWrap="wrap" gap="10px"
@@ -23,7 +23,7 @@ const Program = ({ params, navigate, user, isAdmin }) => {
           ))}
         </Box>
       </Box>
-    </Pagepaper>
+    </PagePaper>
   );
 };
 
