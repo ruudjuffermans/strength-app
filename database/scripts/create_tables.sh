@@ -1,1 +1,1 @@
-psql -U strength_app_admin -h localhost -d postgres -f ./sql/V0.1__tables.sql
+psql -U strength_app_admin -h localhost -d postgres -f ../sql/V0.1__tables.sql
