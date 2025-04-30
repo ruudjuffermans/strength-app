@@ -1,20 +1,23 @@
 const exerciseRouter = require("./exerciseRouter");
-const splitRouter = require("./splitRouter");
 const programRouter = require("./programRouter");
 const workoutRouter = require("./workoutRouter");
-const userRouter = require("./userRouter");
+const adminRouter = require("./adminRouter");
+
+const { isAdmin } = require("../middleware/isAdmin");
+const { isPremium } = require("../middleware/isPremium");
+// const { auditLogger } = require("../middleware/auditLogger");
+
 
 function router(app) {
   const routers = [
     { path: '/workout', router: workoutRouter },
     { path: '/program', router: programRouter },
     { path: '/exercise', router: exerciseRouter },
-    { path: '/split', router: splitRouter },
-    { path: '/user', router: userRouter },
+    { path: '/admin', middleware: [isAdmin], router: adminRouter },
   ];
 
-  routers.forEach(({ path, router }) => {
-    app.use(`${path}`, router);
+  routers.forEach(({ path, router, middleware = [] }) => {
+    app.use(path, ...middleware, router);
   });
 }
 

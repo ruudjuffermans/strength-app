@@ -2,28 +2,28 @@ import { useGetQuery, usePostMutation, usePutMutation, useDeleteMutation } from 
 import { useErrorSnackbar, useSuccessSnackbar } from "@hooks/useSnackbar";
 
 export const useExercises = () => {
-    const setSuccess = useSuccessSnackbar();
-    const setError = useErrorSnackbar();
+  const setSuccess = useSuccessSnackbar();
+  const setError = useErrorSnackbar();
 
-    const exercises = useGetQuery(["exercises"], "/exercise");
-  
-    const addExercise = usePostMutation(["exercises"], "/exercise", ["exercises"]);
-    const updateExercise = usePutMutation(["exercises"], ({ id }) => `/exercise/${id}`, ["exercises"]);
-    const deleteExercise = useDeleteMutation(["exercises"], ({ id }) => `/exercise/${id}`, ["exercises"]);
+  const exercises = useGetQuery(["exercises"], "/exercise");
 
-    const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
-        try {
-            await mutationFn(data);
-            setSuccess(successMessage);
-        } catch (error) {
-            setError(error?.response?.data?.error || errorMessage);
-        }
-    };
+  const createExerciseMutation = usePostMutation(["exercises"], "/exercise", ["exercises"]);
+  const updateExerciseMutation = usePutMutation(["exercises"], ({ id }) => `/exercise/${id}`, ["exercises"]);
+  const deleteExerciseMutation = useDeleteMutation(["exercises"], ({ id }) => `/exercise/${id}`, ["exercises"]);
 
-    return {
-        exercises,
-        addExercise: (data) => handleMutation(addExercise, data, "Exercise added successfully!", "Failed to add exercise."),
-        updateExercise: (data) => handleMutation(updateExercise, data, "Exercise updated successfully!", "Failed to update exercise."),
-        deleteExercise: (data) => handleMutation(deleteExercise, data, "Exercise deleted successfully!", "Failed to delete exercise."),
-    };
+  const handle = async (fn, data, successMsg, errorMsg) => {
+    try {
+      await fn(data);
+      setSuccess(successMsg);
+    } catch (err) {
+      setError(errorMsg);
+    }
+  };
+
+  return {
+    exercises,
+    addExercise: (data) => handle(createExerciseMutation, data, "Exercise created!", "Failed to create exercise."),
+    updateExercise: (data) => handle(updateExerciseMutation, data, "Exercise updated!", "Failed to update exercise."),
+    deleteExercise: (data) => handle(deleteExerciseMutation, data, "Exercise deleted!", "Failed to delete exercise."),
+  };
 };

@@ -1,24 +1,27 @@
-import Home from "@pages/Home";
-import Settings from "@pages/Settings";
-import Support from "@pages/Support";
-import Programs from "@pages/Programs";
-import Exercises from "@pages/Exercises";
-import Split from "@pages/Split";
-import Workout from "@pages/Workout";
-import Workouts from "@pages/Workouts";
-
-import ForgotPassword from "@pages/ForgotPassword";
-import Login from "@pages/Login";
-import Register from "@pages/Register";
+import ForgotPassword from "@pages/auth/ForgotPassword";
+import Login from "@pages/auth/Login";
+import Register from "@pages/auth/Register";
+import ActivateAccount from "@pages/auth/ActivateAccount";
+import ResetPassword from "@pages/auth/ResetPassword";
 
 import { PageBuilder } from "./PageBuilder";
-import Users from "@pages/Users";
-import ProgramEdit from "@pages/ProgramEdit";
-import Program from "@pages/Program";
-import ActivateAccount from "@pages/ActivateAccount";
-import ResetPassword from "@pages/ResetPassword";
-import Profile from "@pages/Profile";
-import CreateProgram from "../pages/CreateProgram";
+
+import ProgramEdit from "@pages/app/program/ProgramEdit";
+import Program from "@pages/app/program/Program";
+import CreateProgram from "@pages/app/program/CreateProgram";
+import Programs from "@pages/app/program/Programs";
+
+import Profile from "@pages/app/Profile";
+import Home from "@pages/app/Home";
+import Settings from "@pages/app/Settings";
+import Support from "@pages/app/Support";
+import Exercises from "@pages/app/Exercises";
+import Split from "@pages/app/Split";
+
+import Workout from "@pages/app/Workout";
+import Workouts from "@pages/app/Workouts";
+
+import Users from "@pages/app/admin/Users";
 
 export const homePage = new PageBuilder()
   .element(Home).title("Home").subtitle("welcome to your dashboard")

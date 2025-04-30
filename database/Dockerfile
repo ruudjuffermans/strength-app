@@ -1,6 +1,5 @@
-ARG POSTGRES_VERSION
+ARG POSTGRES_VERSION=16
 FROM postgres:${POSTGRES_VERSION}
 
-COPY ./sql/* /docker-entrypoint-initdb.d/
+COPY ./schema/* /docker-entrypoint-initdb.d/
 RUN chmod 644 /docker-entrypoint-initdb.d/*
-

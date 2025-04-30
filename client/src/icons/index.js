@@ -35,6 +35,7 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import LockIcon from '@mui/icons-material/Lock';
 
 export default {
   edit: EditIcon,
@@ -74,5 +75,6 @@ export default {
   remove: RemoveIcon,
   radioOn: RadioButtonCheckedIcon,
   radioOff: RadioButtonUncheckedIcon,
-  arrow: KeyboardArrowDownIcon
+  arrow: KeyboardArrowDownIcon,
+  lock: LockIcon
 };

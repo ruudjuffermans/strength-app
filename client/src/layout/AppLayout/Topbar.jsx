@@ -16,7 +16,6 @@ const Topbar = ({ open, setOpen, user }) => {
   const colors = theme.palette.colors;
   const colorMode = useContext(ColorModeContext);
   const { isMobile } = useResponsive();
-  console.log(user)
   const content = (
     <Box display="flex" backgroundColor={isMobile && colors.base[400]} justifyContent="space-between" alignItems="center" p={2}>
       {isMobile ? (

@@ -1,0 +1,107 @@
+{
+    "info": {
+      "_postman_id": "5e83287c-a55e-4d6c-a3b2-programapi123456",
+      "name": "Program API",
+      "description": "Program and Split management endpoints",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Get All Programs",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": "{{BASE_URL}}/program"
+        }
+      },
+      {
+        "name": "Get Program by ID",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": "{{BASE_URL}}/program/1"
+        }
+      },
+      {
+        "name": "Create Program",
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"My New Program\",\n  \"description\": \"Push Pull Legs Split\"\n}"
+          },
+          "url": "{{BASE_URL}}/program"
+        }
+      },
+      {
+        "name": "Update Program",
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Updated Program Name\",\n  \"description\": \"Updated program description\"\n}"
+          },
+          "url": "{{BASE_URL}}/program/1"
+        }
+      },
+      {
+        "name": "Delete Program",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": "{{BASE_URL}}/program/1"
+        }
+      },
+      {
+        "name": "Activate Program",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "url": "{{BASE_URL}}/program/1/activate"
+        }
+      },
+      {
+        "name": "Add Split to Program",
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Push Day\",\n  \"description\": \"Chest, Shoulders, Triceps\"\n}"
+          },
+          "url": "{{BASE_URL}}/program/split/1"
+        }
+      },
+      {
+        "name": "Edit Split",
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Updated Split Name\",\n  \"description\": \"Updated split description\"\n}"
+          },
+          "url": "{{BASE_URL}}/program/split/1"
+        }
+      },
+      {
+        "name": "Remove Split",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": "{{BASE_URL}}/program/split/1"
+        }
+      }
+    ]
+  }
+  

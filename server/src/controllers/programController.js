@@ -1,81 +1,169 @@
-const { programHandler } = require('../handlers');
+const { programHandler, splitHandler } = require('../handlers');
+const AppError = require('../utils/appError');
 
 const getAllPrograms = async (req, res) => {
-  try {
-    const exercises = await programHandler.getAllPrograms(req.user.id);
-    res.status(200).json(exercises);
-  } catch (error) {
-    console.error("Error fetching all programs:", error);
-    res.status(500).json(error);
-  }
+  const userId = req.user.id;
+  
+  const programs = await programHandler.getAllPrograms(userId);
+  res.status(200).json(programs);
 }
 
 const getProgramById = async (req, res) => {
-  const { id } = req.params;
-  const program = await programHandler.getProgramById(id);
+  const userId = req.user.id;
+  const { source, programId } = req.params;
+  
+  const program = await programHandler.getProgramById(userId, source, programId);
   if (!program) {
     return res.status(404).json({ error: "Program not found." });
   }
   res.status(200).json(program);
 }
 
-const createProgram = async (req, res) => {
+const createUserProgram = async (req, res) => {
+  const userId = req.user.id;
   const { name, description } = req.body;
-  console.log("hit")
-  const createdProgram = await programHandler.createProgram(name, description, req.user.id);
+
+  const createdProgram = await programHandler.createProgram(userId, name, description);
   res.status(200).json(createdProgram);
 }
 
 const activateProgram = async (req, res) => {
-  const { id } = req.params;
-  const ctx = req.user;
+  const userId = req.user.id;
+  const { programId } = req.params;
 
-  const updatedProgram = await programHandler.activateProgram(id, ctx.id);
-  res.status(200).json(updatedProgram);
+  const program = await programHandler.getProgramById(programId, 'user', userId);
+
+  if (!program) {
+    throw new AppError('Program not found or not owned by user.', 404);
+  }
+
+  const activatedProgram = await programHandler.activateProgram(userId, programId);
+  res.status(200).json(activatedProgram);
 }
 
-const updateProgram = async (req, res) => {
-  const { id } = req.params;
-  const { name, description } = req.body;
-  const updatedProgram = await programHandler.updateProgram(id, name, description);
-  res.status(200).json(updatedProgram);
-}
-
-const deleteProgram = async (req, res) => {
-  const { id } = req.params;
-  await programHandler.deleteProgram(id);
-  res.status(200).json();
-}
-
-const addSplit = async (req, res) => {
+const updateUserProgram = async (req, res) => {
+  const userId = req.user.id;
   const { programId } = req.params;
   const { name, description } = req.body;
-  const updatedProgram = await programHandler.addSplit(programId, name, description);
+
+  const updatedProgram = await programHandler.updateUserProgram(userId, programId, name, description);
   res.status(200).json(updatedProgram);
 }
 
-const editSplit = async (req, res) => {
-  const { splitId } = req.params;
-  const { name, description } = req.body;
-  const updatedProgram = await programHandler.editSplit(splitId, name, description);
-  res.status(200).json(updatedProgram);
-}
-
-const removeSplit = async (req, res) => {
-  const { splitId } = req.params;
-  await programHandler.removeSplit(splitId);
+const deleteUserProgram = async (req, res) => {
+  const { programId } = req.params;
+  await programHandler.deleteUserProgram(programId);
   res.status(200).json();
 }
+const createSplit = async (req, res) => {
+  const userId = req.user.id;
+  const { programId } = req.params;
+  const { name, description } = req.body;
 
+  const program = await programHandler.getProgramById(programId, 'user', userId);
+
+  if (!program) {
+    throw new AppError('Program not found or not owned by user.', 404);
+  }
+
+  const updatedProgram = await programHandler.addSplit(programId, name, description);
+  res.status(200).json(updatedProgram);
+};
+
+const updateSplit = async (req, res) => {
+  const userId = req.user.id;
+  const { programId, splitId } = req.params;
+  const { name, description } = req.body;
+
+  const program = await programHandler.getProgramById(programId, 'user', userId);
+
+  if (!program) {
+    throw new AppError('Program not found or not owned by user.', 404);
+  }
+
+  const updatedProgram = await programHandler.editSplit(splitId, name, description);
+  res.status(200).json(updatedProgram);
+};
+
+const deleteSplit = async (req, res) => {
+  const userId = req.user.id;
+  const { programId, splitId } = req.params;
+
+  const program = await programHandler.getProgramById(programId, 'user', userId);
+
+  if (!program) {
+    throw new AppError('Program not found or not owned by user.', 404);
+  }
+
+  await splitHandler.deleteSplit(splitId);
+  res.status(200).json({ message: 'Split deleted successfully.' });
+};
+
+const createUserExercise = async (req, res) => {
+  const { programId, splitId, exerciseId } = req.params;
+  const { sets, reps } = req.body
+
+  const program = await programHandler.getProgramById(programId, 'user', userId);
+
+  if (!program) {
+    throw new AppError('Program not found or not owned by user.', 404);
+  }
+
+  const createdExerciseSplit = await splitExerciseHandler.createExercise(splitId, exerciseId, sets, reps);
+  res.status(201).json(createdExerciseSplit);
+};
+
+const updateUserExercise = async (req, res) => {
+  const { programId, splitId, exerciseId } = req.params;
+  const { reps, sets } = req.body
+
+  const program = await programHandler.getProgramById(programId, 'user', userId);
+
+  if (!program) {
+    throw new AppError('Program not found or not owned by user.', 404);
+  }
+
+  const updatedExerciseSplit = await splitExerciseHandler.updateExercise(splitId, exerciseId, reps, sets);
+  res.status(201).json(updatedExerciseSplit);
+};
+
+const deleteUserExercise = async (req, res) => {
+  const { programId, splitId, exerciseId } = req.params;
+
+  const program = await programHandler.getProgramById(programId, 'user', userId);
+
+  if (!program) {
+    throw new AppError('Program not found or not owned by user.', 404);
+  }
+
+  await splitExerciseHandler.deleteExercise(splitId, exerciseId);
+  res.status(201).json();
+};
+
+const reorderExercises = async (req, res) => {
+  const { programId, splitId } = req.params;
+  const exercises = req.body;
+
+  if (!Array.isArray(exercises)) {
+    return res.status(400).json({ error: "Invalid format. Expected { exercises: [...] }" });
+  }
+
+  await splitExerciseHandler.reorderExercises(programId, splitId, exercises);
+  res.status(200).json({ message: "Order updated successfully." });
+};
 
 module.exports = {
   getAllPrograms,
   getProgramById,
-  createProgram,
-  updateProgram,
-  deleteProgram,
+  createUserProgram,
+  updateUserProgram,
+  deleteUserProgram,
   activateProgram,
-  addSplit,
-  editSplit,
-  removeSplit
+  createSplit,
+  updateSplit,
+  deleteSplit,
+  createUserExercise,
+  updateUserExercise,
+  deleteUserExercise,
+  reorderExercises
 };

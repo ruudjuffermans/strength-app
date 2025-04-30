@@ -55,100 +55,113 @@ async function getSplitById(id) {
   }
 }
 
-async function createSplit(programId, name) {
-  const result = await pool.query(
-    `INSERT INTO split (program_id, name)
-     VALUES ($1, $2) RETURNING *`,
-    [programId, name]
-  );
+async function createSplit(programId, name, description) {
+  const result = await pool.query(`
+    INSERT INTO split (program_ref_id, program_source, name, description)
+    SELECT program_id, source, $1, $2
+    FROM program
+    WHERE program_id = $3
+    RETURNING *
+  `, [name, description, programId]);
+
   return result.rows[0];
 }
 
-async function updateSplit(id, name) {
-  const result = await pool.query(
-    `UPDATE split SET name = $2 WHERE id = $1 RETURNING *`,
-    [id, name]
-  );
+async function updateSplit(splitId, name, description) {
+  const result = await pool.query(`
+    UPDATE split
+    SET name = $1,
+        description = $2
+    WHERE id = $3
+    RETURNING *
+  `, [name, description, splitId]);
+
+  if (result.rows.length === 0) {
+    throw new AppError("Split not found", 404);
+  }
+
   return result.rows[0];
 }
 
-async function deleteSplit(id) {
+async function deleteSplit(splitId) {
   const result = await pool.query(
     `DELETE FROM split
      WHERE id = '$1'
      RETURNING *`,
-    [id]
+    [splitId]
   );
-  return result.rows[0];
-}
-
-async function addExercise(splitId, exerciseId, sets, reps) {
-    // Get the next order number
-    const { rows } = await pool.query(
-      `SELECT COALESCE(MAX(exercise_order), 0) + 1 AS next_order FROM split_exercise WHERE split_id = $1`,
-      [splitId]
-    );
-    const nextOrder = rows[0].next_order;
-
-    // Insert the new exercise with the next order value
-    const result = await pool.query(
-      `INSERT INTO split_exercise (split_id, exercise_id, sets, reps, exercise_order)
-         VALUES ($1, $2, $3, $4, $5)
-         RETURNING *`,
-      [splitId, exerciseId, sets, reps, nextOrder]
-    );
-
-    return result.rows[0];
-}
-
-async function editExercise(id, reps, sets) {
-  const result = await pool.query(
-    `UPDATE split_exercise SET reps = $2, sets = $3 WHERE id = $1 RETURNING *`,
-    [id, reps, sets]
-  );
-  return result.rows[0];
-}
-
-async function removeExercise(id) {
-  const result = await pool.query(
-    `DELETE FROM split_exercise
-     WHERE id = $1
-     RETURNING *`,
-    [id]
-  );
-  return result.rows[0];
-}
-
-async function reorderExercises(splitId, reorderedList) {
-  const client = await pool.connect();
-  try {
-    await client.query("BEGIN");
-
-    for (const { id, order } of reorderedList) {
-      await client.query(
-        `UPDATE split_exercise
-         SET exercise_order = $1
-         WHERE id = $2 AND split_id = $3`,
-        [order, id, splitId]
-      );
-    }
-
-    await client.query("COMMIT");
-  } catch (error) {
-    await client.query("ROLLBACK");
-    console.error("Error reordering split exercises:", error);
-    throw new Error("Failed to reorder exercises");
-  } finally {
-    client.release();
+  
+  if (result.rows.length === 0) {
+    throw new AppError("Split not found", 404);
   }
+
+  return result.rows[0];
 }
+
+// async function addExercise(splitId, exerciseId, sets, reps) {
+//     // Get the next order number
+//     const { rows } = await pool.query(
+//       `SELECT COALESCE(MAX(exercise_order), 0) + 1 AS next_order FROM split_exercise WHERE split_id = $1`,
+//       [splitId]
+//     );
+//     const nextOrder = rows[0].next_order;
+
+//     // Insert the new exercise with the next order value
+//     const result = await pool.query(
+//       `INSERT INTO split_exercise (split_id, exercise_id, sets, reps, exercise_order)
+//          VALUES ($1, $2, $3, $4, $5)
+//          RETURNING *`,
+//       [splitId, exerciseId, sets, reps, nextOrder]
+//     );
+
+//     return result.rows[0];
+// }
+
+// async function editExercise(id, reps, sets) {
+//   const result = await pool.query(
+//     `UPDATE split_exercise SET reps = $2, sets = $3 WHERE id = $1 RETURNING *`,
+//     [id, reps, sets]
+//   );
+//   return result.rows[0];
+// }
+
+// async function removeExercise(id) {
+//   const result = await pool.query(
+//     `DELETE FROM split_exercise
+//      WHERE id = $1
+//      RETURNING *`,
+//     [id]
+//   );
+//   return result.rows[0];
+// }
+
+// async function reorderExercises(splitId, reorderedList) {
+//   const client = await pool.connect();
+//   try {
+//     await client.query("BEGIN");
+
+//     for (const { id, order } of reorderedList) {
+//       await client.query(
+//         `UPDATE split_exercise
+//          SET exercise_order = $1
+//          WHERE id = $2 AND split_id = $3`,
+//         [order, id, splitId]
+//       );
+//     }
+
+//     await client.query("COMMIT");
+//   } catch (error) {
+//     await client.query("ROLLBACK");
+//     console.error("Error reordering split exercises:", error);
+//     throw new Error("Failed to reorder exercises");
+//   } finally {
+//     client.release();
+//   }
+// }
 
 module.exports = {
   getSplitById,
+  createSplit,
   updateSplit,
-  deleteSplit,
-  addExercise,
-  editExercise,
-  removeExercise,
-  reorderExercises
+  deleteSplit
 };

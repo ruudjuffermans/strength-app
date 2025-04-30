@@ -1,137 +1,99 @@
 const pool = require("../db");
+const AppError = require("../utils/appError");
+
 
 async function getAllPrograms(userId) {
   const result = await pool.query(`
-    SELECT 
-      p.id AS program_id, 
-      p.name AS program_name, 
-      p.description AS program_description,
-      p.created_by AS program_owner,
-      s.id AS split_id, 
-      s.name AS split_name,
-      s.description AS split_description
-    FROM program p
-    LEFT JOIN split s ON p.id = s.program_id
-    WHERE p.created_by IN (2, $1)
+    SELECT * FROM program
+    WHERE source = 'base' OR (source = 'user' AND user_id = $1)
   `, [userId]);
 
-  const programs = {};
-
-  result.rows.forEach((row) => {
-    const programId = row.program_id;
-
-    if (!programs[programId]) {
-      programs[programId] = {
-        id: programId,
-        name: row.program_name,
-        description: row.program_description,
-        owner: row.program_owner,
-        splits: [],
-      };
-    }
-
-    if (row.split_id) {
-      programs[programId].splits.push({
-        id: row.split_id,
-        name: row.split_name,
-        description: row.split_description,
-      });
-    }
-  });
-
-  return Object.values(programs); // Convert object to array
+  return result.rows;
 }
 
+async function getProgramById(userId, source, programId) {
+  const result = await pool.query(`
+    SELECT * FROM program
+    WHERE program_id = $1
+      AND source = $2
+      AND (
+        source = 'base'
+        OR (source = 'user' AND user_id = $3)
+      )
+  `, [programId, source, userId]);
 
-async function getProgramById(groupId) {
-  const result = await pool.query(
-    `SELECT * FROM program WHERE id = $1;`,
-    [groupId]
-  );
+  if (result.rows.length === 0) {
+    throw new AppError("Program not found", 404);
+  }
 
   return result.rows[0];
 }
 
-async function createProgram(name, description, userId) {
+async function createProgram(userId, name, description) {
   const result = await pool.query(
-    `INSERT INTO program (name, description, created_by)
+    `INSERT INTO user_program (user_id, name, description)
      VALUES ($1, $2, $3) RETURNING *`,
-    [name, description, userId]
+    [userId, name, description]
   );
   return result.rows[0];
 }
 
-async function activateProgram(id, userId) {
+async function updateUserProgram(userId, programId, name, description) {
   const result = await pool.query(
-    `UPDATE user_account 
-     SET active_program = $1
+    `UPDATE user_prograsm 
+     SET name = $3, description = $4
      WHERE id = $2
+       AND user_id = $1 
      RETURNING *`,
-    [id, userId]
+    [userId, programId, name, description]
   );
+
+  if (result.rows.length === 0) {
+    throw new AppError("Program not found", 404);
+  }
+
   return result.rows[0];
 }
 
-async function updateProgram(id, name, description) {
+async function deleteUserProgram(userId, programId) {
   const result = await pool.query(
-    `UPDATE program 
-     SET name = $2, description = $3
-     WHERE id = $1
+    `DELETE FROM user_program
+     WHERE id = $2
+     AND user_id = $1 
      RETURNING *`,
-    [id, name, description]
+    [userId, programId]
   );
+
+  if (result.rows.length === 0) {
+    throw new AppError("Program not found", 404);
+  }
+
   return result.rows[0];
 }
 
-async function deleteProgram(id) {
+async function activateProgram(userId, programId) {
   const result = await pool.query(
-    `DELETE FROM program
-     WHERE id = $1
+    `UPDATE user_program 
+     SET program_state = 'Active'
+     WHERE id = $2
+       AND user_id = $1 
      RETURNING *`,
-    [id]
+    [userId, programId]
   );
+
+  if (result.rows.length === 0) {
+    throw new AppError("Program not found", 404);
+  }
+
   return result.rows[0];
 }
 
-async function addSplit(programId, name, description) {
-  const result = await pool.query(
-    `INSERT INTO split (program_id, name, description)
-     VALUES ($1, $2, $3)
-     RETURNING *`,
-    [programId, name, description]
-  );
-  return result.rows[0];
-}
-
-
-async function editSplit(splitId, name, description) {
-  const result = await pool.query(
-    `UPDATE split 
-     SET name = $2,
-     description = $3
-     WHERE id = $1
-     RETURNING *`,
-    [splitId, name, description]
-  );
-  return result.rows[0];
-}
-
-async function removeSplit(splitId) {
-  await pool.query(
-    `DELETE FROM split 
-     WHERE id = $1`,
-    [splitId]
-  );
-}
 
 module.exports = {
   createProgram,
   getProgramById,
+  updateUserProgram,
+  deleteUserProgram,
   getAllPrograms,
-  updateProgram,
-  deleteProgram,
   activateProgram,
-  editSplit,
-  removeSplit,
-  addSplit
 };

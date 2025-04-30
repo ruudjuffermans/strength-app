@@ -1,4 +1,4 @@
-const nodemailer = require("nodeMailer");
+const nodemailer = require("nodemailer");
 
 const config = require("../utils/config.js");
 

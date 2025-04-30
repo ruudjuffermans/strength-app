@@ -1,0 +1,63 @@
+{
+    "info": {
+      "_postman_id": "d3c4ee43-7a4c-4c18-bbbb-123456789def",
+      "name": "Exercise API",
+      "description": "Endpoints for managing exercises",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Get All Exercises",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": "{{BASE_URL}}/exercise"
+        }
+      },
+      {
+        "name": "Get Exercise by ID",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": "{{BASE_URL}}/exercise/1"
+        }
+      },
+      {
+        "name": "Create Exercise",
+        "request": {
+          "method": "POST",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Incline Bench Press\",\n  \"description\": \"Barbell chest exercise\",\n  \"muscle_group\": \"Chest\",\n  \"equipment_type\": \"Barbell\"\n}"
+          },
+          "url": "{{BASE_URL}}/exercise"
+        }
+      },
+      {
+        "name": "Update Exercise",
+        "request": {
+          "method": "PUT",
+          "header": [
+            { "key": "Content-Type", "value": "application/json" }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"Incline Bench Press Updated\",\n  \"description\": \"Updated description\"\n}"
+          },
+          "url": "{{BASE_URL}}/exercise/1"
+        }
+      },
+      {
+        "name": "Delete Exercise",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": "{{BASE_URL}}/exercise/1"
+        }
+      }
+    ]
+  }
+  

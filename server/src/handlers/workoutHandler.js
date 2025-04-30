@@ -118,16 +118,19 @@ async function getWorkoutById(workoutId) {
 }
 
 async function getAllWorkouts(userId) {
-    const result = await pool.query(`SELECT * FROM workout WHERE created_by IN (2, $1) `, [userId]);
+    const result = await pool.query(`SELECT * FROM workout WHERE user_id = $1 `, [userId]);
     return result.rows;
 }
 
-async function completeWorkout(workoutId, notes) {
-    const result = await pool.query(`UPDATE workout SET workout_state = 'Completed', completed_at =  NOW(), notes = $2 WHERE id = $1 RETURNING *`, [workoutId, notes]);
+async function completeWorkout(userId, workoutId, notes) {
+    const result = await pool.query(
+        `UPDATE workout 
+        SET workout_state = 'Completed', completed_at =  NOW(), notes = $3 
+        WHERE user_id = $1 AND id = $2 RETURNING *`, [userId, workoutId, notes]);
     return result.rows[0];
 }
 
-async function deleteWorkout(workoutId) {
+async function deleteWorkout(userId, workoutId) {
     const result = await pool.query(
         `DELETE FROM workout WHERE id = $1 RETURNING *`,
         [workoutId]
@@ -135,27 +138,47 @@ async function deleteWorkout(workoutId) {
     return result.rows[0];
 }
 
-async function logSet(id, performedReps, weightUsed) {
+async function logSet(userId, logId, performedReps, weightUsed) {
     const result = await pool.query(
         `UPDATE workout_log 
-       SET performed_reps = $2, weight_used = $3, updated = TRUE
-       WHERE id = $1
+       SET performed_reps = $2, weight_used = $3, logged = TRUE
+       WHERE user_id = $1 AND id = $1
        RETURNING *`,
-        [id, performedReps, weightUsed]
+        [userId, logId, performedReps, weightUsed]
     );
     return result.rows[0];
 }
 
-async function updateLoggedSet(id, performedReps, weightUsed) {
+async function updateLoggedSet(userId, logId, performedReps, weightUsed) {
     const result = await pool.query(
         `UPDATE workout_log 
-       SET performed_reps = $2, weight_used = $3, updated = TRUE
-       WHERE id = $1
-       RETURNING *`,
-        [id, performedReps, weightUsed]
+           SET performed_reps = $2, weight_used = $3, logged = TRUE
+           WHERE user_id = $1 AND id = $1
+           RETURNING *`,
+        [userId, logId, performedReps, weightUsed]
     );
     return result.rows[0];
 }
+
+async function completeExercise(userId, workoutId, exerciseOrder) {
+    const result = await pool.query(
+      `
+      UPDATE workout_log
+      SET locked = TRUE
+      WHERE user_id = $1
+        AND workout_id = $2
+        AND exercise_order = $3
+      RETURNING *
+      `,
+      [userId, workoutId, exerciseOrder]
+    );
+  
+    if (result.rows.length === 0) {
+      throw new AppError("No matching log entries found to lock.", 404);
+    }
+  
+    return result.rows;
+  }
 
 module.exports = {
     getAllWorkouts,
@@ -164,5 +187,6 @@ module.exports = {
     completeWorkout,
     deleteWorkout,
     logSet,
-    updateLoggedSet
+    updateLoggedSet,
+    completeExercise
 };

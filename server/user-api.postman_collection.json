@@ -1,0 +1,59 @@
+{
+    "info": {
+      "_postman_id": "a8cf6540-4321-4abc-bbbb-userapi123456",
+      "name": "User API",
+      "description": "Admin endpoints for managing users: approval, role changes, removal",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Get All Users",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": "{{BASE_URL}}/user"
+        }
+      },
+      {
+        "name": "Approve User",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "url": "{{BASE_URL}}/user/approve/1"
+        }
+      },
+      {
+        "name": "Disable User",
+        "request": {
+          "method": "POST",
+          "header": [],
+          "url": "{{BASE_URL}}/user/disable/1"
+        }
+      },
+      {
+        "name": "Remove User",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": "{{BASE_URL}}/user/remove/1"
+        }
+      },
+      {
+        "name": "Set Role: Premium",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": "{{BASE_URL}}/user/set-role-premium/1"
+        }
+      },
+      {
+        "name": "Set Role: User",
+        "request": {
+          "method": "DELETE",
+          "header": [],
+          "url": "{{BASE_URL}}/user/set-role-user/1"
+        }
+      }
+    ]
+  }
+  
