@@ -1,12 +1,12 @@
 import React from 'react'
-import BasePaper from "@components/papers/BasePaper";
+import { Paper } from "@mui/material";
 import {
   Box,
   Typography,
 } from "@mui/material";
 import { useSplit } from '@hooks/useSplit';
-import Header from '@components/Header';
 import TextButton from '@components/TextButton';
+import ContentHeading from '../../../components/headings/ContentHeading';
 
 const SplitTile = ({ id, name, description, navigate }) => {
 
@@ -23,18 +23,18 @@ const SplitTile = ({ id, name, description, navigate }) => {
   };
 
   return (
-    <BasePaper sx={{
+    <Paper sx={{
       flex: "1 1 400px",
       width: "100%",
     }}>
-        <Header sub={true} title={name} subtitle={description} />
+        <ContentHeading title={name} subtitle={description} />
         <Box mt={1} display="flex" flexDirection="column">
         <TextButton style={{float: "right"}} label={"Do the Workout"} onClick={() => handleCreateWorkout({ splitId: id })} />
         </Box>
           <Box mt={3} display="flex" flexDirection="column" gap={1}>
             
             {(split.exercises || []).map((exercise, index) => (
-              <BasePaper
+              <Paper
                 key={index}
                 sx={{
                   p: 1,
@@ -52,10 +52,10 @@ const SplitTile = ({ id, name, description, navigate }) => {
                     </Typography>
                   </Box>
                 </Box>
-              </BasePaper>
+              </Paper>
             ))}
           </Box>
-    </BasePaper>
+    </Paper>
   );
 };
 

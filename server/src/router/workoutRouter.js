@@ -10,7 +10,7 @@ router.put("/:workoutId/complete", asyncHandler(workoutController.completeWorkou
 router.put("/:workoutId/order/:exerciseOrder/complete", asyncHandler(workoutController.completeExercise));
 router.delete("/:workoutId", asyncHandler(workoutController.deleteWorkout));
 router.get("/", asyncHandler(workoutController.getAllWorkouts));
-router.post("/log/:logId", asyncHandler(workoutController.logSet));
+router.put("/log/:logId", asyncHandler(workoutController.logSet));
 router.put("/log/:logId/update", asyncHandler(workoutController.updateLoggedSet));
 router.put("/log/:logId/update", asyncHandler(workoutController.updateLoggedSet));
 

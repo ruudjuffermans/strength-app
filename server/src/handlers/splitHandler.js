@@ -56,16 +56,18 @@ async function getSplitById(id) {
 }
 
 async function createSplit(programId, name, description) {
-  const result = await pool.query(`
-    INSERT INTO split (program_ref_id, program_source, name, description)
-    SELECT program_id, source, $1, $2
-    FROM program
-    WHERE program_id = $3
+  const result = await pool.query(
+    `
+    INSERT INTO split (program_id, name, description)
+    VALUES ($1, $2, $3)
     RETURNING *
-  `, [name, description, programId]);
+    `,
+    [programId, name, description]
+  );
 
   return result.rows[0];
 }
+
 
 async function updateSplit(splitId, name, description) {
   const result = await pool.query(`
@@ -97,6 +99,33 @@ async function deleteSplit(splitId) {
 
   return result.rows[0];
 }
+async function getSplitsByProgramId(programId) {
+  try {
+    const result = await pool.query(
+      `
+      SELECT 
+        id AS split_id,
+        name AS split_name,
+        description AS split_description
+      FROM split
+      WHERE program_id = $1
+      ORDER BY id
+      `,
+      [programId] // ✅ Removed extra 'source'
+    );
+
+    return result.rows.map(row => ({
+      id: row.split_id,
+      name: row.split_name,
+      description: row.split_description,
+    }));
+  } catch (error) {
+    console.error("Error fetching splits by program ID:", error);
+    throw new Error("Failed to fetch splits for program");
+  }
+}
+
+
 
 // async function addExercise(splitId, exerciseId, sets, reps) {
 //     // Get the next order number
@@ -163,5 +192,6 @@ module.exports = {
   getSplitById,
   createSplit,
   updateSplit,
-  deleteSplit
+  deleteSplit,
+  getSplitsByProgramId
 };

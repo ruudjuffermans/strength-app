@@ -7,9 +7,9 @@ async function seedPrograms() {
         await client.query(`
             INSERT INTO workout (program, split, workout_state, created_at, completed_at, notes, user_id)
             VALUES
-            ('Main Program', 'Legs & Shoulders', 'Completed', NOW() - INTERVAL '3 days', NOW() - INTERVAL '3 days', 'Felt strong, increased squat weight.', 3),
-            ('Main Program', 'Back & Biceps', 'Completed', NOW() - INTERVAL '2 days', NOW() - INTERVAL '2 days', 'Good lat engagement.', 3),
-            ('Main Program', 'Chest & Triceps', 'Active', NOW(), NULL, 'Plan to go heavier next session.', 3)
+            ('Main Program', 'Legs & Shoulders', 'Completed', NOW() - INTERVAL '3 days', NOW() - INTERVAL '3 days', 'Felt strong, increased squat weight.', 1),
+            ('Main Program', 'Back & Biceps', 'Completed', NOW() - INTERVAL '2 days', NOW() - INTERVAL '2 days', 'Good lat engagement.', 1),
+            ('Main Program', 'Chest & Triceps', 'Active', NOW(), NULL, 'Plan to go heavier next session.', 1)
             ON CONFLICT DO NOTHING;
         `);
 

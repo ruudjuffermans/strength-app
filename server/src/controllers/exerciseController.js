@@ -38,6 +38,8 @@ const deleteExercise = async (req, res) => {
   const userId = req.user.id
   const { exerciseId } = req.params;
 
+  console.log(userId, exerciseId)
+
   const deletedExercise = await exerciseHandler.deleteUserExercise(userId, exerciseId);
   res.status(200).json(deletedExercise);
 }

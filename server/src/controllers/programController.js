@@ -1,4 +1,5 @@
-const { programHandler, splitHandler } = require('../handlers');
+const { programController } = require('.');
+const { programHandler, splitHandler, splitExerciseHandler, userHandler } = require('../handlers');
 const AppError = require('../utils/appError');
 
 const getAllPrograms = async (req, res) => {
@@ -8,16 +9,45 @@ const getAllPrograms = async (req, res) => {
   res.status(200).json(programs);
 }
 
+// const getProgramById = async (req, res) => {
+//   const userId = req.user.id;
+//   const { source, programId } = req.params;
+
+//   console.log(userId, source, programId)
+  
+//   const program = await programHandler.getProgramById(userId, source, programId);
+//   if (!program) {
+//     return res.status(404).json({ error: "Program not found." });
+//   }
+//   res.status(200).json(program);
+// }
+
 const getProgramById = async (req, res) => {
   const userId = req.user.id;
-  const { source, programId } = req.params;
-  
-  const program = await programHandler.getProgramById(userId, source, programId);
+  const { programId } = req.params;
+
+  // Fetch base program info
+  const program = await programHandler.getProgramById(userId, programId);
   if (!program) {
     return res.status(404).json({ error: "Program not found." });
   }
+
+  // Fetch splits for this program
+  const splits = await splitHandler.getSplitsByProgramId(programId);
+  console.log(splits)
+
+  // For each split, fetch exercises
+  for (const split of splits) {
+    const exercises = await splitExerciseHandler.getExercisesBySplitId(split.id);
+    split.exercises = exercises; // Attach exercises to the split
+  }
+
+  // Attach splits to the program
+  program.splits = splits;
+
   res.status(200).json(program);
-}
+};
+
 
 const createUserProgram = async (req, res) => {
   const userId = req.user.id;
@@ -31,7 +61,7 @@ const activateProgram = async (req, res) => {
   const userId = req.user.id;
   const { programId } = req.params;
 
-  const program = await programHandler.getProgramById(programId, 'user', userId);
+  const program = await userHandler.setActiveProgram(userId, programId);
 
   if (!program) {
     throw new AppError('Program not found or not owned by user.', 404);

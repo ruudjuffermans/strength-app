@@ -1,37 +1,41 @@
 import { Box } from "@mui/material";
 import CustomInput from "@components/CustomInput";
 import { Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import * as yup from "yup";
 import { useAuth } from "@context/AuthContext";
 import Button from "@components/buttons/Button";
+import InfoDialog from "../../../components/dialogs/InfoDialog";
 
 const checkoutSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("required"),
   firstname: yup.string().required("required"),
   lastname: yup.string().required("required"),
-  password: yup.string().required("required").min(6, "Minimum 6 characters"),
 });
 
 const initialValues = {
   email: "",
   firstname: "",
-  lastname: "",
-  password: "",
+  lastname: ""
 };
 
 const Register = ({ colors, theme, user, navigate, isMobile, params }) => {
 
-  const {
-    register,
-  } = useAuth();
+  const { register } = useAuth();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleFormSubmit = async (values) => {
-    register(values).then(navigate("/login"))
-    
+    try {
+      await register(values);
+      setOpenDialog(true);
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
   };
 
   return (
+    <>
+
     <Box sx={!isMobile ? { minWidth: "500px" } : { height: "100%" }} p={4}>
       <Formik
         onSubmit={handleFormSubmit}
@@ -89,17 +93,6 @@ const Register = ({ colors, theme, user, navigate, isMobile, params }) => {
                 helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 4" }}
               />
-              <CustomInput
-                type="password"
-                label="Password"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.password}
-                name="password"
-                error={!!touched.password && !!errors.password}
-                helperText={touched.password && errors.password}
-                sx={{ gridColumn: "span 4" }}
-              />
             </Box>
             <Box display="flex" justifyContent="end" mt="20px">
               <Button label={"Register"} type="submit" color="secondary" variant="contained" />
@@ -108,6 +101,15 @@ const Register = ({ colors, theme, user, navigate, isMobile, params }) => {
         )}
       </Formik>
     </Box>
+    <InfoDialog
+  open={openDialog}
+  onClose={() => setOpenDialog(false)}
+  title="Registration Successful"
+  message="Your account has been registered and is awaiting review. Once approved by an administrator, you will receive an email containing your login password."
+  confirmLabel="Go to Login"
+  onConfirm={() => navigate("/login")}
+/>
+    </>
   );
 };
 

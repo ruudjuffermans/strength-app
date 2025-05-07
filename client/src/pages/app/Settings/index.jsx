@@ -1,13 +1,12 @@
 import { Box, Modal, TextField, Typography } from "@mui/material";
 import Button from "@components/buttons/Button";
-import BasePaper from "@components/papers/BasePaper";
+import { Paper } from "@mui/material";
 import React, { useState } from "react";
 import CustomInput from "@components/CustomInput";
 
 const Settings = ({ colors, theme, user, navigate, isMobile, params }) => {
   const [open, setOpen] = useState(false);
 
-  // Functions to open and close the modal
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
@@ -20,18 +19,19 @@ const Settings = ({ colors, theme, user, navigate, isMobile, params }) => {
 
       <Modal open={open} onClose={handleClose}>
         <Box>
-          <BasePaper
+          <Paper
             sx={{
               position: "absolute",
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
               width: 400,
-              bgcolor: "background.paper",
+              bgcolor: theme.palette.background.paper,
               boxShadow: 24,
+              p: 4
             }}
           >
-            <Typography variant="h3" mb={1}>
+            <Typography variant="h3" mb={2}>
               Modal Title
             </Typography>
             <Typography variant="body2">
@@ -42,14 +42,13 @@ const Settings = ({ colors, theme, user, navigate, isMobile, params }) => {
               <CustomInput
                 fullWidth
                 label="Input Field"
-                variant="outlined"
               />
             </Box>
             <Box display="flex" justifyContent="flex-end" gap={2}>
               <Button variant="outlined" label={"Cancel"} color="secondary" onClick={handleClose} />
               <Button variant="contained" label={"Save"} color="primary" onClick={handleClose} />
             </Box>
-          </BasePaper>
+          </Paper>
         </Box>
       </Modal>
     </Box>

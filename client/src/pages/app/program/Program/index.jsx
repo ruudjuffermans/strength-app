@@ -1,14 +1,14 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { usePrograms } from "@hooks/usePrograms";
+import { useProgram } from "@hooks/useProgram";
 import PagePaper from "@components/papers/PagePaper";
 import SplitTile from "./SplitTile";
 
 const Program = ({ params, navigate, user, isAdmin }) => {
-  const { programs } = usePrograms();
   const { programId } = params;
+  const { program } = useProgram(programId, "base");
 
-  const program = programs.find(program => program.id == programId);
+  // const program = programs.find(program => program.id == programId);
 
   return (
     <PagePaper m={2} title={program.name} subtitle={program.description}>

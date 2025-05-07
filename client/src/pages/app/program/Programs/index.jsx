@@ -1,69 +1,39 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-} from "@mui/material";
-import Button from "@components/buttons/Button";
+import { Box } from "@mui/material";
 import { usePrograms } from "@hooks/usePrograms";
+import ProgramSelector from "./ProgramSelector";
 import ProgramTile from "./ProgramTile";
+import { startTransition } from "react";
 
-const Programs = ({ colors, navigate, user }) => {
-  const {
-    programs,
-    createProgram,
-    updateProgram,
-    deleteProgram,
-    activateProgram,
-    addSplit,
-    editSplit,
-    deleteSplit,
-  } = usePrograms();
+const Programs = ({ colors, navigate, isMobile }) => {
+  const {programs} = usePrograms();
+  const [selectedProgramId, setSelectedProgramId] = useState(undefined);
 
-  // State for Add/Edit Program Dialog
-  const [openProgramDialog, setOpenProgramDialog] = useState(false);
-  const [programData, setProgramData] = useState({
-    id: null,
-    name: "",
-    description: "",
-  });
-  const [error, setError] = useState({ name: "", description: "" });
-
-  // State for Add/Edit Split Dialog
-  const [openSplitDialog, setOpenSplitDialog] = useState(false);
-  const [splitData, setSplitData] = useState({
-    id: null,
-    programId: null,
-    name: "",
-    description: ""
-  });
-
-  const handleActivateProgram = (id) => {
-    activateProgram({ programId: id });
+  const handleSelect = (id) => {
+    startTransition(() => setSelectedProgramId(id));
   };
 
-  console.log(programs)
+  const selectedProgram = programs.find(p => p.id === selectedProgramId);
 
   return (
-      <Box display="flex" flexDirection={"column"} gap={3}>
-        {programs.map(({ id, name, description, splits }) => (
-          <ProgramTile
-            key={id}
-            id={id}
-            name={name}
-            colors={colors}
-            description={description}
-            splits={splits}
-            navigate={navigate}
-            setActive={handleActivateProgram}
-            isActive={user.active_program == id}
+    <Box>
+      <Box mx={isMobile && 3}>
+        <ProgramSelector
+          size="small"
+          programs={programs}
+          activeId={selectedProgramId}
+          onSelect={handleSelect}
           />
-        ))}
-        {/* <Button label={"Create New Program"} to={"/programs"} /> */}
       </Box>
+      {selectedProgram && (
+        <ProgramTile
+        key={selectedProgram.id}
+          id={selectedProgram.id}
+          colors={colors}
+          navigate={navigate}
+        />
+      )}
+    </Box>
   );
 };
 

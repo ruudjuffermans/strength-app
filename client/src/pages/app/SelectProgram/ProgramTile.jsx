@@ -1,5 +1,5 @@
 import React from "react";
-import BasePaper from "@components/papers/BasePaper";
+import { Paper } from "@mui/material";
 import { Box, Typography } from "@mui/material";
 import Header from "@components/Header";
 import IconButton from "@components/buttons/IconButton";
@@ -8,7 +8,7 @@ import IconButton from "@components/buttons/IconButton";
 const ProgramTile = ({ id, name, colors, description, splits, setActive, isActive }) => {
 
   return (
-    <BasePaper sx={{
+    <Paper sx={{
       position: "relative",
       flex: "1 1 400px",
       cursor: "pointer",
@@ -32,7 +32,7 @@ const ProgramTile = ({ id, name, colors, description, splits, setActive, isActiv
           ))}
         </ul>
       </Box>
-    </BasePaper>
+    </Paper>
   );
 };
 

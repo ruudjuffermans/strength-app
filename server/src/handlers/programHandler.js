@@ -5,22 +5,18 @@ const AppError = require("../utils/appError");
 async function getAllPrograms(userId) {
   const result = await pool.query(`
     SELECT * FROM program
-    WHERE source = 'base' OR (source = 'user' AND user_id = $1)
+    WHERE creator = $1 OR creator IS NULL
   `, [userId]);
 
   return result.rows;
 }
 
-async function getProgramById(userId, source, programId) {
+async function getProgramById(userId, programId) {
+  console.log(userId, programId)
   const result = await pool.query(`
     SELECT * FROM program
-    WHERE program_id = $1
-      AND source = $2
-      AND (
-        source = 'base'
-        OR (source = 'user' AND user_id = $3)
-      )
-  `, [programId, source, userId]);
+    WHERE id = $1 AND (creator = $2 OR creator IS NULL)
+  `, [programId, userId]);
 
   if (result.rows.length === 0) {
     throw new AppError("Program not found", 404);
@@ -29,9 +25,10 @@ async function getProgramById(userId, source, programId) {
   return result.rows[0];
 }
 
+
 async function createProgram(userId, name, description) {
   const result = await pool.query(
-    `INSERT INTO user_program (user_id, name, description)
+    `INSERT INTO program (creator, name, description)
      VALUES ($1, $2, $3) RETURNING *`,
     [userId, name, description]
   );
@@ -40,10 +37,10 @@ async function createProgram(userId, name, description) {
 
 async function updateUserProgram(userId, programId, name, description) {
   const result = await pool.query(
-    `UPDATE user_prograsm 
+    `UPDATE prograsm 
      SET name = $3, description = $4
      WHERE id = $2
-       AND user_id = $1 
+       AND creator = $1 
      RETURNING *`,
     [userId, programId, name, description]
   );
@@ -57,9 +54,9 @@ async function updateUserProgram(userId, programId, name, description) {
 
 async function deleteUserProgram(userId, programId) {
   const result = await pool.query(
-    `DELETE FROM user_program
+    `DELETE FROM program
      WHERE id = $2
-     AND user_id = $1 
+     AND creator = $1 
      RETURNING *`,
     [userId, programId]
   );
@@ -70,24 +67,6 @@ async function deleteUserProgram(userId, programId) {
 
   return result.rows[0];
 }
-
-async function activateProgram(userId, programId) {
-  const result = await pool.query(
-    `UPDATE user_program 
-     SET program_state = 'Active'
-     WHERE id = $2
-       AND user_id = $1 
-     RETURNING *`,
-    [userId, programId]
-  );
-
-  if (result.rows.length === 0) {
-    throw new AppError("Program not found", 404);
-  }
-
-  return result.rows[0];
-}
-
 
 module.exports = {
   createProgram,
@@ -95,5 +74,4 @@ module.exports = {
   updateUserProgram,
   deleteUserProgram,
   getAllPrograms,
-  activateProgram,
 };

@@ -14,7 +14,8 @@
         "prod:clear-data": "NODE_ENV=production node src/scripts/clearData.js",
         "dev:clear-users": "NODE_ENV=development node src/scripts/clearUsers.js",
         "prod:clear-users": "NODE_ENV=production node src/scripts/clearUsers.js",
-        "seed-workouts": "node src/scripts/seedWorkouts.js"
+        "seed-workouts": "node src/scripts/seedWorkouts.js",
+        "seed-logs": "node src/scripts/seedWorkoutLogs.js"
     },
     "author": "",
     "license": "ISC",

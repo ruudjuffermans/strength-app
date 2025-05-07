@@ -9,26 +9,24 @@ import useResponsive from "../../hooks/useResponsive";
 import OptionsMenu from "../../components/OptionsMenu";
 import { useNavigate } from "react-router-dom";
 import IconButton from "@components/buttons/IconButton";
+import CustomInput from "../../components/CustomInput";
 
 const Topbar = ({ open, setOpen, user }) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const colors = theme.palette.colors;
+  const colors = theme.palette;
   const colorMode = useContext(ColorModeContext);
   const { isMobile } = useResponsive();
   const content = (
-    <Box display="flex" backgroundColor={isMobile && colors.base[400]} justifyContent="space-between" alignItems="center" p={2}>
+    <Box display="flex" backgroundColor={isMobile && colors.background[200]} justifyContent="space-between" alignItems="center" p={2}>
       {isMobile ? (
         <IconButton size={"medium"} icon={"menu"} onClick={() => setOpen(!open)} />
       ) : (
         <>
           <Box
             display="flex"
-            backgroundColor={colors.base[200]}
             borderRadius={2}
           >
-            <InputBase sx={{ p: 2, pl: 4, flex: 1 }} placeholder="Search" />
-            <IconButton icon={"search"} type="button" sx={{ p: 1 }} />
           </Box>
           <Box display="flex">
             <OptionsMenu

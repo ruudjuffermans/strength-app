@@ -15,9 +15,10 @@ const typography = {
       'sans-serif',
     ].join(','),
     h1: {
-      fontSize: '3.5rem', 
+      "@media (max-width:480px)": {fontSize: '3rem'},
+      fontSize: '4rem', 
       fontWeight: 700,
-      lineHeight: 1.2,
+      lineHeight: 1.1,
       letterSpacing: '-0.01562em',
     },
     h2: {

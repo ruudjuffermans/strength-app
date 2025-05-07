@@ -2,15 +2,14 @@ const { workoutHandler } = require("../handlers");
 
 const getAllWorkouts = async (req, res) => {
   const userId = req.user.id
-  const { exerciseId } = req.params;
-  const { name, description } = req.body;
   const workouts = await workoutHandler.getAllWorkouts(userId);
   res.status(200).json(workouts);
 };
 
 const createWorkout = async (req, res) => {
   const userId = req.user.id
-  const { splitId } = req.params;
+  const { splitId } = req.body;
+  console.log(splitId)
   const newWorkout = await workoutHandler.createWorkoutFromSplit(userId, splitId);
   res.status(201).json(newWorkout);
 };
@@ -56,9 +55,7 @@ const logSet = async (req, res) => {
   const userId = req.user.id
   const { logId } = req.params;
   const { performedReps, weightUsed } = req.body;
-
   const updatedLog = await workoutHandler.logSet(userId, logId, performedReps, weightUsed);
-
   res.status(200).json(updatedLog);
 };
 

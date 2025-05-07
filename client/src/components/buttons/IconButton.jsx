@@ -16,16 +16,14 @@ const StyledIconButton = styled(MuiIconButton)(({ theme, ownerState }) => ({
   transition: 'background-color 0.2s, box-shadow 0.2s, transform 0.1s',
 
   '&:hover': {
-    backgroundColor: theme.palette.colors.contrast[400],
+    backgroundColor: theme.palette.background[600],
   },
   '&:active': {
     transform: 'scale(0.95)',
     backgroundColor: "unset",
-    // boxShadow: `0 2px 8px ${theme.palette.action.selected}`,
   },
   '&.Mui-disabled': {
-    backgroundColor: theme.palette.colors.contrast[400],
-    // color: "red",
+    backgroundColor: theme.palette.background[400],
   },
 }));
 

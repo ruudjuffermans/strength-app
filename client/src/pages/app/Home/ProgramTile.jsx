@@ -1,52 +1,44 @@
 import React from "react";
-import BasePaper from "@components/papers/BasePaper";
+import { Paper } from "@mui/material";
 import { Box, Typography } from "@mui/material";
-import Header from "@components/Header";
-import { useSplit } from "@hooks/useSplit";
+import ContentHeading from "../../../components/headings/ContentHeading";
+import ContentPaper from "../../../components/papers/ContentPaper";
 
-const ProgramTile = ({ id, name, colors, description, splits, navigate }) => {
+const ProgramTile = ({ id, name, colors, description, splits , handleCreateWorkout }) => {
 
   return (
-    <BasePaper sx={{
-      position: "relative",
-      background: colors.primary[200],
-    }}
-    >
-      <Header sub={true} title={name} subtitle={description} />
+    <ContentPaper>
+      <ContentHeading title={name} subtitle={description} />
       <Box display={"flex"} flexDirection={"column"} gap={1}>
-          {splits.map(({ name, description, id }, index) => (
+        {splits.map(({ name, description, id }, index) => (
           <SplitTile
             key={index}
             name={name}
             description={description}
             id={id}
             colors={colors}
-            navigate={navigate}
+            handleCreateWorkout={handleCreateWorkout}
           />
-          ))}
+        ))}
       </Box>
-    </BasePaper>
+    </ContentPaper>
   );
 };
 
 export default ProgramTile;
 
-const SplitTile = ({id, colors, name, navigate}) => {
-      const { createWorkout } = useSplit(id);
-      const handleCreateWorkout = async () => {
-        const res = await createWorkout({splitId: id});
-        navigate(`/workout/${res.id}`)
-      };
-    return (
-        <BasePaper
-        sx={{ p: 1, background: colors.primary[300] }}
-        onClick={() => handleCreateWorkout()}
-      >
-          <Box sx={{ pl: 1 }}>
-            <Typography variant="body1" fontWeight={300}>
-              {name}
-            </Typography>
-          </Box>
-        </BasePaper>
-    )
+const SplitTile = ({ id, colors, name, handleCreateWorkout }) => {
+
+  return (
+    <Box
+      sx={{ p: 2, background: colors.background[100], borderRadius: 2 }}
+      onClick={() => handleCreateWorkout(id)}
+    >
+      <Box sx={{ pl: 1 }}>
+        <Typography variant="body1">
+          {name}
+        </Typography>
+      </Box>
+    </Box>
+  )
 }

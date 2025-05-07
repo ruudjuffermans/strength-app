@@ -33,7 +33,7 @@ const Item = ({ title, to, icon, selected, setSelected, onItemClick }) => (
 const Sidebar = ({ open, setOpen, user }) => {
   const theme = useTheme();
   const { logout } = useAuth();
-  const colors = theme.palette.colors
+  const colors = theme.palette
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [selected, setSelected] = useState("Dashboard");
   const sidebarRef = useRef(null);
@@ -68,12 +68,14 @@ const Sidebar = ({ open, setOpen, user }) => {
           open={open}
           onClick={handleClose}
           sx={{
-            bgcolor:
-              theme.palette.mode === "light"
-                ? "rgba(0, 0, 0, 0.3)"
-                : "rgba(255, 255, 255, 0.2)",
+            zIndex: 10,
+            // backgroundColor: "red",
             backdropFilter: "blur(3px)",
             WebkitBackdropFilter: "blur(3px)",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            width: "100vw"
           }}
         />
       )}
@@ -88,12 +90,8 @@ const Sidebar = ({ open, setOpen, user }) => {
           transition: isMobile ? "left 0.3s ease-in-out" : "none",
           height: "100vh",
           zIndex: 101,
-          borderRight: `1px solid ${colors.base[500]}`,
           "& .pro-sidebar-inner": {
-            background: `${theme.palette.mode === "dark"
-              ? colors.base[200]
-              : colors.base[100]
-              } !important`,
+            backgroundColor: theme.palette.background.paper,
           },
           "& .pro-icon-wrapper": {
             backgroundColor: "transparent !important",
@@ -102,11 +100,11 @@ const Sidebar = ({ open, setOpen, user }) => {
             padding: "5px 0px 5px 5px !important",
           },
           "& .pro-menu-item": {
-            color: `${colors.contrast[200]}`,
+            color: `${colors.grey[200]}`,
             padding: "0px 25px 0px 20px !important",
           },
           "& .pro-menu-item:hover:not(.active)": {
-            color: `${colors.contrast[100]}`,
+            color: `${colors.grey[100]}`,
           },
           "& .pro-menu-item.active": {
             color: `${colors.primary[500]} !important`,

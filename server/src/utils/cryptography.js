@@ -1,9 +1,13 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const crypto = require('crypto');
+const crypto = require("crypto");
 const config = require("./config.js");
 
 const salt = bcrypt.genSaltSync(10, "b");
+
+function generatePassword(length = 12) {
+  return crypto.randomBytes(length).toString("base64").slice(0, length);
+}
 
 const hashPassword = (plainPassword) => {
   return bcrypt.hash(plainPassword, salt);
@@ -50,4 +54,5 @@ module.exports = {
   createRefreshToken,
   decodeToken,
   verifyToken,
+  generatePassword
 };

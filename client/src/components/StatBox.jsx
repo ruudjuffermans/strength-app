@@ -3,7 +3,7 @@ import ProgressCircle from "./ProgressCircle";
 
 const StatBox = ({ title, subtitle, icon, progress, increase }) => {
   const theme = useTheme();
-  const colors = theme.palette.colors
+  const colors = theme.palette
 
   return (
     <Box width="100%" m="0 15px" >
@@ -23,7 +23,7 @@ const StatBox = ({ title, subtitle, icon, progress, increase }) => {
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between" mt="2px">
-        <Typography variant="h6" sx={{ color: colors.contrast[300], fontStyle: "italic" }}>
+        <Typography variant="h6" sx={{ color: colors.grey[300], fontStyle: "italic" }}>
           {subtitle}
         </Typography>
         <Typography

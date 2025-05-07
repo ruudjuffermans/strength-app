@@ -1,15 +1,16 @@
 
 const components = (theme) => {
     const mode = theme.palette.mode;
-    const colors = theme.palette.colors;
+    const colors = theme.palette;
   
+    console.log(colors)
     return {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            '--scrollbar-track': colors.base[400],
-            '--scrollbar-thumb': colors.base[700],
-            '--scrollbar-thumb-hover': colors.base[900],
+            '--scrollbar-track': colors.grey[400],
+            '--scrollbar-thumb': colors.grey[700],
+            '--scrollbar-thumb-hover': colors.grey[900],
           },
         },
       },
@@ -22,22 +23,12 @@ const components = (theme) => {
           },
         },
       },
-      MuiPaper: {
-        styleOverrides: {
-          root: {
-            borderRadius: 0,
-            padding: 9,
-            background: mode === "dark" ? colors.base[200] : colors.base[100],
-          },
-        },
-      },
       MuiAccordion: {
         styleOverrides: {
           root: {
-            border: `1px solid ${colors.base[500]}`,
             boxShadow: "none",
             padding: 0,
-            borderRadius: 4,
+
             "&:before": {
               display: "none",
             },
@@ -47,27 +38,6 @@ const components = (theme) => {
       MuiTextField: {
         styleOverrides: {
           root: {
-            // height: "60px",
-            // "& .MuiInputBase-root": {
-            //   borderRadius: "0px",
-            //   overflow: "hidden",
-            //   padding: "0px",
-            // },
-            // "& .MuiInputBase-input": {
-            //   // padding: "20px 10px 6px",
-            // },
-          },
-        },
-      },
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            borderRadius: 0,
-            // fontSize: 16,
-            // textTransform: 'none',
-            // height: "40px",
-            // // paddingLeft: 16,
-            // // paddingRight: 16,
           },
         },
       },

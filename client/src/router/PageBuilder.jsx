@@ -90,7 +90,7 @@ export class PageBuilder {
 
         this._useHookedProps = () => {
             const theme = useTheme();
-            const colors = theme.palette.colors
+            const colors = theme.palette
             return {
                 ...previousHookedProps?.(),
                 theme, colors,

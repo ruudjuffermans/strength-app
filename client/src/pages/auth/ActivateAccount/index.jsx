@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import Button from "@components/buttons/Button";
-import BasePaper from "@components/papers/BasePaper";
+import { Paper } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@context/AuthContext";
 
@@ -28,7 +28,7 @@ const ActivateAccount = ({ colors, theme, navigate, isMobile, searchParams }) =>
   return (
     <Box m={isMobile ? "10px" : "20px"}>
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
-        <BasePaper
+        <Paper
           sx={{
             width: isMobile ? "90%" : 400,
             bgcolor: "background.paper",
@@ -69,7 +69,7 @@ const ActivateAccount = ({ colors, theme, navigate, isMobile, searchParams }) =>
               />
             </>
           )}
-        </BasePaper>
+        </Paper>
       </Box>
     </Box>
   );

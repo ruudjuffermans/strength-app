@@ -9,7 +9,7 @@ export const useAuth = () => {
     const login = usePostMutation(["auth", "login"], () => `/auth/login`);
     const register = usePostMutation(["auth", "register"], () => `/auth/register`);
     const activate = usePostMutation(["auth", "activate"], () => `/auth/activate`);
-    const approveUser = usePostMutation(["auth", "approve"], () => `/auth/approve`);
+    const approveUser = usePostMutation(["auth", "approve"], () => `/admin/approve`);
 
     const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {
         try {

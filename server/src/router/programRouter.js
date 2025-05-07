@@ -5,10 +5,11 @@ const { asyncHandler } = require("../utils/asyncHandler");
 const router = express.Router();
 
 router.get("/", asyncHandler(programController.getAllPrograms));
-router.get("/:programId/source/:source", asyncHandler(programController.getProgramById));
+router.get("/:programId", asyncHandler(programController.getProgramById));
 router.post("/", asyncHandler(programController.createUserProgram));
 router.put("/:programId", asyncHandler(programController.updateUserProgram));
 router.delete("/:programId", asyncHandler(programController.deleteUserProgram));
+router.post("/:programId/activate", asyncHandler(programController.activateProgram));
 
 router.post("/:programId/add-split", asyncHandler(programController.createSplit));
 router.put("/:programId/split:splitId", asyncHandler(programController.updateSplit));

@@ -15,9 +15,9 @@ const AppLayout = () => {
 
   return (
     <div className="app">
-      <Sidebar open={open} setOpen={setOpen} user={user}  />
+      <Sidebar open={open} setOpen={setOpen} user={user} />
       <main className="content">
-        <Topbar open={open} setOpen={setOpen} user={user}  />
+        <Topbar open={open} setOpen={setOpen} user={user} />
         <ModuleBoundary innerPage>
           <Outlet />
         </ModuleBoundary>

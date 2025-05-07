@@ -14,6 +14,22 @@ async function sendConfirmationMail(email, name, code) {
   }
 }
 
+async function sendAccountApprovedMail(email, name, password) {
+  const content = await createFromTemplate(
+    {
+      email: encodeURIComponent(email),
+      name,
+      password,
+      clientUrl: config.CLIENT_URL,
+    },
+    "account-approved.html"
+  );
+  const result = mailer(email, "Your Account Has Been Approved", content);
+  if (!result) {
+    console.error("Sending approval email did not work");
+  }
+}
+
 async function sendAccountRegisteredMail(email, name, code) {
   const content = await createFromTemplate(
     { email: encodeURIComponent(email), name, code, clientUrl: config.CLIENT_URL, serverUrl: config.SERVER_URL },
@@ -54,4 +70,5 @@ module.exports = {
   sendAccountRegisteredMail,
   sendAccountActivatedMail,
   sendResetPasswordMail,
+  sendAccountApprovedMail,
 };

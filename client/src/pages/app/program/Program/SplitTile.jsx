@@ -1,37 +1,37 @@
 import React from 'react'
-import BasePaper from "@components/papers/BasePaper";
+import { Paper } from "@mui/material";
 import {
   Box,
   Typography,
 } from "@mui/material";
 import { useSplit } from '@hooks/useSplit';
-import Header from '@components/Header';
 import OptionsMenu from '@components/OptionsMenu';
+import ContentHeading from '../../../../components/headings/ContentHeading';
 
 const SplitTile = ({ id, name, description, user, navigate }) => {
-  const { split, createWorkout } = useSplit(id);
-  const handleCreateWorkout = async (splitId) => {
-    const res = await createWorkout(splitId);
-    navigate(`/workout/${res.id}`)
-  };
+  // const { split, createWorkout } = useSplit(id);
+  // const handleCreateWorkout = async (splitId) => {
+  //   const res = await createWorkout(splitId);
+  //   navigate(`/workout/${res.id}`)
+  // };
 
-  const options = [
-    { label: "Do Workout", icon: "go", onClick: () => handleCreateWorkout({ splitId: id }) },
-  ];
+  // const options = [
+  //   { label: "Do Workout", icon: "go", onClick: () => handleCreateWorkout({ splitId: id }) },
+  // ];
 
   return (
-    <BasePaper sx={{
+    <Paper sx={{
       flex: "1 1 400px",
       width: "100%",
 
     }}>
-      <Box position={"absolute"} right={10} top={10}>
+      {/* <Box position={"absolute"} right={10} top={10}>
         <OptionsMenu options={options} />
-      </Box>
-      <Header sub={true} title={name} subtitle={description} />
+      </Box> */}
+      <ContentHeading sub={true} title={name} subtitle={description} />
       <Box mt={3} display="flex" flexDirection="column" gap={1}>
-        {(split.exercises || []).map((exercise, index) => (
-          <BasePaper
+        {/* {(split.exercises || []).map((exercise, index) => (
+          <Paper
             key={index}
             sx={{
               p: 1,
@@ -49,10 +49,10 @@ const SplitTile = ({ id, name, description, user, navigate }) => {
                 </Typography>
               </Box>
             </Box>
-          </BasePaper>
-        ))}
+          </Paper>
+        ))} */}
       </Box>
-    </BasePaper>
+    </Paper>
   );
 };
 

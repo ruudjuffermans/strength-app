@@ -1,6 +1,6 @@
 import { createContext, useState, useMemo } from "react";
 import useResponsive from "../hooks/useResponsive";
-import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 import getPalette from './palette';
 import typography from './typography';
@@ -15,16 +15,10 @@ const createAppTheme = (mode = 'light') => {
     spacing: 4,
   });
 
-  return responsiveFontSizes(
-    createTheme({
+  return createTheme({
       ...baseTheme,
-      components: components(baseTheme),
-      // custom: {
-      //   drawerWidth: 280,
-      //   appBarHeight: '64px',
-      // },
+      components: components(baseTheme)
     })
-  );
 };
 
 

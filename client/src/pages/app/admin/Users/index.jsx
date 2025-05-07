@@ -23,7 +23,7 @@ const Users = ({ isAdmin, isMobile, colors, user }) => {
       renderCell: (params) => (
         <Chip
           label={params.value}
-          color={params.value === "Approved" ? "success" : params.value === "Rejected" ? colors.base[300] : "warning"}
+          color={params.value === "Approved" ? "success" : params.value === "Rejected" ? colors.grey[300] : "warning"}
           size="small"
         />
       ),

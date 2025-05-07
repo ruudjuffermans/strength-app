@@ -5,24 +5,23 @@ import { Typography, Box } from '@mui/material';
 import clsx from 'clsx';
 
 const StyledInputBase = styled(InputBase)(({ theme, ownerState }) => ({
-  backgroundColor: theme.palette.colors.base[400] ,
+  backgroundColor: theme.palette.grey[800] ,
   borderRadius: theme.spacing(ownerState.borderRadius ?? 1),
-  color: ownerState.color || 'inherit',
-  fontSize: ownerState.fontSize || theme.typography.body1.fontSize,
-  padding: theme.spacing(ownerState.paddingY ?? 1, ownerState.paddingX ?? 2),
+  color: 'rgba(255,255,255,60%)',
+  fontWeight: "400",
+  padding: theme.spacing(1, 2),
   width: '100%',
-  transition: 'background-color 0.2s, box-shadow 0.2s',
-  
+  transition: 'background-color 0.2s',
   '&:hover': {
-    backgroundColor: theme.palette.colors.contrast[400],
+    backgroundColor: theme.palette.grey[700],
   },
-  '&.Mui-disabled': {
-    backgroundColor: theme.palette.action.disabledBackground,
-    color: theme.palette.text.disabled,
-  },
-  '&.error': {
-    border: `1px solid ${theme.palette.error.main}`,
-  }
+  // '&.Mui-disabled': {
+  //   backgroundColor: theme.palette.action.disabledBackground,
+  //   color: theme.palette.text.disabled,
+  // },
+  // '&.error': {
+  //   border: `1px solid ${theme.palette.error.main}`,
+  // }
 }));
 
 const CustomInput = ({

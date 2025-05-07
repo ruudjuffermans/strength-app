@@ -1,47 +1,38 @@
-const { authHandler } = require('../handlers');
+const { userHandler } = require('../handlers');
 const { sendConfirmationMail, sendResetPasswordMail } = require('../mail/sender.js');
 const AppError = require('../utils/appError.js');
 const config = require('../utils/config.js');
 const { hashPassword, createRegistryToken, decodeToken, comparePassword, createAccessToken, createResetToken, verifyToken } = require('../utils/cryptography.js');
 
 const register = async (req, res) => {
-  const { email, firstname, lastname, password } = req.body;
+  const { email, firstname, lastname } = req.body;
 
-  const hashedPassword = await hashPassword(password);
-  const user = await authHandler.register({ email, firstname, lastname, password: hashedPassword });
-  await authHandler.createDefaultUserSettings(user.id);
-  const registrytoken = await createRegistryToken({email : user.email})
+  const user = await userHandler.register({ email, firstname, lastname });
+  await userHandler.createDefaultUserSettings(user.id);
+  const registrytoken = createRegistryToken({email : user.email})
   await sendConfirmationMail(email, firstname, registrytoken);
   res.status(200).json(user);
-};
-
-const activate = async (req, res) => {
-  const { code } = req.body;
-  const { email } = await decodeToken(code)
-  const user = await authHandler.getUserByEmail(email);
-  await authHandler.setVerified(user.id);
-  return res.status(200)
 };
 
 const login = async (req, res) => {
   const {email, password} = req.body;
 
-  const user = await authHandler.getUserByEmail(email);
+  const user = await userHandler.getUserByEmail(email);
   if (!user) {
-    throw new AppError("Invalid email or password", 401); // User not found
+    throw new AppError("Invalid email or password", 401);
   }
 
   if (user.status === 'Pending') {
-    throw new AppError("Account is still pending approval", 403); // Pending user
+    throw new AppError("Account is still pending approval", 403);
   }
 
   if (user.status === 'Rejected') {
-    throw new AppError("Account has been rejected", 403); // Rejected user
+    throw new AppError("Account has been rejected", 403);
   }
 
   const valid = await comparePassword(password, user.password_hash);
   if (!valid) {
-    throw new AppError("Invalid email or password", 401); // Invalid password
+    throw new AppError("Invalid email or password", 401);
   }
 
   const token = createAccessToken(user);
@@ -59,9 +50,9 @@ const login = async (req, res) => {
 const getContext = async (req, res) => {
   const token = req.cookies?.token;
   if (token) {
-    const ctx = await decodeToken(token)
+    const ctx = decodeToken(token)
 
-    const user = await authHandler.getUserById(ctx.id);
+    const user = await userHandler.getUserById(ctx.id);
     return res.status(200).json(user);
   }
   res.status(401).json({ message: "Unauthorized: Invalid or expired token" });
@@ -78,16 +69,13 @@ const logout = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
-  const user = await authHandler.getUserByEmail(email);
+  const user = await userHandler.getUserByEmail(email);
 
   if (!user) {
     return res.status(200).json({ message: "If that email is registered, you'll receive a reset link." });
   }
 
-  const resetToken = createResetToken({ id: user.id, email: user.email });
-
-  const resetUrl = `${config.CLIENT_URL}/reset-password/${resetToken}`;
-  await sendResetPasswordMail(email, user.firstname, resetUrl);
+  await userHandler.setPasswordForgot(userId);
 
   res.status(200).json({ message: "Reset link sent to email if registered." });
 };
@@ -103,21 +91,20 @@ const resetPassword = async (req, res) => {
     throw new AppError("Reset token is invalid or has expired.", 400);
   }
 
-  const user = await authHandler.getUserById(decoded.id);
+  const user = await userHandler.getUserById(decoded.id);
   if (!user) {
     throw new AppError("User not found.", 404);
   }
 
   const newPasswordHash = await hashPassword(password);
 
-  await authHandler.updatePassword(user.id, newPasswordHash);
+  await userHandler.updatePassword(user.id, newPasswordHash);
 
   res.status(200).json({ message: "Password has been reset successfully!" });
 };
 
 module.exports = {
   register,
-  activate,
   login,
   getContext,
   logout,

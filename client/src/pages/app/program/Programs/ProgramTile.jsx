@@ -1,38 +1,32 @@
-import React from "react";
-import BasePaper from "@components/papers/BasePaper";
-import { Box, Typography } from "@mui/material";
-import Header from "@components/Header";
-import IconButton from "@components/buttons/IconButton";
+import React, { startTransition, useState } from "react";
+import { useProgram } from "../../../../hooks/useProgram";
+import SplitTile from "./SplitTile";
+import ContentPaper from "../../../../components/papers/ContentPaper";
+import { Box, Stack } from "@mui/material";
+import OptionsMenu from "../../../../components/OptionsMenu";
+import ContentHeading from "../../../../components/headings/ContentHeading";
+import ProgramSelector from "./ProgramSelector";
 
-const ProgramTile = ({ id, name, colors, description, splits, navigate, setActive, isActive }) => {
+const ProgramTile = ({ id, navigate, isMobile }) => {
+  const { program, createWorkout } = useProgram(id)
+
+  const options = [
+    { label: "Set Default", icon: "go", onClick: () => alert("set default") },
+  ];
 
   return (
-    <BasePaper sx={{
-      position: "relative",
-      background: isActive && colors.primary[100],
-    }}
-    >
-      <Header sub={true} title={name} subtitle={description} />
+    <ContentPaper>
       <Box position={"absolute"} right={10} top={10}>
-        <IconButton icon={isActive ? "radioOn" : "radioOff"} onClick={() =>setActive(id)}  />
+        <OptionsMenu options={options} />
       </Box>
-      <Box position={"absolute"} right={10} bottom={10}>
-        <IconButton icon={"info"} onClick={() =>navigate(`/program/${id}`)} />
-      </Box>
-      <Box px={4}>
-        <ul style={{ paddingLeft: 10, margin: 0 }}>
-          {splits.map(({ name, description, id }) => (
-            <li key={id}>
-              <Box sx={{ pl: 1 }}>
-                <Typography variant="body1" fontWeight={300}>
-                  {name}
-                </Typography>
-              </Box>
-            </li>
-          ))}
-        </ul>
-      </Box>
-    </BasePaper>
+      <ContentHeading title={program.name} subtitle={program.description} />
+      <Stack gap={2}>
+        {program.splits.map((split) =>
+          <SplitTile key={split.id} id={id} name={split.name} description={split.description} exercises={split.exercises} createWorkout={createWorkout} navigate={navigate} />
+
+        )}
+      </Stack>
+    </ContentPaper>
   );
 };
 

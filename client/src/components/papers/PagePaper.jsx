@@ -1,21 +1,24 @@
-import BasePaper from './BasePaper';
-import Header from '@components/Header';
-
 import { useTheme } from '@mui/material/styles';
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, Paper, useMediaQuery } from '@mui/material';
+import PageHeading from '../headings/PageHeading';
 
 const PagePaper = ({ children, title, subtitle }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  return (
-    <Box m={isMobile ? 2 : 7} pt={isMobile && 6} pb={isMobile && 12}>
-      <BasePaper sx={{ display: isMobile && "contents", minHeight: "calc(100vh - 80px)" }}>
-        <Header title={title} subtitle={subtitle} />
-        {children}
-      </BasePaper>
+  return isMobile ? (
+    <Box  >
+      <Box sx={{ p: 3 }}>
+      <PageHeading title={title} subtitle={subtitle} />
+      </Box>
+      {children}
     </Box>
-  );
+  ) : (
+    <Box sx={{ position: "relative", border: `1px solid ${theme.palette.background[100]}`, backgroundColor: theme.palette.background.paper, borderRadius: 3, display: isMobile && "contents", minHeight: "calc(100vh - 200px)", m: 4, p: 4 }}>
+      <PageHeading title={title} subtitle={subtitle} />
+      {children}
+    </Box>
+  )
 };
 
 export default PagePaper;

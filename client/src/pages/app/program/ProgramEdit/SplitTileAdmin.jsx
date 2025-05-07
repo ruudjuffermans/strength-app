@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import BasePaper from "@components/papers/BasePaper";
+import { Paper } from "@mui/material";
 import {
   Box,
   FormControl,
@@ -15,10 +15,10 @@ import CustomDropdown from "@components/DropDown";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useExercises } from "@hooks/useExercises";
 import { useSplit } from '@hooks/useSplit';
-import Header from '@components/Header';
 import TextButton from '@components/buttons/TextButton';
 import Button from '@components/buttons/Button';
 import IconButton from '@components/buttons/IconButton';
+import ContentHeading from '../../../../components/headings/ContentHeading';
 
 const SplitTileAdmin = ({ id, name, description, navigate }) => {
   const [selectedExercise, setSelectedExercise] = useState("");
@@ -69,11 +69,11 @@ const SplitTileAdmin = ({ id, name, description, navigate }) => {
     reorderExercises(payload);
   };
   return (
-    <BasePaper sx={{
+    <Paper sx={{
       flex: "1 1 400px",
       width: "100%",
     }}>
-      <Header sub={true} title={name} subtitle={description} />
+      <ContentHeading title={name} subtitle={description} />
 
 
       <Box mt={1} display="flex" flexDirection="column">
@@ -96,7 +96,7 @@ const SplitTileAdmin = ({ id, name, description, navigate }) => {
                 {(split.exercises || []).map((exercise, index) => (
                   <Draggable key={exercise.id} draggableId={exercise.id.toString()} index={index}>
                     {(provided) => (
-                      <BasePaper
+                      <Paper
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         sx={{
@@ -121,7 +121,7 @@ const SplitTileAdmin = ({ id, name, description, navigate }) => {
 
                           <IconButton size={"small"} icon={"delete"} sx={{ opacity: 0.5 }} onClick={() => deleteExercise({ exerciseId: exercise.id })} />
                        </Box>
-                      </BasePaper>
+                      </Paper>
                     )}
                   </Draggable>
 
@@ -171,7 +171,7 @@ const SplitTileAdmin = ({ id, name, description, navigate }) => {
       </Dialog>
 
 
-    </BasePaper>
+    </Paper>
   );
 };
 

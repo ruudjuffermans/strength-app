@@ -1,15 +1,15 @@
-const authHandler = require("./authHandler");
 const workoutHandler = require("./workoutHandler");
 const exerciseHandler = require("./exerciseHandler");
 const programHandler = require("./programHandler");
 const splitHandler = require("./splitHandler");
 const userHandler = require("./userHandler");
+const splitExerciseHandler = require("./splitExerciseHandler");
 
 module.exports = {
-  authHandler,
   exerciseHandler,
   programHandler,
   splitHandler,
   workoutHandler,
-  userHandler
+  userHandler,
+  splitExerciseHandler
 };

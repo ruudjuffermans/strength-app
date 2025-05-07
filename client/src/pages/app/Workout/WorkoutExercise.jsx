@@ -1,22 +1,27 @@
 import React from 'react';
-import Header from '@components/Header';
 import WorkoutSet from './WorkoutSet';
-import { Box } from '@mui/material';
-import BasePaper from '@components/papers/BasePaper';
+import ContentHeading from '../../../components/headings/ContentHeading';
+import ContentPaper from '../../../components/papers/ContentPaper';
+import Button from "@components/buttons/Button";
+import { Stack } from '@mui/material';
 
-const WorkoutExercise = ({ logs, handleInputChange, inputValues, handleLogSet }) => {
+const WorkoutExercise = ({ sets, exercise, logSet }) => {
+
+  const targetRepsString = sets.map(({ target_reps }) => target_reps).join(" / ");
 
   return (
-    <BasePaper>
-      <Header sub={true} title={logs[0]?.exercise?.name} subtitle={`target reps: ${logs[0]?.target_reps} | 1RM: 20kg | TRM: 18kg`} />
-      {logs
+    <ContentPaper>
+      <ContentHeading title={exercise?.name} subtitle={`target reps: ${targetRepsString} | 1RM: 20kg | TRM: 18kg`} />
+      {sets
         .sort((a, b) => a.set_number - b.set_number)
-        .map((log) => (
-          <WorkoutSet key={log.id} log={log} inputValues={inputValues} targetReps={logs[0]?.target_reps} handleInputChange={handleInputChange} handleLogSet={handleLogSet} />
+        .map((set) => (
+          <WorkoutSet key={set.id} exercise={exercise} set={set} logSet={logSet} />
         ))}
-        <Box mt={2}>
-        </Box>
-    </BasePaper>
+        <Stack mt={4}>
+
+        <Button outlined label={"Complete Exercise"} onClick={() => console.log()} />
+        </Stack>
+    </ContentPaper>
   );
 };
 

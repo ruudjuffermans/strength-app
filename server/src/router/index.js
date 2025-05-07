@@ -2,6 +2,7 @@ const exerciseRouter = require("./exerciseRouter");
 const programRouter = require("./programRouter");
 const workoutRouter = require("./workoutRouter");
 const adminRouter = require("./adminRouter");
+const userRouter = require("./userRouter");
 
 const { isAdmin } = require("../middleware/isAdmin");
 const { isPremium } = require("../middleware/isPremium");
@@ -11,6 +12,7 @@ const { isPremium } = require("../middleware/isPremium");
 function router(app) {
   const routers = [
     { path: '/workout', router: workoutRouter },
+    { path: '/user', router: userRouter },
     { path: '/program', router: programRouter },
     { path: '/exercise', router: exerciseRouter },
     { path: '/admin', middleware: [isAdmin], router: adminRouter },

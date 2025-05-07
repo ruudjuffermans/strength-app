@@ -10,12 +10,12 @@ import {
     const setError = useErrorSnackbar();
   
     // Queries
-    const users = useGetQuery(["users"], "/user");
+    const users = useGetQuery(["users"], "/admin");
   
     // Mutations
-    const approve = usePostMutation(["users"], ({ userId }) => `/user/approve/${userId}`, ["users"]);
-    const disable = usePostMutation(["users"], ({ userId }) => `/user/disable/${userId}`, ["users"]);
-    const deleteUser = useDeleteMutation(["users"], ({ userId }) => `/user/remove/${userId}`, ["users"]);
+    const approve = usePostMutation(["users"], ({ userId }) => `/admin/approve/${userId}`, ["users"]);
+    const disable = usePostMutation(["users"], ({ userId }) => `/admin/disable/${userId}`, ["users"]);
+    const deleteUser = useDeleteMutation(["users"], ({ userId }) => `/admin/remove/${userId}`, ["users"]);
   
     // Unified mutation handler
     const handleMutation = async (mutationFn, data, successMessage, errorMessage) => {

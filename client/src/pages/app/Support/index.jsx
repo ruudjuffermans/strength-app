@@ -2,12 +2,15 @@ import { useTheme } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
+import { Box, Typography, Container } from "@mui/material";
 import Icon from "@components/Icon";
 
 const Support = ({colors, theme, user, navigate, isMobile, params}) => {
 
-    return (
+  return (
+    <Box sx={{ position: "relative", minHeight: "100vh", overflow: "hidden" }}>
+
+      <Container maxWidth="md" sx={{ pt: 10 }}>
       <>
         <Accordion sx={{mb: 2}}>
           <AccordionSummary expandIcon={<Icon name={"arrow"} />}>
@@ -75,7 +78,10 @@ const Support = ({colors, theme, user, navigate, isMobile, params}) => {
           </AccordionDetails>
         </Accordion>
       </>
-    );
-}
+      </Container>
+    </Box>
+  );
+};
+
 
 export default Support

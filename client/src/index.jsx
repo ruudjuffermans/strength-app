@@ -7,9 +7,6 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RecoilRoot } from "recoil";
 import RecoilNexus from "recoil-nexus";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ErrorSnackbar from "@components/snackbars/ErrorSnackbar";
-import SuccessSnackbar from "./components/snackbars/SuccessSnackbar";
-import InfoSnackbar from "./components/snackbars/InfoSnackbar";
 import ModuleBoundary from "./components/ModuleBoundary";
 
 const queryClient = new QueryClient({
@@ -36,9 +33,6 @@ root.render(
     </ModuleBoundary>
   </BrowserRouter>
   <RecoilNexus />
-  <ErrorSnackbar />
-  <SuccessSnackbar />
-  <InfoSnackbar />
 </RecoilRoot>
 
   </QueryClientProvider>

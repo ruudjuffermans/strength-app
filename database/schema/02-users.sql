@@ -3,7 +3,7 @@ CREATE TABLE user_account (
     email VARCHAR(255) UNIQUE NOT NULL,
     firstname VARCHAR(255),
     lastname VARCHAR(255),
-    password_hash TEXT,
+    password_hash TEXT DEFAULT NULL,
     role user_role_enum DEFAULT 'User',
     status user_status_enum DEFAULT 'Pending',
     created_at TIMESTAMP DEFAULT NOW(),

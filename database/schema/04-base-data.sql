@@ -1,4 +1,4 @@
-INSERT INTO base_exercise (id, name, description, muscle_group, equipment_type)
+INSERT INTO exercise (id, name, description, muscle_group, equipment_type)
 VALUES
   (1, 'Bench Press', 'Barbell chest press for building chest strength.', 'Chest', 'Barbell'),
   (2, 'Incline Smith Press', 'Smith Machine chest press on an incline bench.', 'Chest', 'Smith Machine'),
@@ -44,46 +44,88 @@ VALUES
   (42, 'Shrug', 'Trap isolation.', 'Shoulders', 'Dumbbell')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO base_program (id, name, description)
+SELECT setval('exercise_id_seq', (SELECT MAX(id) FROM exercise));
+
+INSERT INTO program (id, name, description)
 VALUES
   (1, 'Main Program', 'This is the Main Program'),
   (2, 'Second Program', 'This is the Second Program'),
   (3, 'Third Program', 'This is the Third Program')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO split (id, program_source, program_ref_id, name, description)
+INSERT INTO split (id, program_id, name, description)
 VALUES
-  (1, 'user', 1, 'Legs & Shoulders', 'Lower body with shoulder isolation.'),
-  (2, 'user', 1, 'Back & Biceps', 'Pull day focus.'),
-  (3, 'user', 1, 'Chest & Triceps', 'Push day focus.'),
-  (4, 'user', 2, 'Legs & Shoulders', 'Lower body with shoulder isolation.'),
-  (5, 'user', 2, 'Back & Biceps', 'Pull day focus.'),
-  (6, 'user', 2, 'Chest & Triceps', 'Push day focus.'),
-  (7, 'user', 3, 'Legs & Shoulders', 'Lower body with shoulder isolation.'),
-  (8, 'user', 3, 'Back & Biceps', 'Pull day focus.'),
-  (9, 'user', 3, 'Chest & Triceps', 'Push day focus.')
+  (1, 1, 'Legs & Shoulders', 'Lower body with shoulder isolation.'),
+  (2, 1, 'Back & Biceps', 'Pull day focus.'),
+  (3, 1, 'Chest & Triceps', 'Push day focus.'),
+  (4, 2, 'Legs & Shoulders', 'Lower body with shoulder isolation.'),
+  (5, 2, 'Back & Biceps', 'Pull day focus.'),
+  (6, 2, 'Chest & Triceps', 'Push day focus.'),
+  (7, 3, 'Legs & Shoulders', 'Lower body with shoulder isolation.'),
+  (8, 3, 'Back & Biceps', 'Pull day focus.'),
+  (9, 3, 'Chest & Triceps', 'Push day focus.')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO split_exercise (split_id, exercise_source, exercise_ref_id, sets, reps, exercise_order)
+INSERT INTO split_exercise (split_id, exercise_id, sets, reps, exercise_order)
 VALUES 
-(1, 'base', 28, 5, 5, 1),
-(1, 'base', 37, 5, 5, 2),
-(1, 'base', 18, 3, 4, 3),
-(1, 'base', 39, 3, 10, 4),
-(1, 'base', 41, 3, 10, 5),
-(1, 'base', 31, 3, 12, 6),
-(1, 'base', 29, 3, 12, 7),
-(1, 'base', 35, 1, 6, 8),
-(1, 'base', 32, 1, 6, 9),
-(1, 'base', 36, 3, 12, 10),
-(2, 'base', 20, 5, 5, 1),
-(2, 'base', 19, 3, 12, 2),
-(2, 'base', 23, 3, 10, 3),
-(2, 'base', 26, 3, 10, 4),
-(2, 'base', 27, 3, 10, 5),
-(3, 'base', 1, 5, 5, 1),
-(3, 'base', 3, 3, 12, 2),
-(3, 'base', 6, 3, 10, 3),
-(3, 'base', 14, 3, 12, 4),
-(3, 'base', 15, 3, 10, 5)
+(1, 28, 5, 5, 1),
+(1, 37, 5, 5, 2),
+(1, 18, 3, 4, 3),
+(1, 39, 3, 10, 4),
+(1, 41, 3, 10, 5),
+(1, 31, 3, 12, 6),
+(1, 29, 3, 12, 7),
+(1, 35, 1, 6, 8),
+(1, 32, 1, 6, 9),
+(1, 36, 3, 12, 10),
+(2, 20, 5, 5, 1),
+(2, 19, 3, 12, 2),
+(2, 23, 3, 10, 3),
+(2, 26, 3, 10, 4),
+(2, 27, 3, 10, 5),
+(3, 1, 5, 5, 1),
+(3, 3, 3, 12, 2),
+(3, 6, 3, 10, 3),
+(3, 14, 3, 12, 4),
+(3, 15, 3, 10, 5),
+(4, 28, 5, 5, 1),
+(4, 37, 5, 5, 2),
+(4, 18, 3, 4, 3),
+(4, 39, 3, 10, 4),
+(4, 41, 3, 10, 5),
+(4, 31, 3, 12, 6),
+(4, 29, 3, 12, 7),
+(4, 35, 1, 6, 8),
+(4, 32, 1, 6, 9),
+(4, 36, 3, 12, 10),
+(5, 20, 5, 5, 1),
+(5, 19, 3, 12, 2),
+(5, 23, 3, 10, 3),
+(5, 26, 3, 10, 4),
+(5, 27, 3, 10, 5),
+(6, 1, 5, 5, 1),
+(6, 3, 3, 12, 2),
+(6, 6, 3, 10, 3),
+(6, 14, 3, 12, 4),
+(6, 15, 3, 10, 5),
+(7, 28, 5, 5, 1),
+(7, 37, 5, 5, 2),
+(7, 18, 3, 4, 3),
+(7, 39, 3, 10, 4),
+(7, 41, 3, 10, 5),
+(7, 31, 3, 12, 6),
+(7, 29, 3, 12, 7),
+(7, 35, 1, 6, 8),
+(7, 32, 1, 6, 9),
+(7, 36, 3, 12, 10),
+(8, 20, 5, 5, 1),
+(8, 19, 3, 12, 2),
+(8, 23, 3, 10, 3),
+(8, 26, 3, 10, 4),
+(8, 27, 3, 10, 5),
+(8, 1, 5, 5, 1),
+(9, 3, 3, 12, 2),
+(9, 6, 3, 10, 3),
+(9, 14, 3, 12, 4),
+(9, 15, 3, 10, 5)
 ON CONFLICT DO NOTHING;

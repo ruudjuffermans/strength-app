@@ -2,7 +2,7 @@ import { Box, useTheme } from "@mui/material";
 
 const ProgressCircle = ({ progress = "0.75", size = "62" }) => {
   const theme = useTheme();
-  const colors = theme.palette.colors
+  const colors = theme.palette
   const angle = progress * 360;
   return (
     <Box
