@@ -4,22 +4,17 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-import { useSplit } from '@hooks/useSplit';
 import OptionsMenu from '@components/OptionsMenu';
 import ContentHeading from '../../../../components/headings/ContentHeading';
 
 const SplitTile = ({ id, name, description, user, navigate }) => {
 
   console.log(user)
-  const {
-    split,
-    createWorkout,
-  } = useSplit(id);
 
   const [edit, setEdit] = useState(false)
 
   const handleCreateWorkout = async (splitId) => {
-    const res = await createWorkout(splitId);
+    // const res = await createWorkout(splitId);
     navigate(`/workout/${res.id}`)
 
   };

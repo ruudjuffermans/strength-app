@@ -5,11 +5,11 @@ const PageHeading = ({ title, subtitle }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const colors = theme.palette
   return (
-    <Box mb={isMobile ? 2 : 6}>
-      <Typography variant={"h1"} >
+    <Box my={isMobile ? 4 : 6}>
+      <Typography color={colors.grey[200]} variant={"h1"} >
         {title}
       </Typography>
-      <Typography variant={"subtitle1"} fontWeight={400}  color={colors.grey[500]}>
+      <Typography variant={"subtitle1"}   color={colors.grey[500]}>
         {subtitle}
       </Typography>
     </Box>

@@ -8,8 +8,7 @@ import IconButton from "@components/buttons/IconButton";
 
 const Users = ({ isAdmin, isMobile, colors, user }) => {
   const { users, approveUser, disableUser, deleteUser } = useUsers();
-  console.log(user)
-  console.log(users)
+
   const columns = [
     ...(!isMobile ? [{ field: "id", headerName: "id", flex: 0.1 }] : []),
     { field: "email", headerName: "email", flex: 2 },

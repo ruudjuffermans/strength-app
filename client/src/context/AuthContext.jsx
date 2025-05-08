@@ -14,12 +14,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🚀 Integrate your mutation hooks
   const loginMutation = usePostMutation(["auth", "login"], () => `/auth/login`);
   const registerMutation = usePostMutation(["auth", "register"], () => `/auth/register`);
   const activateMutation = usePostMutation(["auth", "activate"], () => `/auth/activate`);
   const approveUserMutation = usePostMutation(["auth", "approve"], () => `/auth/approve`);
-  const forgotPasswordMutation = usePostMutation(["auth", "forgot-password"], () => `/auth/forgot-password`);
 
   const getContext = useCallback(async (force = false) => {
     if (user && !force) return user;
@@ -63,21 +61,6 @@ export const AuthProvider = ({ children }) => {
   const register = (data) => handleMutation(registerMutation, data, "Registered successfully!", "Failed to register.");
   const activate = (data) => handleMutation(activateMutation, data, "Account activated!", "Failed to activate.");
   const approveUser = (data) => handleMutation(approveUserMutation, data, "User approved!", "Failed to approve user.");
-  const forgotPassword = (email) => handleMutation(forgotPasswordMutation, { email }, "If the email is valid, a reset link has been sent.", "Failed to send reset link.");
-
-  const resetPassword = async (token, password) => {
-    try {
-      await axiosInstance.post(`/auth/reset-password/${token}`, { password }, {
-        withCredentials: true,
-      });
-      setSuccess("Password has been reset successfully.");
-      return true;
-    } catch (error) {
-      console.error(error);
-      setError(error.response?.data?.error || "Failed to reset password.");
-      return false;
-    }
-  };
 
   const logout = async () => {
     try {
@@ -99,9 +82,7 @@ export const AuthProvider = ({ children }) => {
       activate,
       approveUser,
       logout,
-      getContext,
-      forgotPassword,
-      resetPassword
+      getContext
     }}>
       {children}
     </AuthContext.Provider>

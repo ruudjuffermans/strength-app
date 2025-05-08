@@ -1,4 +1,5 @@
 const { workoutHandler } = require("../handlers");
+const calculate1RM = require("../utils/1rm");
 
 const getAllWorkouts = async (req, res) => {
   const userId = req.user.id
@@ -55,7 +56,9 @@ const logSet = async (req, res) => {
   const userId = req.user.id
   const { logId } = req.params;
   const { performedReps, weightUsed } = req.body;
-  const updatedLog = await workoutHandler.logSet(userId, logId, performedReps, weightUsed);
+
+  const oneRm = calculate1RM(weightUsed, performedReps)
+  const updatedLog = await workoutHandler.logSet(userId, logId, performedReps, weightUsed, oneRm);
   res.status(200).json(updatedLog);
 };
 

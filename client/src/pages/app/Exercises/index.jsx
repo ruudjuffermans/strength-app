@@ -3,8 +3,18 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box } from "@mui/material";
 import { useExercises } from "@hooks/useExercises";
 import OptionsMenu from "@components/OptionsMenu";
-import CreateExerciseDialog from "./CreateNewExerciseDialog";
 import Button from "@components/buttons/Button";
+import FormModal from "../../../components/FormModal";
+
+const MUSCLE_GROUPS = [
+  "Chest", "Triceps", "Back", "Biceps", "Calves", "Quads",
+  "Glutes", "Forearms", "Hamstrings", "Shoulders", "Abs"
+];
+
+const EQUIPMENT_TYPES = [
+  "Bodyweight", "Barbell", "Machine", "Dumbbell", "Cable", "Smith Machine"
+];
+
 
 const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params }) => {
   const { exercises, addExercise, deleteExercise } = useExercises();
@@ -40,11 +50,10 @@ const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params })
         const handleDelete = () => {
           deleteExercise({ id: params.row.id });
         };
-    
+
         const options = [
           { label: "Delete", icon: "disable", onClick: handleDelete },
         ];
-    
         return <OptionsMenu options={options} />;
       },
     }] : []),
@@ -52,9 +61,9 @@ const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params })
 
   return (
     <>
-        <Box mb={2} display="flex" flexDirection="column">
-          <Button label={"Add Exercise"} style={{ float: "right" }} text={"Add exercise"} onClick={() => setOpen(true)} />
-        </Box>
+      <Box mb={1} p={3} display="flex" flexDirection="column">
+        <Button label={"Add Exercise"} outlined text={"Add exercise"} onClick={() => setOpen(true)} />
+      </Box>
       <DataGrid
         rows={exercises}
         columns={columns}
@@ -62,7 +71,6 @@ const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params })
         paginationMode="server"
         rowCount={0}
         sx={{
-          // fontSize: "10px",
           p: 0,
           m: 0,
           '& .MuiDataGrid-header': {
@@ -75,10 +83,39 @@ const Exercises = ({ colors, theme, user, navigate, isMobile, isAdmin, params })
           }
         }}
       />
-      <CreateExerciseDialog
+      <FormModal
         open={open}
-        onClose={() => setOpen(false)}
-        onSubmit={handleCreate}
+        handleClose={() => setOpen(false)}
+        title="Add Exercise"
+        action={handleCreate}
+        fields={[
+          {
+            name: "name",
+            label: "Exercise Name",
+          },
+          {
+            name: "description",
+            label: "Description",
+          },
+          {
+            name: "muscle_group",
+            label: "muscleGroup",
+            type: "select",
+            options: MUSCLE_GROUPS.map((i) => ({
+              label: i,
+              value: i,
+            })),
+          },
+          {
+            name: "equipment_type",
+            label: "equipmentType",
+            type: "select",
+            options: EQUIPMENT_TYPES.map((i) => ({
+              label: i,
+              value: i,
+            })),
+          },
+        ]}
       />
     </>
   );

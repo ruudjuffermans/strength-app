@@ -5,6 +5,11 @@ import Sidebar from "@layout/AppLayout/Sidebar";
 import Topbar from "@layout/AppLayout/Topbar";
 import ModuleBoundary from "../../components/ModuleBoundary";
 import { useAuth } from "@context/AuthContext";
+import ErrorSnackbar from "../../components/snackbars/ErrorSnackbar";
+import SuccessSnackbar from "../../components/snackbars/SuccessSnackbar";
+import InfoSnackbar from "../../components/snackbars/InfoSnackbar";
+import Footer from "./Footer";
+import { Box, Stack } from "@mui/material";
 
 const AppLayout = () => {
   const [open, setOpen] = useState(false);
@@ -16,12 +21,18 @@ const AppLayout = () => {
   return (
     <div className="app">
       <Sidebar open={open} setOpen={setOpen} user={user} />
-      <main className="content">
+      <Box className="content">
         <Topbar open={open} setOpen={setOpen} user={user} />
+        <Box>
         <ModuleBoundary innerPage>
           <Outlet />
         </ModuleBoundary>
-      </main>
+        <ErrorSnackbar />
+        <SuccessSnackbar />
+        <InfoSnackbar />
+        </Box>
+      <Footer />
+      </Box>
     </div>
   );
 };

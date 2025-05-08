@@ -36,6 +36,10 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LockIcon from '@mui/icons-material/Lock';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 export default {
   edit: EditIcon,
@@ -76,5 +80,9 @@ export default {
   radioOn: RadioButtonCheckedIcon,
   radioOff: RadioButtonUncheckedIcon,
   arrow: KeyboardArrowDownIcon,
-  lock: LockIcon
+  lock: LockIcon,
+  lockOpen: LockOpenIcon,
+  progress: TimelineIcon,
+  checkBox: CheckBoxIcon,
+  CheckBoxBlank: CheckBoxOutlineBlankIcon
 };

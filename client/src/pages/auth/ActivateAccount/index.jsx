@@ -19,7 +19,6 @@ const ActivateAccount = ({ colors, theme, navigate, isMobile, searchParams }) =>
   }, [searchParams]);
 
   const handleActivate = () => {
-    // Here you would normally send the code to your backend to activate
     console.log("Activating account with code:", code);
     activate({code})
     setActivated(true);

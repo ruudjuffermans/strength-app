@@ -12,7 +12,7 @@ import _ from "lodash";
 const Button = React.forwardRef((props, ref) => {
     const {
         id, onClick, disabled, label, className, to, Icon, tooltip, type,
-        outlined, text, positive, negative, disableAutoFocus = false
+        outlined, text, positive, negative, disableAutoFocus = false, color="primary"
     } = props;
 
     if (_.sum([outlined, text, positive, negative]) > 1) {
@@ -35,7 +35,7 @@ const Button = React.forwardRef((props, ref) => {
             id={ id }
             ref={ ref }
             variant={variant}
-            color='primary'
+            color={color}
             startIcon={ Icon ? <Icon fontSize='large'/> : undefined }
             className={ clsx("action-button", className, positive && 'positive', negative && 'negative') }
             onClick={ runWithoutPropagation(to ? () => navigate(to) : onClick) }

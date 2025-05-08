@@ -22,7 +22,6 @@ const Login = ({ colors, theme, user, navigate, isMobile, params }) => {
   const handleFormSubmit = async (values) => {
     const res = await login(values);
     if (res) {
-      console.log(res)
       navigate("/");
     }
   };

@@ -10,9 +10,10 @@ const ContentPaper = ({ children }) => {
       position: "relative",
       p: 3,
       py: 4,
-      backgroundColor: theme.palette.background.paper,
-      borderTop: `1px solid ${theme.palette.background[100]}`,
-      borderBottom: `1px solid ${theme.palette.background[100]}`
+      borderRadius: 0,
+      backgroundColor: theme.palette.background[100],
+      borderTop: `1px solid ${theme.palette.background[200]}`,
+      borderBottom: `1px solid ${theme.palette.background[200]}`
     }}>
       {children}
     </Box>

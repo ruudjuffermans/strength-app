@@ -14,7 +14,7 @@ const PagePaper = ({ children, title, subtitle }) => {
       {children}
     </Box>
   ) : (
-    <Box sx={{ position: "relative", border: `1px solid ${theme.palette.background[100]}`, backgroundColor: theme.palette.background.paper, borderRadius: 3, display: isMobile && "contents", minHeight: "calc(100vh - 200px)", m: 4, p: 4 }}>
+    <Box sx={{ position: "relative", backgroundColor: theme.palette.background.paper, borderRadius: 3, display: isMobile && "contents", minHeight: "calc(100vh - 200px)", m: 2, p: 2 }}>
       <PageHeading title={title} subtitle={subtitle} />
       {children}
     </Box>

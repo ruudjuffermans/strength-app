@@ -37,7 +37,7 @@ async function createProgram(userId, name, description) {
 
 async function updateUserProgram(userId, programId, name, description) {
   const result = await pool.query(
-    `UPDATE prograsm 
+    `UPDATE program 
      SET name = $3, description = $4
      WHERE id = $2
        AND creator = $1 

@@ -13,7 +13,7 @@ export default function InfoSnackbar() {
             open={state.open}
             autoHideDuration={3000}
             onClose={clearSnackbar}
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
             <MuiAlert severity="info" onClose={clearSnackbar} elevation={6} sx={{
                 backgroundColor: theme.palette.info.dark,

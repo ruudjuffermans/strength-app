@@ -53,7 +53,6 @@ const SplitTileAdmin = ({ id, name, description, onDeleteSplit, onEditSplit, nav
   };
 
   const handleDeleteExercise = (id) => {
-    console.log(id)
     deleteExercise({exerciseId: id})
   };
 

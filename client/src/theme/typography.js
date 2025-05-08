@@ -1,8 +1,8 @@
 const typography = {
     fontFamily: [
-      'Josefin Sans',
-      'Comic Relief',
-      'Tuffy',
+      // 'Josefin Sans',
+      // 'Comic Relief',
+      // 'Tuffy',
       'Noto Sans',
       'Sensation',
       'Open Sans',
@@ -16,9 +16,9 @@ const typography = {
     ].join(','),
     h1: {
       "@media (max-width:480px)": {fontSize: '3rem'},
-      fontSize: '4rem', 
-      fontWeight: 700,
-      lineHeight: 1.1,
+      fontSize: '3rem', 
+      fontWeight: 500,
+      lineHeight: 1.2,
       letterSpacing: '-0.01562em',
     },
     h2: {
@@ -53,9 +53,9 @@ const typography = {
     },
   
     subtitle1: {
-      fontSize: '1.25rem',
-      fontWeight: 500,
-      lineHeight: 1.6,
+      fontSize: '1.12rem',
+      fontWeight: 300,
+      lineHeight: 2,
       letterSpacing: '0.00938em',
     },
     subtitle2: {

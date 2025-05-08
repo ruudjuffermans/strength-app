@@ -22,8 +22,11 @@ const StyledIconButton = styled(MuiIconButton)(({ theme, ownerState }) => ({
     transform: 'scale(0.95)',
     backgroundColor: "unset",
   },
-  '&.Mui-disabled': {
-    backgroundColor: theme.palette.background[400],
+  "&.Mui-disabled": {
+    opacity: 1,                 // Restore full opacity
+    color: "unset", // Or any specific color
+    pointerEvents: "auto",      // Allow clicks if you want (use with care)
+    cursor: "pointer",          // Optional, show pointer
   },
 }));
 

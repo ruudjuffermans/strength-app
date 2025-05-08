@@ -13,7 +13,7 @@ export default function SuccessSnackbar() {
             open={state.open}
             autoHideDuration={3000}
             onClose={clearSnackbar}
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
             <MuiAlert severity="success" onClose={clearSnackbar} elevation={6} sx={{
                 backgroundColor: theme.palette.success.dark,

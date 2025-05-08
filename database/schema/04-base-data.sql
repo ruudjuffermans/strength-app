@@ -46,12 +46,14 @@ ON CONFLICT DO NOTHING;
 
 SELECT setval('exercise_id_seq', (SELECT MAX(id) FROM exercise));
 
-INSERT INTO program (id, name, description)
+INSERT INTO program (id, name, description, is_active)
 VALUES
-  (1, 'Main Program', 'This is the Main Program'),
-  (2, 'Second Program', 'This is the Second Program'),
-  (3, 'Third Program', 'This is the Third Program')
+  (1, 'Main Program', 'This is the Main Program', TRUE),
+  (2, 'Second Program', 'This is the Second Program', TRUE),
+  (3, 'Third Program', 'This is the Third Program', TRUE)
 ON CONFLICT DO NOTHING;
+
+SELECT setval('program_id_seq', (SELECT MAX(id) FROM program));
 
 INSERT INTO split (id, program_id, name, description)
 VALUES
@@ -65,6 +67,8 @@ VALUES
   (8, 3, 'Back & Biceps', 'Pull day focus.'),
   (9, 3, 'Chest & Triceps', 'Push day focus.')
 ON CONFLICT DO NOTHING;
+
+SELECT setval('split_id_seq', (SELECT MAX(id) FROM split));
 
 INSERT INTO split_exercise (split_id, exercise_id, sets, reps, exercise_order)
 VALUES 

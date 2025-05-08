@@ -6,16 +6,15 @@ const darkPalette = {
   primary: {
     main: colors.primary[300],
     dark: colors.primary[400],
-    light: colors.primary[200],
+    light: colors.primary[100],
     contrastText: "#fff",
   },
   background: {
-    default: "#111111",
-    paper: "#1d1d1d",
-    100: "#2e2e2e",
-    200: "#3a3a3a",
-    300: "#474747",
-    400: "#545454",
+    50: "#161616",
+    100: "#1c1c1c",
+    200: "#282828",
+    300: "#494949",
+    400: "#4c4c4c",
     500: "#606060",
     600: "#6d6d6d",
     700: "#7a7a7a",
@@ -25,7 +24,7 @@ const darkPalette = {
   warning: {
     main: colors.warning[300],
     dark: colors.warning[400],
-    light: colors.warning[200],
+    light: colors.warning[100],
     contrastText: "#fff",
   },
   success: {

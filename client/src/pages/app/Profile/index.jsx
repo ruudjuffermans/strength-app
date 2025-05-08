@@ -1,6 +1,7 @@
 import React from "react";
 import { useUserProfile } from "../../../hooks/useUserProfile";
-import { Box, Typography, Grid, Paper, Divider } from "@mui/material";
+import { Box, Typography, Grid, Divider } from "@mui/material";
+import ContentPaper from "../../../components/papers/ContentPaper";
 
 const Profile = () => {
   const { userProfile } = useUserProfile();
@@ -25,7 +26,7 @@ const Profile = () => {
   } = userProfile;
 
   return (
-    <Paper elevation={3} sx={{ padding: 4, maxWidth: 800, margin: "0 auto" }}>
+    <ContentPaper >
       <Typography variant="h5" gutterBottom>
         User Profile
       </Typography>
@@ -78,7 +79,7 @@ const Profile = () => {
           {latest_weight ? `${latest_weight.weight} kg on ${new Date(latest_weight.created_at).toLocaleDateString()}` : "No entries yet"}
         </Grid>
       </Grid>
-    </Paper>
+    </ContentPaper>
   );
 };
 

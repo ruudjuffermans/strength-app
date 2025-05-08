@@ -1,6 +1,7 @@
 import { Box, Typography, Chip } from "@mui/material";
 import ContentPaper from "../../../components/papers/ContentPaper";
 import IconButton from "../../../components/buttons/IconButton";
+import { formatDate } from "@utils/formatDate";
 
 const WorkoutTile = ({ workout, navigate }) => {
   return (
@@ -22,13 +23,13 @@ const WorkoutTile = ({ workout, navigate }) => {
           </Typography>
         </Box>
         <Box display={'flex'} fontWeight={300} height={0} gap={1} >
-          <Chip color={workout.workout_state === "Completed" ? "success" : "warning"} label={workout.workout_state} variant="outlined" />
+          <Chip color={workout.workout_state === "Completed" ? "primary" : "warning"} label={workout.workout_state} variant={workout.workout_state === "Completed" ? "filled" : "outlined"} />
         </Box>
       </Box>
       <Box>
         <Box display="flex" gap={1} flexWrap="wrap" alignItems="center" mt={1}>
           <Typography variant="caption" color="textSecondary">
-            Created: {workout.created_at}
+            Created: {formatDate(workout.created_at)}
           </Typography>
         </Box>
 

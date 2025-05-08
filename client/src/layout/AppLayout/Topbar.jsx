@@ -18,7 +18,7 @@ const Topbar = ({ open, setOpen, user }) => {
   const colorMode = useContext(ColorModeContext);
   const { isMobile } = useResponsive();
   const content = (
-    <Box display="flex" backgroundColor={isMobile && colors.background[200]} justifyContent="space-between" alignItems="center" p={2}>
+    <Box display="flex" justifyContent="flex-end" alignItems="center" p={1}>
       {isMobile ? (
         <IconButton size={"medium"} icon={"menu"} onClick={() => setOpen(!open)} />
       ) : (
@@ -46,17 +46,14 @@ const Topbar = ({ open, setOpen, user }) => {
   return isMobile ? (
     <Box
       sx={{
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
         backgroundColor: theme.palette.background.default,
-        mb: "12px",
+        borderBottom: "1px solid rgba(255,255,255,8%)"
       }}
     >
       {content}
     </Box>
   ) : (
-    <Box m="10px">{content}</Box>
+    <Box m={3}>{content}</Box>
   );
 };
 

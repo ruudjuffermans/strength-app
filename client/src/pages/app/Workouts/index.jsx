@@ -1,126 +1,62 @@
-import React, { useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import React, { startTransition, useEffect, useState } from "react";
 import {
-  IconButton,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Chip,
   Box,
+  colors,
 } from "@mui/material";
 import { useWorkouts } from "@hooks/useWorkouts";
-import Icon from "@components/Icon"
 import WorkoutTile from "./WorkoutTile";
+import Selector from "../../../components/Selector";
 
-const Workouts = ({navigate}) => {
+const Workouts = ({navigate, isMobile}) => {
   const { workouts } = useWorkouts();
 
-  console.log(workouts)
+  const [selectedValue, setSelectedValue] = useState(undefined);
 
-  const sortedWorkouts = [...workouts].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const handleSelect = (id) => {
+    if (id === undefined || id === null) {
+      window.location.hash = '';
+    } else {
+      window.location.hash = `program-${id}`;
+    }
+    startTransition(() => setSelectedValue(id));
+  };
 
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.startsWith("#status-")) {
+      const value = hash.replace("#status-", "");
+      setSelectedValue(value);
+    }
+  }, []);
 
-  //   const columns = [
-  //     ...(!isMobile ? [{ field: "id", headerName: "ID", flex: 0.1 }] : []),
-  //     { field: "program", headerName: "Program", flex: 1 },
-  //     { field: "split", headerName: "Split", flex: 1 },
-  //     {
-  //       field: "workout_state",
-  //       headerName: "State",
-  //       flex: 1,
-  //       renderCell: (params) => (
-  //         <Chip
-  //           label={params.value}
-  //           color={params.value === "Completed" ? "success" : params.value === "Active" ? "info" : "warning"}
-  //           size="small"
-  //         />
-  //       ),
-  //     },
-  //     { field: "created_at", headerName: "Created", flex: 1 },
-  //     ...(!isMobile ? [{ field: "completed_at", headerName: "Completed", flex: 1 }] : []),
-  //     ...(isAdmin ? [{
-  //       field: "actions",
-  //       headerName: "",
-  //       flex: 0.1,
-  //       renderCell: (params) => {
-  //         const [anchorEl, setAnchorEl] = useState(null);
-  //         const open = Boolean(anchorEl);
+  const sortedWorkouts = [...workouts].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
 
-  //         const handleMenuOpen = (event) => {
-  //           setAnchorEl(event.currentTarget);
-  //         };
+  const filteredWorkouts = selectedValue
+  ? sortedWorkouts.filter((w) => w.workout_state === selectedValue)
+  : sortedWorkouts;
 
-  //         const handleMenuClose = () => {
-  //           setAnchorEl(null);
-  //         };
-
-  //         const handleDelete = () => {
-  //           deleteWorkout({ id: params.row.id });
-  //           handleMenuClose();
-  //         };
-
-  //         const handleView = () => {
-  //           navigate(`/workout/${params.row.id}`);
-  //           handleMenuClose();
-  //         };
-
-  //         return (
-  //           <>
-  //             <IconButton size={"small"} onClick={handleMenuOpen}>
-  //               <Icon size={"small"} name={"options"}  />
-  //             </IconButton>
-  //             <Menu
-  //               anchorEl={anchorEl}
-  //               open={open}
-  //               onClose={handleMenuClose}
-  //               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-  //               transformOrigin={{ vertical: "top", horizontal: "right" }}
-  //             >
-  //               <MenuItem onClick={handleView}>
-  //                 <ListItemIcon>
-  //                   <Icon name={"link"} fontSize="small" />
-  //                 </ListItemIcon>
-  //                 <ListItemText>View</ListItemText>
-  //               </MenuItem>
-  //               <MenuItem onClick={handleDelete}>
-  //                 <ListItemIcon>
-  //                   <Icon name={"delete"} fontSize="small" />
-  //                 </ListItemIcon>
-  //                 <ListItemText>Delete</ListItemText>
-  //               </MenuItem>
-  //             </Menu>
-  //           </>
-  //         );
-  // },
-  // }] : []),
-  //   ];
+  const filterOptions = [
+    { id: "Active", name: "Active", color: "warning" },
+    { id: "Completed", name: "Completed", color: "primary" },
+  ];
 
   return (
     <>
-      {/* <DataGrid
-      rows={workouts}
-      columns={columns}
-      density="compact"
-      processRowUpdateMode="client"
-      rowCount={0}
-      onRowClick={isAdmin ? undefined : (params) => navigate(`/workout/${params.row.id}`)}
-      sx={{
-        // fontSize: "10px",
-        p: 0,
-        m: 0,
-        '& .MuiDataGrid-header': {
-          py: 0,
-          px: 0.5,
-        },
-        '& .MuiIconButton-root': {
-          padding: "0px",
-          fontSize: "11px"
-        }
-      }}
-      /> */}
-      <Box display="flex" flexDirection={"column"} gap={1}>
-        {sortedWorkouts.map((workout,i) => (
+    <Box mx={isMobile && 3}>
+
+            <Selector
+          size="small"
+          items={filterOptions}
+          activeId={selectedValue}
+          onSelect={handleSelect}
+          action={()=> handleSelect(undefined)}
+          actionLabel={"reset"}
+          />
+          </Box>
+      <Box display="flex" flexDirection={"column"} gap={3}>
+        {filteredWorkouts.map((workout,i) => (
           <WorkoutTile key={i} workout={workout} navigate={navigate}
           />
         ))}

@@ -19,6 +19,15 @@ app.use(cors({
 
 app.use(express.json())
 
+app.use((req, res, next) => {
+    console.log("🛎️  Incoming Request:");
+    console.log("➡️  Method:", req.method);
+    console.log("📫 Route:", req.originalUrl);
+    console.log("📦 Body:", req.body);
+    console.log("----------------------------------");
+    next();
+  });
+
 app.get('/health', (req, res) => {
     console.log("health")
     res.json({ "message": "healthy" })

@@ -1,4 +1,5 @@
 const pool = require("../db");
+const AppError = require("../utils/appError");
 
 async function createWorkoutFromSplit(userId, splitId) {
     console.log(splitId, userId)
@@ -67,6 +68,7 @@ async function getWorkoutById(userId, workoutId) {
             wl.weight_used,
             wl.logged,
             wl.locked,
+            wl.one_rm,
             wl.notes AS workout_log_notes,
             e.id AS exercise_id,
             e.name AS exercise_name,
@@ -128,6 +130,7 @@ async function getWorkoutById(userId, workoutId) {
         id: row.workout_log_id,
         user_id: row.workout_user_id,
         set_number: row.set_number,
+        one_rm: row.one_rm,
         target_reps: row.target_reps,
         performed_reps: row.performed_reps,
         weight_used: row.weight_used,
@@ -166,13 +169,13 @@ async function deleteWorkout(userId, workoutId) {
     return result.rows[0];
 }
 
-async function logSet(userId, logId, performedReps, weightUsed) {
+async function logSet(userId, logId, performedReps, weightUsed, oneRm) {
     const result = await pool.query(
         `UPDATE workout_log 
-       SET performed_reps = $3, weight_used = $4, logged = TRUE
+       SET performed_reps = $3, weight_used = $4, logged = TRUE, one_RM = $5
        WHERE user_id = $1 AND id = $2
        RETURNING *`,
-        [userId, logId, performedReps, weightUsed]
+        [userId, logId, performedReps, weightUsed, oneRm]
     );
     return result.rows[0];
 }

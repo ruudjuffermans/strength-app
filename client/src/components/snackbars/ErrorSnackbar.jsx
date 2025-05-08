@@ -13,7 +13,7 @@ export default function ErrorSnackbar() {
             open={state.open}
             autoHideDuration={3000}
             onClose={clearSnackbar}
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
             <MuiAlert
                 severity="error"
@@ -21,7 +21,8 @@ export default function ErrorSnackbar() {
                 elevation={12}
                 sx={{
                     backgroundColor: theme.palette.error.dark,
-                    opacity: "0.9 !important",
+                    opacity: "0.8 !important",
+                    p: 0,
                     color: theme.palette.error.contrastText,
                     '& .MuiAlert-icon': {
                         color: theme.palette.error.contrastText,

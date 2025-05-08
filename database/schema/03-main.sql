@@ -4,6 +4,7 @@ CREATE TABLE program (
     description TEXT,
     creator INTEGER DEFAULT NULL,
     is_overwriter BOOLEAN DEFAULT FALSE,
+    is_active BOOLEAN DEFAULT FALSE,
     overwriter_ref INTEGER DEFAULT NULL,
     FOREIGN KEY (overwriter_ref) REFERENCES program(id) ON DELETE
     SET NULL
@@ -63,6 +64,7 @@ CREATE TABLE workout_log (
     target_reps INTEGER NOT NULL,
     performed_reps INTEGER DEFAULT NULL,
     weight_used DECIMAL(5, 2) DEFAULT NULL,
+    one_rm DECIMAL(8, 5) DEFAULT NULL,
     logged BOOLEAN DEFAULT FALSE,
     locked BOOLEAN DEFAULT FALSE,
     notes TEXT,

@@ -5,7 +5,7 @@ import ContentPaper from '../../../components/papers/ContentPaper';
 import Button from "@components/buttons/Button";
 import { Stack } from '@mui/material';
 
-const WorkoutExercise = ({ sets, exercise, logSet }) => {
+const WorkoutExercise = ({ sets, exercise, logSet, exerciseOrder, handleCompleteExercise }) => {
 
   const targetRepsString = sets.map(({ target_reps }) => target_reps).join(" / ");
 
@@ -17,10 +17,9 @@ const WorkoutExercise = ({ sets, exercise, logSet }) => {
         .map((set) => (
           <WorkoutSet key={set.id} exercise={exercise} set={set} logSet={logSet} />
         ))}
-        <Stack mt={4}>
-
-        <Button outlined label={"Complete Exercise"} onClick={() => console.log()} />
-        </Stack>
+      <Stack mt={4}>
+        <Button outlined color={"warning"} disabled={sets[0].locked} label={"Complete Exercise"} onClick={() => handleCompleteExercise(exerciseOrder)} />
+      </Stack>
     </ContentPaper>
   );
 };

@@ -16,9 +16,6 @@ function App() {
         <AuthProvider>
           <Router/>
         </AuthProvider>
-          <ErrorSnackbar />
-          <SuccessSnackbar />
-          <InfoSnackbar />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

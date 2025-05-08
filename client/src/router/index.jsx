@@ -15,14 +15,15 @@ import {
   supportPage,
   exercisesPage,
   programsPage,
-  createProgramPage,
-  programPage,
-  programEditPage,
-  splitPage,
+  // createProgramPage,
+  // programPage,
+  // programEditPage,
+  // splitPage,
   workoutPage,
   workoutsPage,
   resetPasswordPage,
   profilePage,
+  progressPage
 } from "./routes";
 
 const Router = () => {
@@ -44,10 +45,11 @@ const Router = () => {
         <Route path="/support" element={createElement(supportPage)} />
         <Route path="/exercises" element={createElement(exercisesPage)} />
         <Route path="/programs" element={createElement(programsPage)} />
-        <Route path="/create-program" element={createElement(createProgramPage)} />
+        <Route path="/progress" element={createElement(progressPage)} />
+        {/* <Route path="/create-program" element={createElement(createProgramPage)} />
         <Route path="/program/:programId/edit" element={createElement(programEditPage)} />
-        <Route path="/program/:programId" element={createElement(programPage)} />
-        <Route path="/split/:splitId" element={createElement(splitPage)} />
+        <Route path="/program/:programId" element={createElement(programPage)} /> */}
+        {/* <Route path="/split/:splitId" element={createElement(splitPage)} /> */}
         <Route path="/workout/:workoutId" element={createElement(workoutPage)} />
         <Route path="/workouts" element={createElement(workoutsPage)} />
       </Route>

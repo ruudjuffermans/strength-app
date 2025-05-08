@@ -16,8 +16,6 @@ const WorkoutSet = ({ set, exercise, logSet }) => {
   const theme = useTheme();
   const colors = theme.palette;
 
-  console.log(set)
-
   const [weight, setWeight] = useState(set.weight_used ?? "");
   const [reps, setReps] = useState(set.performed_reps ?? "");
 
@@ -45,9 +43,9 @@ const WorkoutSet = ({ set, exercise, logSet }) => {
           isLocked={set.locked}
         />
         <IconButton
-          sx={{ backgroundColor: set.logged ? colors.primary.dark : colors.primary.light, borderRadius: 2, height: "40px", width: "40px" }}
-          disabled={set.logged}
-          icon={set.logged ? "lock" : "submit"}
+          sx={{ backgroundColor: set.logged || set.locked ? `${colors.warning.light} !important` : `${colors.warning.main} !important`, borderRadius: 2, opacity: set.logged || set.locked ? "0.8 !important": 1, height: "40px", width: "40px" }}
+          disabled={set.logged || set.locked}
+          icon={set.logged || set.locked ? "lock" : "lockOpen"}
           onClick={() => handleLogSet({ logId: set.id })}
           size="small"
         />

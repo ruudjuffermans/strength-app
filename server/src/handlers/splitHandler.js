@@ -1,4 +1,5 @@
 const pool = require("../db");
+const AppError = require("../utils/appError");
 
 async function getSplitById(id) {
   try {
@@ -88,7 +89,7 @@ async function updateSplit(splitId, name, description) {
 async function deleteSplit(splitId) {
   const result = await pool.query(
     `DELETE FROM split
-     WHERE id = '$1'
+     WHERE id = $1
      RETURNING *`,
     [splitId]
   );
